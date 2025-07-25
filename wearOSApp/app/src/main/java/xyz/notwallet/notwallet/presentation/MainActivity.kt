@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Euro
 import androidx.compose.material.icons.rounded.FormatListNumbered
-import androidx.compose.material.icons.rounded.SelfImprovement
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -22,10 +21,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -34,20 +31,15 @@ import androidx.wear.compose.foundation.lazy.TransformingLazyColumn
 import androidx.wear.compose.foundation.lazy.rememberTransformingLazyColumnState
 import androidx.wear.compose.material.Button
 import androidx.wear.compose.material3.AppScaffold
-import androidx.wear.compose.material3.EdgeButton
-import androidx.wear.compose.material3.EdgeButtonSize
 import androidx.wear.compose.material3.ScreenScaffold
 import androidx.wear.compose.material3.SurfaceTransformation
 import androidx.wear.compose.material3.lazy.rememberTransformationSpec
 import androidx.wear.tooling.preview.devices.WearDevices
 import com.google.android.horologist.compose.layout.ColumnItemType
 import com.google.android.horologist.compose.layout.rememberResponsiveColumnPadding
-import xyz.notwallet.notwallet.R
 import xyz.notwallet.notwallet.presentation.components.BaseText
 import xyz.notwallet.notwallet.presentation.components.Chip
-import xyz.notwallet.notwallet.presentation.components.IconButton
 import xyz.notwallet.notwallet.presentation.components.PriceGraphView
-import xyz.notwallet.notwallet.presentation.components.TextHeader
 import xyz.notwallet.notwallet.presentation.theme.NotWalletTheme
 import xyz.notwallet.notwallet.presentation.transactions.TransactionListActivity
 
