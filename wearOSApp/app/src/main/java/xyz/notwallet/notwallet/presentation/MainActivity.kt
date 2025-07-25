@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Euro
+import androidx.compose.material.icons.rounded.FormatListNumbered
 import androidx.compose.material.icons.rounded.SelfImprovement
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
@@ -114,12 +115,8 @@ fun WearApp() {
                     }
                     item {
                         Button(
-                            onClick = {
-                                context.startActivity(
-                                    Intent(context, TransactionListActivity::class.java)
-                                )
-                            },
-                            modifier = Modifier.fillMaxWidth()
+                            onClick = {},
+                            modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)
                         ) {
                             BaseText(
                                 text = "10.89 mill",
@@ -131,6 +128,19 @@ fun WearApp() {
                                 transformation = SurfaceTransformation(transformationSpec)
                             )
                         }
+                    }
+                    item {
+                        Chip(
+                            text = "Transactions",
+                            imageVector = Icons.Rounded.FormatListNumbered,
+                            iconContentDescription = "List of transactions",
+                            onClick = {
+                                context.startActivity(
+                                    Intent(context, TransactionListActivity::class.java)
+                                )
+                            },
+                            transformation = SurfaceTransformation(transformationSpec)
+                        )
                     }
                 }
             }
