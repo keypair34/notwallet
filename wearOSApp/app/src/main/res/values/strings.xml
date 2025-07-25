@@ -7,4 +7,6 @@
     <string name="hello_world">From the Square world,\nHello, %1$s!</string>
     <string name="more">More</string>
     <string name="end_of_list">End of list</string>
+    <string name="token_info_card_information">Information</string>
+    <string name="token_info_card_total_supply">Total supply</string>
 </resources>

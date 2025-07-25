@@ -53,11 +53,8 @@ import xyz.notwallet.notwallet.presentation.transactions.TransactionListActivity
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
-
         super.onCreate(savedInstanceState)
-
         setTheme(android.R.style.Theme_DeviceDefault)
-
         setContent { WearApp() }
     }
 }
@@ -108,7 +105,7 @@ fun WearApp() {
                     }
                     item {
                         BaseText(
-                            text = "My saldo",
+                            text = "Total supply",
                             fontSize = 18.sp,
                             fontWeight = FontWeight.SemiBold,
                             color = Color.Gray,
@@ -125,7 +122,7 @@ fun WearApp() {
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             BaseText(
-                                text = "10.624 BACH",
+                                text = "10.89 mill",
                                 fontSize = 20.sp,
                                 fontFamily = FontFamily.Monospace,
                                 modifier =

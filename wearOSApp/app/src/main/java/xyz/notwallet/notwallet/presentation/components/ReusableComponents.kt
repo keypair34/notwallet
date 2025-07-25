@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.Message
 import androidx.compose.material.icons.rounded.Euro
+import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.SelfImprovement
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -77,15 +78,16 @@ fun IconButton(
 }
 
 @Composable
-fun BaseText(text: String,
-             modifier: Modifier = Modifier,
-             fontSize: TextUnit = 12.sp,
-             fontFamily: FontFamily = FontFamily.Monospace,
-             color: Color = Color.Gray,
-             textAlign: TextAlign = TextAlign.Center,
-             fontWeight: FontWeight = FontWeight.SemiBold,
-             maxLines: Int = 1,
-             transformation: SurfaceTransformation
+fun BaseText(
+    text: String,
+    modifier: Modifier = Modifier,
+    fontSize: TextUnit = 12.sp,
+    fontFamily: FontFamily = FontFamily.Monospace,
+    color: Color = Color.Gray,
+    textAlign: TextAlign = TextAlign.Center,
+    fontWeight: FontWeight = FontWeight.SemiBold,
+    maxLines: Int = 1,
+    transformation: SurfaceTransformation
 ) {
     ListHeader(
         modifier = modifier,
@@ -156,6 +158,34 @@ fun Card(
         title = { Text(title) },
         onClick = onClick,
     ) {
+        Text(content)
+    }
+}
+
+@Composable
+fun TokenInfoCard(
+    modifier: Modifier = Modifier,
+    iconModifier: Modifier = Modifier,
+    title: String = "",
+    content: String = "",
+    onClick: () -> Unit,
+    transformation: SurfaceTransformation,
+) {
+    AppCard(
+        modifier = modifier,
+        transformation = transformation,
+        appImage = {
+            Icon(
+                imageVector = Icons.Rounded.Info,
+                contentDescription = "Token information icon",
+                modifier = iconModifier,
+            )
+        },
+        appName = { Text(stringResource(R.string.token_info_card_information)) },
+        title = { Text(title) },
+        onClick = onClick,
+    ) {
+        Text(stringResource(R.string.token_info_card_total_supply))
         Text(content)
     }
 }
@@ -338,6 +368,35 @@ fun CardPreview() {
     }
 }
 
+
+// Token Card Preview
+@WearPreviewDevices
+@Composable
+fun TokenCardPreview() {
+    NotWalletTheme {
+        val transformationSpec = rememberTransformationSpec()
+        AppScaffold {
+            val listState = rememberTransformingLazyColumnState()
+            val contentPadding =
+                rememberResponsiveColumnPadding(first = ColumnItemType.Card)
+            ScreenScaffold(
+                scrollState = listState,
+                contentPadding = contentPadding,
+            ) { cp ->
+                TransformingLazyColumn(state = listState, contentPadding = cp) {
+                    item {
+                        TokenInfoCard(
+                            title = "Kim Green",
+                            content = "On my way!",
+                            onClick = {},
+                            transformation = SurfaceTransformation(transformationSpec)
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
 // Chip Preview
 @WearPreviewDevices
 @Composable

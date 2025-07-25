@@ -71,7 +71,7 @@ private fun ScrollViewContent(listState: TransformingLazyColumnState, contentPad
             )
         }
         item {
-            Text(text = "Fixed supply: 12 million BACH", fontSize = 12.sp, color = Color.Gray)
+            Text(text = "Fixed supply: 10.89 million BACH", fontSize = 12.sp, color = Color.Gray)
         }
         item {
             Spacer(modifier = Modifier.height(16.dp))
