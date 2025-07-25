@@ -17,6 +17,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Euro
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,6 +27,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -32,11 +35,24 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.wear.compose.foundation.lazy.TransformingLazyColumn
+import androidx.wear.compose.foundation.lazy.rememberTransformingLazyColumnState
 import androidx.wear.compose.material.Button
-import androidx.wear.compose.material.MaterialTheme
-import androidx.wear.compose.material.Text
+import androidx.wear.compose.material3.AppScaffold
+import androidx.wear.compose.material3.EdgeButton
+import androidx.wear.compose.material3.EdgeButtonSize
+import androidx.wear.compose.material3.ScreenScaffold
+import androidx.wear.compose.material3.SurfaceTransformation
+import androidx.wear.compose.material3.lazy.rememberTransformationSpec
+import androidx.wear.compose.material3.lazy.transformedHeight
 import androidx.wear.tooling.preview.devices.WearDevices
+import com.google.android.horologist.compose.layout.ColumnItemType
+import com.google.android.horologist.compose.layout.rememberResponsiveColumnPadding
+import xyz.notwallet.NotWallet.R
+import xyz.notwallet.NotWallet.presentation.components.BaseText
+import xyz.notwallet.NotWallet.presentation.components.IconButton
 import xyz.notwallet.NotWallet.presentation.components.PriceGraphView
+import xyz.notwallet.NotWallet.presentation.components.TextRegular
 import xyz.notwallet.NotWallet.presentation.theme.NotWalletTheme
 import xyz.notwallet.NotWallet.presentation.transactions.TransactionListActivity
 
@@ -54,71 +70,105 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun WearApp() {
-
-    val context = LocalContext.current
-
     NotWalletTheme {
-        Box(
-                modifier = Modifier.fillMaxSize().background(Color.Black, RoundedCornerShape(30)),
-                contentAlignment = Alignment.TopCenter
-        ) {
-            Column(
-                    modifier =
-                            Modifier.fillMaxSize()
-                                    .padding(16.dp)
-                                    .verticalScroll(rememberScrollState())
-                                    .background(Color.Black, RoundedCornerShape(30)),
-                    horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Spacer(modifier = Modifier.height(16.dp))
-                Text(
-                        text = "€BACH",
-                        fontSize = 32.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color(0xFF9932CC),
-                        modifier =
-                                Modifier.clickable {
-                                    context.startActivity(
-                                            Intent(context, BachInfoActivity::class.java)
-                                    )
-                                }
-                )
-                Text(text = "Fixed supply", fontSize = 12.sp, color = Color.Gray)
-                Text(text = "12 million BACH", fontSize = 18.sp, textAlign = TextAlign.Center)
-                Spacer(modifier = Modifier.height(16.dp))
-                Box(modifier = Modifier.fillMaxWidth().height(60.dp).background(Color.Black)) {
-                    PriceGraphView(modifier = Modifier.fillMaxSize())
-                }
-                Spacer(modifier = Modifier.height(16.dp))
-                HorizontalDivider()
-                Text(
-                        text = "My saldo",
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.SemiBold,
-                        color = Color.Gray,
-                        modifier = Modifier.padding(vertical = 8.dp)
-                )
-                Button(
-                        onClick = {
-                            context.startActivity(
-                                    Intent(context, TransactionListActivity::class.java)
-                            )
-                        },
-                        modifier = Modifier.fillMaxWidth()
+        AppScaffold {
+            val context = LocalContext.current
+            val listState = rememberTransformingLazyColumnState()
+            val transformationSpec = rememberTransformationSpec()
+            ScreenScaffold(
+                scrollState = listState,
+                contentPadding = rememberResponsiveColumnPadding(
+                    first = ColumnItemType.IconButton,
+                    last = ColumnItemType.Button,
+                ),
+                edgeButton = {
+                    EdgeButton(
+                        onClick = { /* ... */ },
+                        buttonSize = EdgeButtonSize.Medium,
+                    ) {
+                        androidx.wear.compose.material3.Text(stringResource(R.string.more))
+                    }
+                },
+            ) { contentPadding ->
+                TransformingLazyColumn(
+                    state = listState,
+                    contentPadding = contentPadding,
                 ) {
-                    Text(
-                            text = "10.624434723489 BACH",
-                            fontSize = 20.sp,
-                            fontFamily = FontFamily.Monospace,
-                            color = Color.Black,
-                            modifier =
+                    item {
+                        IconButton(
+                            onClick = {
+                                context.startActivity(
+                                    Intent(context, TransactionListActivity::class.java)
+                                )
+                            },
+                            imageVector = Icons.Rounded.Euro
+                        )
+                    }
+                    item {
+                        BaseText(text = "Fixed supply", fontSize = 12.sp, color = Color.Gray,
+                            transformation = SurfaceTransformation(transformationSpec))
+                    }
+                    item {
+                        BaseText(
+                            text = "12 million BACH",
+                            fontSize = 18.sp,
+                            textAlign = TextAlign.Center,
+                            transformation = SurfaceTransformation(transformationSpec)
+                        )
+                    }
+                    item {
+                        Spacer(modifier = Modifier.height(16.dp))
+                    }
+                    item {
+                        Box(
+                            modifier = Modifier.fillMaxWidth().height(60.dp).background(Color.Black)
+                        ) {
+                            PriceGraphView(modifier = Modifier.fillMaxSize())
+                        }
+                    }
+                    item {
+                        Spacer(modifier = Modifier.height(16.dp))
+                    }
+                    item {
+                        HorizontalDivider()
+                    }
+                    item {
+                        BaseText(
+                            text = "My saldo",
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            color = Color.Gray,
+                            modifier = Modifier.padding(vertical = 8.dp),
+                            transformation = SurfaceTransformation(transformationSpec)
+                        )
+                    }
+                    item {
+                        Button(
+                            onClick = {
+                                context.startActivity(
+                                    Intent(context, TransactionListActivity::class.java)
+                                )
+                            },
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            BaseText(
+                                text = "10.624434723489 BACH",
+                                fontSize = 20.sp,
+                                fontFamily = FontFamily.Monospace,
+                                color = Color.Black,
+                                modifier =
                                     Modifier.padding(8.dp)
-                                            .clip(RectangleShape)
-                                            .horizontalScroll(rememberScrollState()),
-                            maxLines = 1
-                    )
+                                        .clip(RectangleShape),
+                                        //.horizontalScroll(rememberScrollState()),
+                                maxLines = 1,
+                                transformation = SurfaceTransformation(transformationSpec)
+                            )
+                        }
+                    }
+                    item {
+                        Spacer(modifier = Modifier.height(16.dp))
+                    }
                 }
-                Spacer(modifier = Modifier.height(16.dp))
             }
         }
     }
