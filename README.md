@@ -1,6 +1,10 @@
 # NotWallet
 
-Solana wallet and more. Do your own research. Use at your own risk.
+Solana non-custodial wallet, stable coin payment platform, and more 🔐
+
+**Do your own research.**
+
+**Use at your own risk.**
 
 ## Official Buils Support
 
