@@ -14,6 +14,8 @@ const USE_LOCAL_RPC: bool = false;
 
 pub fn rpc_url() -> String {
     if USE_LOCAL_RPC {
+        // Use local IP address if running on a real device
+        // for example, 192.168.1.108
         format!("http://localhost:8899")
     } else {
         format!(

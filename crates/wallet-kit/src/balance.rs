@@ -74,3 +74,18 @@ fn get_token_account(data: &UiAccountData) -> Option<UiTokenAccount> {
     };
     Some(token_account.info)
 }
+
+pub fn sol_balance(rpc_url: String, pubkey: String) -> String {
+    let connection = RpcClient::new(rpc_url);
+    let pubkey = match Pubkey::from_str(&pubkey) {
+        Ok(pubkey) => pubkey,
+        Err(e) => {
+            println!("Error parsing pubkey: {}", e);
+            return "0".to_string();
+        }
+    };
+    let balance = client.get_balance(&pubkey).await?;
+    let pretty_balance = balance / LAMPORTS_PER_SOL;
+    println!("{:#?} SOL", pretty_balance);
+    pretty_balance.to_string()
+}
