@@ -38,7 +38,7 @@ if [ -z "$KEY_ALIAS_PASSWORD" ]; then
 fi
 
 echo "Building Android app..."
-cargo tauri android build --aab || { echo "Error: Android build failed"; exit 1; }
+cargo tauri android build --aab -c src-tauri/tauri.prod.conf.json || { echo "Error: Android build failed"; exit 1; }
 
 echo "Android app successfully built!"
 echo "The .aab file is available in the src-tauri/gen/android/app/build/outputs/bundle/release/ directory"
