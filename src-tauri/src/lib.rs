@@ -11,7 +11,8 @@ use crate::{
     wallet::{
         check_pubkey::check_pubkey,
         commands::{
-            derive_next_keypair, get_bach_balance, get_token_info, onboarding_create_wallet,
+            derive_next_keypair, get_bach_balance, get_sol_balance, get_token_info,
+            onboarding_create_wallet,
         },
         import_wallet::{derive_new_keypair, import_solana_wallet},
         set_active_keypair::set_active_keypair,
@@ -48,6 +49,7 @@ pub fn run() {
             set_active_keypair,
             get_installation_id,
             get_bach_balance,
+            get_sol_balance,
             get_token_info,
             onramp_session,
         ])

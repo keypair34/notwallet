@@ -15,7 +15,7 @@ import { useRouter } from "next/navigation";
 import { selectionFeedback } from "@tauri-apps/plugin-haptics";
 import { writeText } from "@tauri-apps/plugin-clipboard-manager";
 import { invoke } from "@tauri-apps/api/core";
-import { GET_BACH_BALANCE } from "@/lib/commands";
+import { GET_BACH_BALANCE, GET_SOL_BALANCE } from "@/lib/commands";
 
 interface WalletCardProps {
   userName: string;
@@ -31,7 +31,8 @@ export default function WalletCard({
   onSwitchKeypair,
 }: WalletCardProps) {
   const router = useRouter();
-  const [balance, setBalance] = React.useState<string>("-");
+  const [bachBalance, setBachBalance] = React.useState<string>("-");
+  const [solBalance, setSolBalance] = React.useState<string>("-");
 
   const handleWalletSettings = async () => {
     await selectionFeedback();
@@ -48,7 +49,11 @@ export default function WalletCard({
       const balance = await invoke<string>(GET_BACH_BALANCE, {
         pubkey: wallet.pubkey,
       });
-      setBalance(`${balance} BACH`);
+      setBachBalance(`${balance}`);
+      const solBalance = await invoke<string>(GET_SOL_BALANCE, {
+        pubkey: wallet.pubkey,
+      });
+      setSolBalance(`${solBalance}`);
     } catch (error) {
       console.error("Error fetching balance:", error);
     }
@@ -201,7 +206,7 @@ export default function WalletCard({
         variant="subtitle2"
         sx={{ color: "#B768FF", mb: 1, letterSpacing: 1 }}
       >
-        Total Balance
+        Balance
       </Typography>
       <Typography
         variant="h3"
@@ -211,9 +216,23 @@ export default function WalletCard({
           mb: 2,
           textShadow: "0 2px 12px #9932CC55",
           fontFamily: "Inter, Helvetica Neue, Arial, sans-serif",
+          fontSize: 24,
         }}
       >
-        {balance}
+        {bachBalance}
+      </Typography>
+      <Typography
+        variant="h4"
+        fontWeight="bold"
+        sx={{
+          color: "#fff",
+          mb: 2,
+          textShadow: "0 2px 12px #9932CC55",
+          fontFamily: "Inter, Helvetica Neue, Arial, sans-serif",
+          fontSize: 16,
+        }}
+      >
+        {solBalance}
       </Typography>
       <Stack direction="row" spacing={2} sx={{ mb: 1 }}>
         <Button

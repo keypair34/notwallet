@@ -12,9 +12,11 @@ use log::{debug, error, info};
 use solana_sdk::signature::Signer;
 use tauri::{command, AppHandle};
 use uuid::Uuid;
-use wallet_kit::balance::bach_balance;
-use wallet_kit::derive_keypair::derive_keypair_default;
-use wallet_kit::token_info::token_info;
+use wallet_kit::{
+    balance::{bach_balance, sol_balance},
+    derive_keypair::derive_keypair_default,
+    token_info::token_info,
+};
 
 #[command]
 pub fn onboarding_create_wallet(app: AppHandle) -> Result<OnboardingCreateWallet, String> {
@@ -155,6 +157,12 @@ pub fn get_bach_balance(pubkey: String) -> String {
         SPL_TOKEN_PROGRAM_ID.to_string(),
         bach_token_address,
     )
+}
+
+#[command]
+pub fn get_sol_balance(pubkey: String) -> String {
+    info!("Getting balance for {}", pubkey);
+    sol_balance(rpc_url(), pubkey)
 }
 
 #[command]

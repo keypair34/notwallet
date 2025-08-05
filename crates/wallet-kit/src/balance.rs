@@ -1,9 +1,8 @@
+use crate::constants::LAMPORTS_PER_SOL;
 use log::{debug, error};
 use serde::{Deserialize, Serialize};
-use solana_account_decoder::parse_token::UiTokenAccount;
-use solana_account_decoder::UiAccountData;
-use solana_client::rpc_client::RpcClient;
-use solana_client::rpc_request::TokenAccountsFilter;
+use solana_account_decoder::{parse_token::UiTokenAccount, UiAccountData};
+use solana_client::{rpc_client::RpcClient, rpc_request::TokenAccountsFilter};
 use solana_program::pubkey::Pubkey;
 use std::str::FromStr;
 
@@ -49,7 +48,38 @@ pub fn bach_balance(
         "Bach balance: {}",
         bach_account[0].token_amount.ui_amount_string
     );
-    bach_account[0].token_amount.ui_amount_string.clone()
+    // Rounded to 2 decimal places
+    let amount = bach_account[0]
+        .token_amount
+        .amount
+        .parse::<u128>()
+        .unwrap_or(0);
+    let decimals = bach_account[0].token_amount.decimals as u32;
+    let whole_part = amount / 10u128.pow(decimals);
+    let decimal_part = ((amount % 10u128.pow(decimals)) * 100) / 10u128.pow(decimals);
+    format!("{}.{:02} BACH", whole_part, decimal_part)
+}
+
+pub fn sol_balance(rpc_url: String, pubkey: String) -> String {
+    let connection = RpcClient::new(rpc_url);
+    let pubkey = match Pubkey::from_str(&pubkey) {
+        Ok(pubkey) => pubkey,
+        Err(e) => {
+            println!("Error parsing pubkey: {}", e);
+            return "0".to_string();
+        }
+    };
+    let balance = match connection.get_balance(&pubkey) {
+        Ok(balance) => balance as f64,
+        Err(e) => {
+            println!("Error getting balance: {}", e);
+            return "0".to_string();
+        }
+    };
+    let pretty_balance = balance / LAMPORTS_PER_SOL;
+    println!("{:#?} SOL", pretty_balance);
+    // Display SOL balance
+    format!("{:.2} SOL", pretty_balance)
 }
 
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
@@ -73,19 +103,4 @@ fn get_token_account(data: &UiAccountData) -> Option<UiTokenAccount> {
         }
     };
     Some(token_account.info)
-}
-
-pub fn sol_balance(rpc_url: String, pubkey: String) -> String {
-    let connection = RpcClient::new(rpc_url);
-    let pubkey = match Pubkey::from_str(&pubkey) {
-        Ok(pubkey) => pubkey,
-        Err(e) => {
-            println!("Error parsing pubkey: {}", e);
-            return "0".to_string();
-        }
-    };
-    let balance = client.get_balance(&pubkey).await?;
-    let pretty_balance = balance / LAMPORTS_PER_SOL;
-    println!("{:#?} SOL", pretty_balance);
-    pretty_balance.to_string()
 }
