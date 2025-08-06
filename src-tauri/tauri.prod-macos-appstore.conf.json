@@ -1,6 +1,6 @@
 {
   "productName": "NotWallet",
-  "identifier": "xyz.notwallet.NotWallet",
+  "identifier": "xyz.notwallet.NotWalletApp",
   "app": {
     "windows": [
       {

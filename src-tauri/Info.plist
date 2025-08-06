@@ -4,5 +4,7 @@
 <dict>
   <key>ITSAppUsesNonExemptEncryption</key>
   <false/>
+  <key>NSCameraUsageDescription</key>
+  <string>Request camera access for onramp KYC</string>
 </dict>
 </plist>
