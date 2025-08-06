@@ -9,6 +9,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import LockIcon from "@mui/icons-material/Lock";
 import { SolanaWallet } from "@/lib/crate/generated";
 import IconButton from "@mui/material/IconButton";
+import SendIcon from "@mui/icons-material/Send";
 import Tooltip from "@mui/material/Tooltip";
 import Box from "@mui/material/Box";
 import { useRouter } from "next/navigation";
@@ -37,6 +38,11 @@ export default function WalletCard({
   const handleWalletSettings = async () => {
     await selectionFeedback();
     router.push("/wallet/settings");
+  };
+
+  const handleSend = async () => {
+    await selectionFeedback();
+    router.push("/wallet/send?address=" + wallet.pubkey);
   };
 
   const onBuySol = React.useCallback(async () => {
@@ -225,19 +231,40 @@ export default function WalletCard({
       >
         Balance
       </Typography>
-      <Typography
-        variant="h3"
-        fontWeight="bold"
-        sx={{
-          color: "#fff",
-          mb: 2,
-          textShadow: "0 2px 12px #9932CC55",
-          fontFamily: "Inter, Helvetica Neue, Arial, sans-serif",
-          fontSize: 24,
-        }}
+      <Stack
+        direction="row"
+        spacing={2}
+        alignItems="start"
+        justifyContent="space-between"
       >
-        {bachBalance}
-      </Typography>
+        <Typography
+          variant="h3"
+          fontWeight="bold"
+          sx={{
+            color: "#fff",
+            mb: 2,
+            textShadow: "0 2px 12px #9932CC55",
+            fontFamily: "Inter, Helvetica Neue, Arial, sans-serif",
+            fontSize: 24,
+          }}
+        >
+          {bachBalance}
+        </Typography>
+        <Tooltip title="Send">
+          <IconButton
+            sx={{
+              color: "#9932CC",
+              bgcolor: "#f5f6fa",
+              "&:hover": { bgcolor: "#EDE7F6" },
+              borderRadius: 2,
+            }}
+            onClick={handleSend}
+            size="small"
+          >
+            <SendIcon />
+          </IconButton>
+        </Tooltip>
+      </Stack>
       <Typography
         variant="h4"
         fontWeight="bold"
