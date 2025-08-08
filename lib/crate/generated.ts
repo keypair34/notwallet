@@ -2,6 +2,8 @@
 
 export const STRIPE_PUBLISHABLE_KEY = "your_stripe_publishable_key";
 
+export const ONRAMPER_KEY = "your_onramper_key";
+
 /**
  * Generate:
  * tsync -i src-tauri/src/ crates/wallet-kit/src/ -o lib/crate/generated.ts
