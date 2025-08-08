@@ -9,12 +9,14 @@ import Tooltip from "@mui/material/Tooltip";
 import CircularProgress from "@mui/material/CircularProgress";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { invoke } from "@tauri-apps/api/core";
+import { openUrl } from "@tauri-apps/plugin-opener";
 import {
   GET_TREASURY_BACH_BALANCE,
   GET_TREASURY_SOL_BALANCE,
 } from "@/lib/commands";
 import { debug } from "@tauri-apps/plugin-log";
 import { selectionFeedback } from "@tauri-apps/plugin-haptics";
+import { THE_STABLE_FOUNDATION_TREASURY_ADDRESS } from "@/lib/crate/generated";
 
 // Solana Icon Component
 const SolanaIcon = ({ size = 24 }: { size?: number }) => (
@@ -49,13 +51,10 @@ export default function TreasuryCard() {
   const [bachBalance, setBachBalance] = React.useState<string>("-");
   const [solBalance, setSolBalance] = React.useState<string>("-");
 
-  const treasuryAddress =
-    "3YAyrP4mjiLRuHZQjfskmmVBbF7urtfDLfnRXfu9cUxnvrxj5PvbzTmf";
-
   const openExplorer = async (address: string) => {
     await selectionFeedback();
     const url = `https://explorer.solana.com/address/${address}`;
-    window.open(url, "_blank");
+    openUrl(url);
   };
 
   const loadTreasuryBalances = async () => {
@@ -129,11 +128,11 @@ export default function TreasuryCard() {
             flex: 1,
           }}
         >
-          {`${treasuryAddress.slice(0, 8)}...${treasuryAddress.slice(-8)}`}
+          {`${THE_STABLE_FOUNDATION_TREASURY_ADDRESS.slice(0, 8)}...${THE_STABLE_FOUNDATION_TREASURY_ADDRESS.slice(-8)}`}
         </Typography>
         <Tooltip title="View on Explorer" arrow>
           <IconButton
-            onClick={() => openExplorer(treasuryAddress)}
+            onClick={() => openExplorer(THE_STABLE_FOUNDATION_TREASURY_ADDRESS)}
             sx={{
               color: "#9932CC",
               ml: 1,
@@ -156,7 +155,10 @@ export default function TreasuryCard() {
       {/* Error State */}
       {state === LoadingState.Error && (
         <Box sx={{ textAlign: "center", py: 4 }}>
-          <Typography variant="body2" sx={{ color: "rgba(255,255,255,0.8)", mb: 2 }}>
+          <Typography
+            variant="body2"
+            sx={{ color: "rgba(255,255,255,0.8)", mb: 2 }}
+          >
             Failed to load treasury balances
           </Typography>
           <Typography

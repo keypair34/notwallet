@@ -4,7 +4,7 @@ export const STRIPE_PUBLISHABLE_KEY = "your_stripe_publishable_key";
 
 /**
  * Generate:
- * tsync -i src-tauri/src/ -o lib/crate/generated.ts
+ * tsync -i src-tauri/src/ crates/wallet-kit/src/ -o lib/crate/generated.ts
  */
 export const STORE = ".notwallet.dat";
 
@@ -98,3 +98,8 @@ export interface OnboardingCreateWallet {
   seed: string;
   keypair: SolanaWallet;
 }
+
+/** The Stable Foundation */
+export const THE_STABLE_FOUNDATION_ADDRESS = "9DWkPYFKcjpGVjwCjgAnYM8T6H4hssEnW27rLDtfU8y5";
+
+export const THE_STABLE_FOUNDATION_TREASURY_ADDRESS = "3YAyrP4mjiLRuHZQjfskmmVBbF7urtfDLfnLtW2jzgx3";

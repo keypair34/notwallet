@@ -3,7 +3,7 @@
 //! This example demonstrates how the 0.25% fee system works for both SOL and token transfers.
 //! The fee is automatically deducted from each transaction and sent to The Stable Foundation Treasury.
 
-use wallet_kit::fee::{FeeBreakdown, FeeConfig, TreasuryFeeManager};
+use wallet_kit::fee::{FeeBreakdown, FeeConfig};
 use wallet_kit::transactions::{estimate_sol_transaction_cost, estimate_token_transaction_cost};
 
 fn main() {
@@ -311,7 +311,7 @@ fn demonstrate_instruction_creation() {
     println!("  To: {}", to_wallet);
     println!(
         "  Treasury: {}",
-        wallet_kit::constants::address::THE_STABLE_FOUNDATION_TREASURY
+        wallet_kit::constants::THE_STABLE_FOUNDATION_TREASURY
     );
     println!();
 

@@ -9,9 +9,11 @@ import Tooltip from "@mui/material/Tooltip";
 import CircularProgress from "@mui/material/CircularProgress";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { invoke } from "@tauri-apps/api/core";
+import { openUrl } from "@tauri-apps/plugin-opener";
 import { GET_BACH_BALANCE } from "@/lib/commands";
 import { debug } from "@tauri-apps/plugin-log";
 import { selectionFeedback } from "@tauri-apps/plugin-haptics";
+import { THE_STABLE_FOUNDATION_ADDRESS } from "@/lib/crate/generated";
 
 // BACH Token Icon Component
 const BachIcon = ({ size = 24 }: { size?: number }) => (
@@ -34,12 +36,10 @@ export default function DAOInfoCard() {
   const [state, setState] = React.useState<LoadingState>(LoadingState.Loading);
   const [lockedBachBalance, setLockedBachBalance] = React.useState<string>("-");
 
-  const daoTokenAddress = "9DWkPYFKcjpGVjwCjgAnYM8T6H4hssEnW27rLDtfU8y5";
-
   const openExplorer = async (address: string) => {
     await selectionFeedback();
     const url = `https://explorer.solana.com/address/${address}`;
-    window.open(url, "_blank");
+    openUrl(url);
   };
 
   const loadDAOBalance = async () => {
@@ -47,7 +47,7 @@ export default function DAOInfoCard() {
       setState(LoadingState.Loading);
 
       const daoLockedBalance = await invoke<string>(GET_BACH_BALANCE, {
-        pubkey: daoTokenAddress,
+        pubkey: THE_STABLE_FOUNDATION_ADDRESS,
       });
 
       debug(`DAO locked BACH balance: ${daoLockedBalance}`);
@@ -109,11 +109,11 @@ export default function DAOInfoCard() {
             flex: 1,
           }}
         >
-          {`${daoTokenAddress.slice(0, 8)}...${daoTokenAddress.slice(-8)}`}
+          {`${THE_STABLE_FOUNDATION_ADDRESS.slice(0, 8)}...${THE_STABLE_FOUNDATION_ADDRESS.slice(-8)}`}
         </Typography>
         <Tooltip title="View on Explorer" arrow>
           <IconButton
-            onClick={() => openExplorer(daoTokenAddress)}
+            onClick={() => openExplorer(THE_STABLE_FOUNDATION_ADDRESS)}
             sx={{
               color: "#9932CC",
               ml: 1,
@@ -149,7 +149,10 @@ export default function DAOInfoCard() {
       {/* Error State */}
       {state === LoadingState.Error && (
         <Box sx={{ textAlign: "center", py: 4 }}>
-          <Typography variant="body2" sx={{ color: "rgba(255,255,255,0.8)", mb: 2 }}>
+          <Typography
+            variant="body2"
+            sx={{ color: "rgba(255,255,255,0.8)", mb: 2 }}
+          >
             Failed to load DAO balance
           </Typography>
           <Typography
