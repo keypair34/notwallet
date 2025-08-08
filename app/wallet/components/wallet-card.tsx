@@ -19,28 +19,7 @@ import { writeText } from "@tauri-apps/plugin-clipboard-manager";
 import { invoke } from "@tauri-apps/api/core";
 import { GET_BACH_BALANCE, GET_SOL_BALANCE } from "@/lib/commands";
 import SendModal from "./send-modal";
-
-// Solana Icon Component
-const SolanaIcon = ({ size = 24 }: { size?: number }) => (
-  <img
-    src="/images/solana-coin.svg"
-    width={size}
-    height={size}
-    alt="Solana"
-    style={{ borderRadius: "50%" }}
-  />
-);
-
-// BACH Token Icon Component
-const BachIcon = ({ size = 24 }: { size?: number }) => (
-  <img
-    src="https://raw.githubusercontent.com/solana-labs/token-list/badd1dbe8c2d1e38c4f77b77f1d5fd5c60d3cccb/assets/mainnet/CTQBjyrX8pYyqbNa8vAhQfnRXfu9cUxnvrxj5PvbzTmf/bach-token-logo-Est.2022.png"
-    width={size}
-    height={size}
-    alt="BACH Token"
-    style={{ borderRadius: "50%" }}
-  />
-);
+import { SolanaIcon, BachIcon } from "@/lib/components/token-icons";
 
 interface WalletCardProps {
   userName: string;

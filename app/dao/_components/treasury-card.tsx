@@ -9,36 +9,14 @@ import Tooltip from "@mui/material/Tooltip";
 import CircularProgress from "@mui/material/CircularProgress";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { invoke } from "@tauri-apps/api/core";
-import { openUrl } from "@tauri-apps/plugin-opener";
 import {
   GET_TREASURY_BACH_BALANCE,
   GET_TREASURY_SOL_BALANCE,
 } from "@/lib/commands";
 import { debug } from "@tauri-apps/plugin-log";
-import { selectionFeedback } from "@tauri-apps/plugin-haptics";
 import { THE_STABLE_FOUNDATION_TREASURY_ADDRESS } from "@/lib/crate/generated";
-
-// Solana Icon Component
-const SolanaIcon = ({ size = 24 }: { size?: number }) => (
-  <img
-    src="/images/solana-coin.svg"
-    width={size}
-    height={size}
-    alt="Solana"
-    style={{ borderRadius: "50%" }}
-  />
-);
-
-// BACH Token Icon Component
-const BachIcon = ({ size = 24 }: { size?: number }) => (
-  <img
-    src="https://raw.githubusercontent.com/solana-labs/token-list/badd1dbe8c2d1e38c4f77b77f1d5fd5c60d3cccb/assets/mainnet/CTQBjyrX8pYyqbNa8vAhQfnRXfu9cUxnvrxj5PvbzTmf/bach-token-logo-Est.2022.png"
-    width={size}
-    height={size}
-    alt="BACH Token"
-    style={{ borderRadius: "50%" }}
-  />
-);
+import { openExplorer } from "@/lib/helper";
+import { SolanaIcon, BachIcon } from "@/lib/components/token-icons";
 
 enum LoadingState {
   Loading,
@@ -50,12 +28,6 @@ export default function TreasuryCard() {
   const [state, setState] = React.useState<LoadingState>(LoadingState.Loading);
   const [bachBalance, setBachBalance] = React.useState<string>("-");
   const [solBalance, setSolBalance] = React.useState<string>("-");
-
-  const openExplorer = async (address: string) => {
-    await selectionFeedback();
-    const url = `https://explorer.solana.com/address/${address}`;
-    openUrl(url);
-  };
 
   const loadTreasuryBalances = async () => {
     try {

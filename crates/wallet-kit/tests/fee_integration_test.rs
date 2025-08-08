@@ -2,8 +2,9 @@
 //!
 //! These tests verify that the 0.25% fee system works correctly for both SOL and token transfers.
 
-use wallet_kit::constants::THE_STABLE_FOUNDATION_TREASURY;
-use wallet_kit::constants::{LAMPORTS_PER_SOL, SEMITONE_PER_BACH};
+use wallet_kit::constants::{
+    LAMPORTS_PER_SOL, SEMITONE_PER_BACH, THE_STABLE_FOUNDATION_TREASURY_ADDRESS,
+};
 use wallet_kit::fee::{FeeBreakdown, FeeConfig, TreasuryFeeManager, DEFAULT_FEE_PERCENTAGE};
 
 #[test]
@@ -78,7 +79,10 @@ fn test_token_units_conversion_accuracy() {
 fn test_treasury_manager_functionality() {
     // Test treasury public key retrieval
     let treasury_pubkey = TreasuryFeeManager::treasury_pubkey().unwrap();
-    assert_eq!(treasury_pubkey.to_string(), THE_STABLE_FOUNDATION_TREASURY);
+    assert_eq!(
+        treasury_pubkey.to_string(),
+        THE_STABLE_FOUNDATION_TREASURY_ADDRESS
+    );
 
     // Test fee calculation
     let fees = TreasuryFeeManager::calculate_fees(100.0, "SOL".to_string()).unwrap();
@@ -100,7 +104,7 @@ fn test_fee_config_functionality() {
     );
     assert_eq!(
         default_config.treasury_address,
-        THE_STABLE_FOUNDATION_TREASURY
+        THE_STABLE_FOUNDATION_TREASURY_ADDRESS
     );
     assert!(default_config.fees_enabled);
 
@@ -108,7 +112,7 @@ fn test_fee_config_functionality() {
     let custom_config = FeeConfig::new(
         0.01, // 1% fee
         0.1,  // Min 0.1 SOL
-        THE_STABLE_FOUNDATION_TREASURY.to_string(),
+        THE_STABLE_FOUNDATION_TREASURY_ADDRESS.to_string(),
         true,
     )
     .unwrap();
@@ -296,8 +300,20 @@ fn test_concurrent_fee_calculations() {
 #[test]
 fn test_error_conditions() {
     // Test invalid fee percentages
-    assert!(FeeConfig::new(-0.1, 0.0, THE_STABLE_FOUNDATION_TREASURY.to_string(), true).is_err());
-    assert!(FeeConfig::new(1.1, 0.0, THE_STABLE_FOUNDATION_TREASURY.to_string(), true).is_err());
+    assert!(FeeConfig::new(
+        -0.1,
+        0.0,
+        THE_STABLE_FOUNDATION_TREASURY_ADDRESS.to_string(),
+        true
+    )
+    .is_err());
+    assert!(FeeConfig::new(
+        1.1,
+        0.0,
+        THE_STABLE_FOUNDATION_TREASURY_ADDRESS.to_string(),
+        true
+    )
+    .is_err());
 
     // Test invalid treasury address
     assert!(FeeConfig::new(0.0025, 0.0, "invalid_address".to_string(), true).is_err());
@@ -317,8 +333,8 @@ fn test_fee_system_constants() {
     assert_eq!(DEFAULT_FEE_PERCENTAGE, 0.0025);
 
     // Verify treasury address format
-    assert_eq!(THE_STABLE_FOUNDATION_TREASURY.len(), 44); // Base58 Solana address length
-    assert!(THE_STABLE_FOUNDATION_TREASURY
+    assert_eq!(THE_STABLE_FOUNDATION_TREASURY_ADDRESS.len(), 44); // Base58 Solana address length
+    assert!(THE_STABLE_FOUNDATION_TREASURY_ADDRESS
         .chars()
         .all(|c| c.is_ascii_alphanumeric()));
 
@@ -364,7 +380,7 @@ fn test_treasury_account_operations() {
     assert!(treasury_pubkey.is_ok());
 
     let pubkey = treasury_pubkey.unwrap();
-    assert_eq!(pubkey.to_string(), THE_STABLE_FOUNDATION_TREASURY);
+    assert_eq!(pubkey.to_string(), THE_STABLE_FOUNDATION_TREASURY_ADDRESS);
 
     // Test that treasury pubkey is valid Solana address
     assert!(pubkey.is_on_curve()); // Ensure it's a valid point on the Ed25519 curve

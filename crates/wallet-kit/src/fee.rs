@@ -1,14 +1,8 @@
-use crate::constants::{
-    LAMPORTS_PER_SOL, SEMITONE_PER_BACH, THE_STABLE_FOUNDATION_TREASURY_ADDRESS,
-};
-use log::{debug, info, warn};
+use crate::constants::{LAMPORTS_PER_SOL, THE_STABLE_FOUNDATION_TREASURY_ADDRESS};
+use log::info;
 use serde::{Deserialize, Serialize};
-use solana_client::nonblocking::rpc_client::RpcClient;
-use solana_sdk::{
-    program_pack::Pack, pubkey::Pubkey, signature::Keypair, signer::Signer, system_instruction,
-    transaction::Transaction,
-};
-use spl_token::{instruction as token_instruction, state::Account as TokenAccount};
+use solana_sdk::{pubkey::Pubkey, system_instruction};
+use spl_token::instruction as token_instruction;
 use std::str::FromStr;
 use thiserror::Error;
 
@@ -374,8 +368,13 @@ mod tests {
 
     #[test]
     fn test_fee_config_custom() {
-        let config =
-            FeeConfig::new(0.01, 0.1, THE_STABLE_FOUNDATION_TREASURY.to_string(), true).unwrap();
+        let config = FeeConfig::new(
+            0.01,
+            0.1,
+            THE_STABLE_FOUNDATION_TREASURY_ADDRESS.to_string(),
+            true,
+        )
+        .unwrap();
 
         let breakdown = config
             .calculate_breakdown(100.0, "USDC".to_string())

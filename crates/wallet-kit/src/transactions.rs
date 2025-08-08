@@ -1,5 +1,5 @@
-use crate::constants::{LAMPORTS_PER_SOL, SEMITONE_PER_BACH, THE_STABLE_FOUNDATION_TREASURY_ADDRESS};
-use crate::fee::{FeeBreakdown, TreasuryFeeManager};
+use crate::constants::{SEMITONE_PER_BACH, THE_STABLE_FOUNDATION_TREASURY_ADDRESS};
+use crate::fee::TreasuryFeeManager;
 use log::{debug, info, warn};
 use solana_client::{nonblocking::rpc_client::RpcClient, rpc_request::TokenAccountsFilter};
 use solana_sdk::{
@@ -172,14 +172,15 @@ pub async fn create_token_transfer_ix(
         };
 
     // Check if treasury has a token account for this mint, if not we'll need to create one
-    let treasury_wallet = Pubkey::from_str(THE_STABLE_FOUNDATION_TREASURY_ADDRESS).map_err(|_| {
-        TransactionError::InvalidAddress(THE_STABLE_FOUNDATION_TREASURY_ADDRESS.to_string())
-    })?;
+    let treasury_wallet =
+        Pubkey::from_str(THE_STABLE_FOUNDATION_TREASURY_ADDRESS).map_err(|_| {
+            TransactionError::InvalidAddress(THE_STABLE_FOUNDATION_TREASURY_ADDRESS.to_string())
+        })?;
 
     let treasury_token_account_result =
         find_token_account(&rpc_client, &treasury_wallet, &token_mint).await;
 
-    let treasury_token_account = match treasury_token_account_result {
+    let _treasury_token_account = match treasury_token_account_result {
         Ok(account) => {
             debug!("Treasury token account exists: {}", account);
             account
@@ -347,7 +348,7 @@ async fn create_token_account(
         .await
         .map_err(|e| TransactionError::ConnectionError(e.to_string()))?;
 
-    let mint = Mint::unpack(&mint_info.data)
+    let _mint = Mint::unpack(&mint_info.data)
         .map_err(|_| TransactionError::TransactionError("Failed to unpack mint".to_string()))?;
 
     // Calculate space required for token account
@@ -435,8 +436,6 @@ pub async fn estimate_sol_transaction_cost(
     rpc_url: String,
     amount: f64,
 ) -> Result<TransactionCostEstimate, TransactionError> {
-    let rpc_client = RpcClient::new(rpc_url);
-
     // Calculate fee breakdown
     let fee_breakdown = TreasuryFeeManager::calculate_fees(amount, "SOL".to_string())
         .map_err(|e| TransactionError::FeeCalculationError(e.to_string()))?;

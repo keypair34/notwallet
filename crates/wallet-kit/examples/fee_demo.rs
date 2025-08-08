@@ -311,7 +311,7 @@ fn demonstrate_instruction_creation() {
     println!("  To: {}", to_wallet);
     println!(
         "  Treasury: {}",
-        wallet_kit::constants::THE_STABLE_FOUNDATION_TREASURY
+        wallet_kit::constants::THE_STABLE_FOUNDATION_TREASURY_ADDRESS
     );
     println!();
 

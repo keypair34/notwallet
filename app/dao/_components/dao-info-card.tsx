@@ -9,22 +9,11 @@ import Tooltip from "@mui/material/Tooltip";
 import CircularProgress from "@mui/material/CircularProgress";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { invoke } from "@tauri-apps/api/core";
-import { openUrl } from "@tauri-apps/plugin-opener";
 import { GET_BACH_BALANCE } from "@/lib/commands";
 import { debug } from "@tauri-apps/plugin-log";
-import { selectionFeedback } from "@tauri-apps/plugin-haptics";
 import { THE_STABLE_FOUNDATION_ADDRESS } from "@/lib/crate/generated";
-
-// BACH Token Icon Component
-const BachIcon = ({ size = 24 }: { size?: number }) => (
-  <img
-    src="https://raw.githubusercontent.com/solana-labs/token-list/badd1dbe8c2d1e38c4f77b77f1d5fd5c60d3cccb/assets/mainnet/CTQBjyrX8pYyqbNa8vAhQfnRXfu9cUxnvrxj5PvbzTmf/bach-token-logo-Est.2022.png"
-    width={size}
-    height={size}
-    alt="BACH Token"
-    style={{ borderRadius: "50%" }}
-  />
-);
+import { openExplorer } from "@/lib/helper";
+import { BachIcon } from "@/lib/components/token-icons";
 
 enum LoadingState {
   Loading,
@@ -35,12 +24,6 @@ enum LoadingState {
 export default function DAOInfoCard() {
   const [state, setState] = React.useState<LoadingState>(LoadingState.Loading);
   const [lockedBachBalance, setLockedBachBalance] = React.useState<string>("-");
-
-  const openExplorer = async (address: string) => {
-    await selectionFeedback();
-    const url = `https://explorer.solana.com/address/${address}`;
-    openUrl(url);
-  };
 
   const loadDAOBalance = async () => {
     try {
@@ -169,7 +152,6 @@ export default function DAOInfoCard() {
         </Box>
       )}
 
-      {/* Loaded State */}
       {state === LoadingState.Loaded && (
         <Stack
           direction="row"
