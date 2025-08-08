@@ -2,10 +2,9 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import { useState } from "react";
-import { feed } from "./components/feed";
+
 import LoadingCard from "@/lib/components/loading-card";
-import ActivityListView from "./components/activity_list_view";
-import HorizontalMenu from "./components/horizontal-menu";
+import HomeView from "./components/home-view";
 import { SolanaWallet, STORE_ACTIVE_KEYPAIR } from "@/lib/crate/generated";
 import { store } from "@/lib/store/store";
 import PageTitleBar from "@/lib/components/page-title-bar";
@@ -16,11 +15,11 @@ enum State {
   Error,
 }
 
-export default function HomeFeedPage() {
+export default function HomePage() {
   const [state, setState] = useState<State>(State.Loading);
   const [pubkey, setPubkey] = useState<string | undefined>(undefined);
 
-  async function loadActivities() {
+  async function loadWallet() {
     const wallet = await store().get<SolanaWallet>(STORE_ACTIVE_KEYPAIR);
     if (!wallet?.pubkey) {
       setState(State.Error);
@@ -28,13 +27,11 @@ export default function HomeFeedPage() {
     }
 
     setPubkey(wallet.pubkey);
-    setTimeout(() => {
-      setState(State.Loaded);
-    }, 1500); // 2 seconds delay
+    setState(State.Loaded);
   }
 
   React.useEffect(() => {
-    loadActivities();
+    loadWallet();
   }, []);
 
   return (
@@ -48,14 +45,9 @@ export default function HomeFeedPage() {
         alignItems: "center",
       }}
     >
-      <PageTitleBar title="Activity Feed" />
+      <PageTitleBar title="Home" />
       {state === State.Loading && <LoadingCard />}
-      {state === State.Loaded && pubkey && (
-        <>
-          <HorizontalMenu />
-          <ActivityListView feed={feed} pubkey={pubkey} />
-        </>
-      )}
+      {state === State.Loaded && pubkey && <HomeView pubkey={pubkey} />}
     </Box>
   );
 }

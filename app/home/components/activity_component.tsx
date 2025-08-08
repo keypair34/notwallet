@@ -7,12 +7,10 @@ import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { useRouter } from "next/navigation";
-import {
-  selectionFeedback
-} from '@tauri-apps/plugin-haptics';
+import { selectionFeedback } from "@tauri-apps/plugin-haptics";
 
 export type ActivityItem = {
-  id: number;
+  id: number | string;
   user: {
     name: string;
     avatar: string;
@@ -92,11 +90,7 @@ export default function ActivityComponent({ item }: { item: ActivityItem }) {
         />
       )}
       <CardContent sx={{ pb: 1 }}>
-        <Typography
-          variant="subtitle1"
-          fontWeight="bold"
-          sx={{ mb: 0.5 }}
-        >
+        <Typography variant="subtitle1" fontWeight="bold" sx={{ mb: 0.5 }}>
           {item.action}
         </Typography>
         <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
