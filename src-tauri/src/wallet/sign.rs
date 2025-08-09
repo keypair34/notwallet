@@ -1,5 +1,4 @@
-use crate::constants::store::store;
-use crate::constants::store::STORE_ACTIVE_KEYPAIR;
+use crate::constants::store::{store, STORE_ACTIVE_KEYPAIR};
 use crate::model::keypair::SolanaWallet;
 use crate::network::airdrop::airdrop;
 use bs58;
