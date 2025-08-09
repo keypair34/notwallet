@@ -5,35 +5,86 @@ import { useSearchParams } from "next/navigation";
 import { debug } from "@tauri-apps/plugin-log";
 import { generateSignature } from "@/lib/helper";
 import { ONRAMPER_SIGNER_KEY } from "@/lib/crate/generated";
+import { useState, useEffect } from "react";
 
 export default function Content() {
   const searchParams = useSearchParams();
   const address = searchParams.get("address");
+  const [iframeSrc, setIframeSrc] = useState<string>("");
 
-  const onramperParams = {
-    apiKey: ONRAMPER_KEY,
-    redirectAtCheckout: "true",
-    onlyCryptos: "solana",
-    mode: "buy",
-    hideTopBar: "true",
-    themeName: "light",
-    containerColor: "f5f6fa",
-    primaryColor: "9932cc",
-    secondaryColor: "ad5ad7",
-    cardColor: "f6f7f9",
-    primaryTextColor: "222222",
-    secondaryTextColor: "6b6f80",
-    primaryBtnTextColor: "ffffff",
-    borderRadius: "0.5",
-    wgBorderRadius: "0.82",
-  };
-  const signContent = `wallets=solana:${address}`;
-  const url = new URLSearchParams(onramperParams);
-  const signature = generateSignature(ONRAMPER_SIGNER_KEY, signContent);
-  const signedUrl = `${url}&signature=${signature}`;
-  const iframeSrc = `https://buy.onramper.com?${signedUrl.toString()}`;
+  useEffect(() => {
+    const buildIframeSrc = async () => {
+      const onramperParams: Record<string, string> = {
+        apiKey: ONRAMPER_KEY,
+        redirectAtCheckout: "true",
+        onlyCryptos: "solana",
+        mode: "buy",
+        hideTopBar: "true",
+        themeName: "light",
+        containerColor: "f5f6fa",
+        primaryColor: "9932cc",
+        secondaryColor: "ad5ad7",
+        cardColor: "f6f7f9",
+        primaryTextColor: "222222",
+        secondaryTextColor: "6b6f80",
+        primaryBtnTextColor: "ffffff",
+        borderRadius: "0.5",
+        wgBorderRadius: "0.82",
+      };
 
-  debug(`iframeSrc: ${iframeSrc}`);
+      // Add wallets parameter if address is provided
+      if (address) {
+        onramperParams.wallets = `solana:${address}`;
+      }
+
+      const url = new URLSearchParams(onramperParams);
+
+      // Create signature content - must include wallets parameter for signing
+      const signContent = address ? `wallets=solana:${address}` : "";
+
+      // Only add signature if we have content to sign (i.e., when address is provided)
+      if (signContent) {
+        try {
+          const signature = await generateSignature(
+            ONRAMPER_SIGNER_KEY,
+            signContent,
+          );
+          url.append("signature", signature);
+          debug(`Generated signature: ${signature}`);
+        } catch (error) {
+          debug(`Error generating signature: ${error}`);
+          // Continue without signature if generation fails
+        }
+      }
+
+      const src = `https://buy.onramper.com?${url.toString()}`;
+
+      debug(`iframeSrc: ${src}`);
+      debug(`signContent: ${signContent}`);
+
+      setIframeSrc(src);
+    };
+
+    buildIframeSrc();
+  }, [address]);
+
+  if (!iframeSrc) {
+    return (
+      <div
+        style={{
+          height: "630px",
+          width: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontSize: "16px",
+          color: "#6b6f80",
+        }}
+      >
+        Loading Onramper...
+      </div>
+    );
+  }
 
   return (
     <iframe
@@ -41,6 +92,12 @@ export default function Content() {
       height="630px"
       width="100%"
       allow="accelerometer; autoplay; camera; gyroscope; payment; microphone"
+      style={{
+        border: "none",
+        borderRadius: "8px",
+      }}
+      onLoad={() => debug("Onramper iframe loaded successfully")}
+      onError={() => debug("Error loading Onramper iframe")}
     />
   );
 }
