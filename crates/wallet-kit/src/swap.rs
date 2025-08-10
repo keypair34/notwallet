@@ -12,7 +12,7 @@ pub async fn get_jupiter_swap_quote(
     slippage_bps: u64,
 ) -> Result<SwapQuoteResponse, ErrorResponse> {
     let url = format!(
-        "{}/{}?inputMint={}&outputMint={}&amount={}&slippageBps={}&platformFeeBps={}&feeAccount={}",
+        "{}{}?inputMint={}&outputMint={}&amount={}&slippageBps={}&platformFeeBps={}&feeAccount={}",
         JUPITER_BASE_URL,
         JUPITER_SWAP_QUOTE_PATH,
         from_token,
@@ -29,7 +29,7 @@ pub async fn get_jupiter_swap_quote(
 pub async fn build_swap_transaction(
     payload: SwapTransactionPayload,
 ) -> Result<SwapTransactionResponse, String> {
-    let url = format!("{}/{}", JUPITER_BASE_URL, JUPITER_SWAP_PATH);
+    let url = format!("{}{}", JUPITER_BASE_URL, JUPITER_SWAP_PATH);
     let client = Client::new();
 
     let response = match client
