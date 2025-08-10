@@ -1,8 +1,5 @@
 /* This file is generated and managed by tsync */
 
-/** Solana */
-export const SOLANA_MINT_ACCOUNT = "So11111111111111111111111111111111111111112";
-
 export const STRIPE_PUBLISHABLE_KEY = "your_stripe_publishable_key";
 
 /**
@@ -111,6 +108,13 @@ export interface OnboardingCreateWallet {
 export const THE_STABLE_FOUNDATION_ADDRESS = "9DWkPYFKcjpGVjwCjgAnYM8T6H4hssEnW27rLDtfU8y5";
 
 export const THE_STABLE_FOUNDATION_TREASURY_ADDRESS = "3YAyrP4mjiLRuHZQjfskmmVBbF7urtfDLfnLtW2jzgx3";
+
+export const BACH_MINT_ACCOUNT = "CTQBjyrX8pYyqbNa8vAhQfnRXfu9cUxnvrxj5PvbzTmf";
+
+/** Solana */
+export const SOLANA_MINT_ACCOUNT = "So11111111111111111111111111111111111111112";
+
+export const SPL_TOKEN_PROGRAM_ID = "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA";
 
 export interface SwapInfo {
   amm_key: string;

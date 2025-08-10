@@ -1,5 +1,5 @@
 use crate::constants::{
-    address::{BACH_TOKEN_ADDRESS, BACH_TOKEN_ADDRESS_LOCAL, SPL_TOKEN_PROGRAM_ID},
+    address::{BACH_TOKEN_ADDRESS, BACH_TOKEN_ADDRESS_LOCAL},
     rpc::{rpc_url, USE_LOCAL_RPC},
     store::{store, STORE_KEYPAIRS, STORE_SEEDS},
 };
@@ -9,11 +9,12 @@ use crate::model::wallet::OnboardingCreateWallet;
 use bip39::{Language, Mnemonic};
 use chrono::Utc;
 use log::{debug, error, info};
-use solana_sdk::{signature::Signer, transaction::Transaction};
-use tauri::{command, AppHandle, State};
+use solana_sdk::signature::Signer;
+use tauri::{command, AppHandle};
 use uuid::Uuid;
 use wallet_kit::{
     balance::{bach_balance, sol_balance},
+    constants::SPL_TOKEN_PROGRAM_ID,
     derive_keypair::derive_keypair_default,
     token_info::token_info,
     transactions::{create_token_transfer_ix, create_transfer_ix},

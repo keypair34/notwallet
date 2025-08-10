@@ -1,10 +1,5 @@
 use tsync::tsync;
 
-/// Solana
-#[tsync]
-pub const SOLANA_MINT_ACCOUNT: &str = "So11111111111111111111111111111111111111112";
-pub const SPL_TOKEN_PROGRAM_ID: &str = "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA";
-
 /// The Stable Foundation
 /// Mainnet Bach Token Address
 #[cfg(not(debug_assertions))]

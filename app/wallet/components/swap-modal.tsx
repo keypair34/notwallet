@@ -17,6 +17,7 @@ import {
   PriorityLevelWithMaxLamports,
   PrioritizationFeeLamports,
   SOLANA_MINT_ACCOUNT,
+  BACH_MINT_ACCOUNT,
 } from "@/lib/crate/generated";
 import { selectionFeedback } from "@tauri-apps/plugin-haptics";
 import { invoke } from "@tauri-apps/api/core";
@@ -36,10 +37,6 @@ interface SwapModalProps {
   bachBalance: string;
   solBalance: string;
 }
-
-const SOLANA_MINT = SOLANA_MINT_ACCOUNT;
-// Using mainnet address - in production this should be conditional based on environment
-const BACH_MINT = "CTQBjyrX8pYyqbNa8vAhQfnRXfu9cUxnvrxj5PvbzTmv";
 
 export default function SwapModal({
   open,
@@ -86,14 +83,12 @@ export default function SwapModal({
         setIsLoadingQuote(true);
         setError(null);
 
-        const fromMint = fromToken === "SOL" ? SOLANA_MINT : BACH_MINT;
-        const toMint = toToken === "SOL" ? SOLANA_MINT : BACH_MINT;
+        const fromMint =
+          fromToken === "SOL" ? SOLANA_MINT_ACCOUNT : BACH_MINT_ACCOUNT;
+        const toMint =
+          toToken === "SOL" ? SOLANA_MINT_ACCOUNT : BACH_MINT_ACCOUNT;
 
-        // Convert to smallest unit (SOL = lamports, BACH = smallest unit)
-        const amount = Math.floor(
-          parseFloat(inputAmount) * (fromToken === "SOL" ? 1e9 : 1e6),
-        );
-
+        const amount = parseFloat(inputAmount);
         const quoteResult = await invoke<SwapQuoteResponse>(GET_SWAP_QUOTE, {
           fromToken: fromMint,
           toToken: toMint,
@@ -154,14 +149,14 @@ export default function SwapModal({
     if (!quote || !quote.route_plan[0]) return "0";
     const feeAmount = parseInt(quote.route_plan[0].swap_info.fee_amount);
     const feeMint = quote.route_plan[0].swap_info.fee_mint;
-    const decimals = feeMint === SOLANA_MINT ? 9 : 6;
+    const decimals = feeMint === SOLANA_MINT_ACCOUNT ? 9 : 6;
     return (feeAmount / Math.pow(10, decimals)).toFixed(6);
   };
 
   const getFeeMintSymbol = () => {
     if (!quote || !quote.route_plan[0]) return "";
     const feeMint = quote.route_plan[0].swap_info.fee_mint;
-    return feeMint === SOLANA_MINT ? "SOL" : "BACH";
+    return feeMint === SOLANA_MINT_ACCOUNT ? "SOL" : "BACH";
   };
 
   const createOptimalSwapTransactionPayload = (

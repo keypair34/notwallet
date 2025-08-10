@@ -8,7 +8,7 @@ use wallet_kit::{
 pub async fn get_swap_quote(
     from_token: &str,
     to_token: &str,
-    amount: u64,
+    amount: f64,
     slippage_bps: u64,
 ) -> Result<SwapQuoteResponse, ErrorResponse> {
     get_jupiter_swap_quote(from_token, to_token, amount, slippage_bps).await
