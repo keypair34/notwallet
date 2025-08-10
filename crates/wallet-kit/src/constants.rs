@@ -10,7 +10,7 @@ pub const THE_STABLE_FOUNDATION_ADDRESS: &str = "9DWkPYFKcjpGVjwCjgAnYM8T6H4hssE
 pub const THE_STABLE_FOUNDATION_TREASURY_ADDRESS: &str =
     "3YAyrP4mjiLRuHZQjfskmmVBbF7urtfDLfnLtW2jzgx3";
 pub const PLATFORM_FEE_BPS: u16 = 10;
-pub const FEE_ACCOUNT: u16 = 10;
+pub const FEE_ACCOUNT: &str = THE_STABLE_FOUNDATION_TREASURY_ADDRESS;
 
 #[tsync]
 pub const BACH_MINT_ACCOUNT: &str = "CTQBjyrX8pYyqbNa8vAhQfnRXfu9cUxnvrxj5PvbzTmf";

@@ -18,6 +18,8 @@ import {
   PrioritizationFeeLamports,
   SOLANA_MINT_ACCOUNT,
   BACH_MINT_ACCOUNT,
+  SOL_DECIMALS,
+  BACH_DECIMALS,
 } from "@/lib/crate/generated";
 import { selectionFeedback } from "@tauri-apps/plugin-haptics";
 import { invoke } from "@tauri-apps/api/core";
@@ -141,7 +143,7 @@ export default function SwapModal({
   const getOutputAmount = () => {
     if (!quote) return "0";
     const amount = parseInt(quote.outAmount);
-    const decimals = toToken === "SOL" ? 9 : 6;
+    const decimals = toToken === "SOL" ? SOL_DECIMALS : BACH_DECIMALS;
     return (amount / Math.pow(10, decimals)).toFixed(6);
   };
 
@@ -149,7 +151,8 @@ export default function SwapModal({
     if (!quote || !quote.routePlan[0]) return "0";
     const feeAmount = parseInt(quote.routePlan[0].swapInfo.feeAmount);
     const feeMint = quote.routePlan[0].swapInfo.feeMint;
-    const decimals = feeMint === SOLANA_MINT_ACCOUNT ? 9 : 6;
+    const decimals =
+      feeMint === SOLANA_MINT_ACCOUNT ? SOL_DECIMALS : BACH_DECIMALS;
     return (feeAmount / Math.pow(10, decimals)).toFixed(6);
   };
 

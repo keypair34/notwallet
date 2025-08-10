@@ -49,7 +49,7 @@ pub async fn get_jupiter_swap_quote(
 ) -> Result<SwapQuoteResponse, ErrorResponse> {
     let amount_denomination = if from_token == SOLANA_MINT_ACCOUNT {
         (amount * 10f64.powi(SOL_DECIMALS)) as i64
-    } else if to_token == BACH_MINT_ACCOUNT {
+    } else if from_token == BACH_MINT_ACCOUNT {
         (amount * 10f64.powi(BACH_DECIMALS)) as i64
     } else {
         panic!("Only support BACH and SOL swap for now.")
