@@ -1,3 +1,4 @@
+use network::model::ErrorResponse;
 use wallet_kit::{
     models::swap::{SwapQuoteResponse, SwapTransactionPayload, SwapTransactionResponse},
     swap::{build_swap_transaction as build_swap_tx, get_jupiter_swap_quote},
@@ -9,7 +10,7 @@ pub async fn get_swap_quote(
     to_token: &str,
     amount: u64,
     slippage_bps: u64,
-) -> Result<SwapQuoteResponse, String> {
+) -> Result<SwapQuoteResponse, ErrorResponse> {
     get_jupiter_swap_quote(from_token, to_token, amount, slippage_bps).await
 }
 

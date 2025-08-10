@@ -2,15 +2,15 @@ use crate::constants::{
     FEE_ACCOUNT, JUPITER_BASE_URL, JUPITER_SWAP_PATH, JUPITER_SWAP_QUOTE_PATH, PLATFORM_FEE_BPS,
 };
 use crate::models::swap::{SwapQuoteResponse, SwapTransactionPayload, SwapTransactionResponse};
-use log::debug;
-use reqwest::header::CONTENT_TYPE;
+use network::{model::ErrorResponse, request};
+use reqwest::{header::CONTENT_TYPE, Client};
 
 pub async fn get_jupiter_swap_quote(
     from_token: &str,
     to_token: &str,
     amount: u64,
     slippage_bps: u64,
-) -> Result<SwapQuoteResponse, String> {
+) -> Result<SwapQuoteResponse, ErrorResponse> {
     let url = format!(
         "{}/{}?inputMint={}&outputMint={}&amount={}&slippageBps={}&platformFeeBps={}&feeAccount={}",
         JUPITER_BASE_URL,
@@ -22,27 +22,15 @@ pub async fn get_jupiter_swap_quote(
         PLATFORM_FEE_BPS,
         FEE_ACCOUNT
     );
-    let client = reqwest::Client::new();
-    let response = match client.get(url).send().await {
-        Ok(response) => response,
-        Err(err) => return Err(err.to_string()),
-    };
-
-    debug!("Jupiter swap quote response: {:?}", response.text().await);
-
-    let json = match response.json::<SwapQuoteResponse>().await {
-        Ok(json) => json,
-        Err(err) => return Err(err.to_string()),
-    };
-
-    Ok(json)
+    let client = Client::new().get(url);
+    request(client).await
 }
 
 pub async fn build_swap_transaction(
     payload: SwapTransactionPayload,
 ) -> Result<SwapTransactionResponse, String> {
     let url = format!("{}/{}", JUPITER_BASE_URL, JUPITER_SWAP_PATH);
-    let client = reqwest::Client::new();
+    let client = Client::new();
 
     let response = match client
         .post(url)
