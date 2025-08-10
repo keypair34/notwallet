@@ -4,71 +4,48 @@ use tsync::tsync;
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[tsync]
+#[allow(non_snake_case)]
 pub struct SwapInfo {
-    #[serde(rename = "ammKey")]
-    pub amm_key: String,
+    pub ammKey: String,
     pub label: String,
-    #[serde(rename = "inputMint")]
-    pub input_mint: String,
-    #[serde(rename = "outputMint")]
-    pub output_mint: String,
-    #[serde(rename = "inAmount")]
-    pub in_amount: String,
-    #[serde(rename = "outAmount")]
-    pub out_amount: String,
-    #[serde(rename = "feeAmount")]
-    pub fee_amount: String,
-    #[serde(rename = "feeMint")]
-    pub fee_mint: String,
+    pub inputMint: String,
+    pub outputMint: String,
+    pub inAmount: String,
+    pub outAmount: String,
+    pub feeAmount: String,
+    pub feeMint: String,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[tsync]
+#[allow(non_snake_case)]
 pub struct RoutePlan {
-    #[serde(rename = "swapInfo")]
-    pub swap_info: SwapInfo,
+    pub swapInfo: SwapInfo,
     pub percent: u8,
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[tsync]
+#[allow(non_snake_case)]
 pub struct SwapQuoteResponse {
-    #[serde(rename = "inputMint")]
-    pub input_mint: String,
-    #[serde(rename = "inAmount")]
-    pub in_amount: String,
-    #[serde(rename = "outputMint")]
-    pub output_mint: String,
-    #[serde(rename = "outAmount")]
-    pub out_amount: String,
-    #[serde(rename = "otherAmountThreshold")]
-    pub other_amount_threshold: String,
-    #[serde(rename = "swapMode")]
-    pub swap_mode: String,
-    #[serde(rename = "slippageBps")]
-    pub slippage_bps: u64,
-    #[serde(rename = "platformFee")]
-    pub platform_fee: Option<PlatformFee>,
-    #[serde(rename = "priceImpactPct")]
-    pub price_impact_pct: String,
-    #[serde(rename = "routePlan")]
-    pub route_plan: Vec<RoutePlan>,
-    #[serde(rename = "contextSlot")]
-    pub context_slot: u64,
-    #[serde(rename = "timeTaken")]
-    pub time_taken: f64,
-    #[serde(rename = "swapUsdValue")]
-    pub swap_usd_value: Option<String>,
-    #[serde(rename = "simplerRouteUsed")]
-    pub simpler_route_used: Option<bool>,
-    #[serde(rename = "mostReliableAmmsQuoteReport")]
-    pub most_reliable_amms_quote_report: Option<MostReliableAmmsQuoteReportInfo>,
-    #[serde(rename = "useIncurredSlippageForQuoting")]
-    pub use_incurred_slippage_for_quoting: Option<bool>,
-    #[serde(rename = "otherRoutePlans")]
-    pub other_route_plans: Option<Vec<RoutePlan>>,
-    #[serde(rename = "aggregatorVersion")]
-    pub aggregator_version: Option<String>,
+    pub inputMint: String,
+    pub outputMint: String,
+    pub inAmount: String,
+    pub outAmount: String,
+    pub otherAmountThreshold: String,
+    pub swapMode: String,
+    pub slippageBps: u64,
+    pub platformFee: Option<PlatformFee>,
+    pub priceImpactPct: String,
+    pub routePlan: Vec<RoutePlan>,
+    pub contextSlot: u64,
+    pub timeTaken: f64,
+    pub swapUsdValue: Option<String>,
+    pub simplerRouteUsed: Option<bool>,
+    pub mostReliableAmmsQuoteReport: Option<MostReliableAmmsQuoteReportInfo>,
+    pub useIncurredSlippageForQuoting: Option<bool>,
+    pub otherRoutePlans: Option<Vec<RoutePlan>>,
+    pub aggregatorVersion: Option<String>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -79,91 +56,74 @@ pub struct MostReliableAmmsQuoteReportInfo {
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[tsync]
+#[allow(non_snake_case)]
 pub struct PriorityLevelWithMaxLamports {
-    #[serde(rename = "maxLamports")]
-    pub max_lamports: u64,
-    #[serde(rename = "priorityLevel")]
-    pub priority_level: String,
+    pub maxLamports: u64,
+    pub priorityLevel: String,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[tsync]
+#[allow(non_snake_case)]
 pub struct PlatformFee {
     pub amount: String,
-    #[serde(rename = "feeBps")]
-    pub fee_bps: i32,
+    pub feeBps: i32,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[tsync]
+#[allow(non_snake_case)]
 pub struct PrioritizationFeeLamports {
-    #[serde(rename = "priorityLevelWithMaxLamports")]
-    pub priority_level_with_max_lamports: PriorityLevelWithMaxLamports,
+    pub priorityLevelWithMaxLamports: PriorityLevelWithMaxLamports,
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[tsync]
+#[allow(non_snake_case)]
 pub struct SwapTransactionPayload {
-    #[serde(rename = "quoteResponse")]
-    pub quote_response: SwapQuoteResponse,
-    #[serde(rename = "userPublicKey")]
-    pub user_public_key: String,
-    #[serde(rename = "dynamicComputeUnitLimit")]
-    pub dynamic_compute_unit_limit: bool,
-    #[serde(rename = "dynamicSlippage")]
-    pub dynamic_slippage: bool,
-    #[serde(rename = "prioritizationFeeLamports")]
-    pub prioritization_fee_lamports: PrioritizationFeeLamports,
+    pub quoteResponse: SwapQuoteResponse,
+    pub userPublicKey: String,
+    pub dynamicComputeUnitLimit: bool,
+    pub dynamicSlippage: bool,
+    pub prioritizationFeeLamports: PrioritizationFeeLamports,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[tsync]
+#[allow(non_snake_case)]
 pub struct ComputeBudget {
-    #[serde(rename = "microLamports")]
-    pub micro_lamports: u64,
-    #[serde(rename = "estimatedMicroLamports")]
-    pub estimated_micro_lamports: u64,
+    pub microLamports: u64,
+    pub estimatedMicroLamports: u64,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[tsync]
+#[allow(non_snake_case)]
 pub struct PrioritizationType {
-    #[serde(rename = "computeBudget")]
-    pub compute_budget: ComputeBudget,
+    pub computeBudget: ComputeBudget,
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[tsync]
+#[allow(non_snake_case)]
 pub struct DynamicSlippageReport {
-    #[serde(rename = "slippageBps")]
-    pub slippage_bps: u64,
-    #[serde(rename = "otherAmount")]
-    pub other_amount: u64,
-    #[serde(rename = "simulatedIncurredSlippageBps")]
-    pub simulated_incurred_slippage_bps: i64,
-    #[serde(rename = "amplificationRatio")]
-    pub amplification_ratio: String,
-    #[serde(rename = "categoryName")]
-    pub category_name: String,
-    #[serde(rename = "heuristicMaxSlippageBps")]
-    pub heuristic_max_slippage_bps: u64,
+    pub slippageBps: u64,
+    pub otherAmount: u64,
+    pub simulatedIncurredSlippageBps: i64,
+    pub amplificationRatio: String,
+    pub categoryName: String,
+    pub heuristicMaxSlippageBps: u64,
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[tsync]
+#[allow(non_snake_case)]
 pub struct SwapTransactionResponse {
-    #[serde(rename = "swapTransaction")]
-    pub swap_transaction: String,
-    #[serde(rename = "lastValidBlockHeight")]
-    pub last_valid_block_height: u64,
-    #[serde(rename = "prioritizationFeeLamports")]
-    pub prioritization_fee_lamports: u64,
-    #[serde(rename = "computeUnitLimit")]
-    pub compute_unit_limit: u64,
-    #[serde(rename = "prioritizationType")]
-    pub prioritization_type: PrioritizationType,
-    #[serde(rename = "dynamicSlippageReport")]
-    pub dynamic_slippage_report: DynamicSlippageReport,
-    #[serde(rename = "simulationError")]
-    pub simulation_error: Option<String>,
+    pub swapTransaction: String,
+    pub lastValidBlockHeight: u64,
+    pub prioritizationFeeLamports: u64,
+    pub computeUnitLimit: u64,
+    pub prioritizationType: PrioritizationType,
+    pub dynamicSlippageReport: DynamicSlippageReport,
+    pub simulationError: Option<String>,
 }

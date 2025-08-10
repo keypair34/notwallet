@@ -140,22 +140,22 @@ export default function SwapModal({
 
   const getOutputAmount = () => {
     if (!quote) return "0";
-    const amount = parseInt(quote.out_amount);
+    const amount = parseInt(quote.outAmount);
     const decimals = toToken === "SOL" ? 9 : 6;
     return (amount / Math.pow(10, decimals)).toFixed(6);
   };
 
   const getFeeAmount = () => {
-    if (!quote || !quote.route_plan[0]) return "0";
-    const feeAmount = parseInt(quote.route_plan[0].swap_info.fee_amount);
-    const feeMint = quote.route_plan[0].swap_info.fee_mint;
+    if (!quote || !quote.routePlan[0]) return "0";
+    const feeAmount = parseInt(quote.routePlan[0].swapInfo.feeAmount);
+    const feeMint = quote.routePlan[0].swapInfo.feeMint;
     const decimals = feeMint === SOLANA_MINT_ACCOUNT ? 9 : 6;
     return (feeAmount / Math.pow(10, decimals)).toFixed(6);
   };
 
   const getFeeMintSymbol = () => {
-    if (!quote || !quote.route_plan[0]) return "";
-    const feeMint = quote.route_plan[0].swap_info.fee_mint;
+    if (!quote || !quote.routePlan[0]) return "";
+    const feeMint = quote.routePlan[0].swapInfo.feeMint;
     return feeMint === SOLANA_MINT_ACCOUNT ? "SOL" : "BACH";
   };
 
@@ -166,20 +166,20 @@ export default function SwapModal({
     maxLamports: number = 1000000,
   ): SwapTransactionPayload => {
     const priorityLevelConfig: PriorityLevelWithMaxLamports = {
-      max_lamports: maxLamports,
-      priority_level: priorityLevel,
+      maxLamports: maxLamports,
+      priorityLevel: priorityLevel,
     };
 
     const prioritizationFee: PrioritizationFeeLamports = {
-      priority_level_with_max_lamports: priorityLevelConfig,
+      priorityLevelWithMaxLamports: priorityLevelConfig,
     };
 
     return {
-      quote_response: quote,
-      user_public_key: userPublicKey,
-      dynamic_compute_unit_limit: true, // Automatically optimize compute units
-      dynamic_slippage: true, // Automatically adjust slippage if needed
-      prioritization_fee_lamports: prioritizationFee,
+      quoteResponse: quote,
+      userPublicKey: userPublicKey,
+      dynamicComputeUnitLimit: true, // Automatically optimize compute units
+      dynamicSlippage: true, // Automatically adjust slippage if needed
+      prioritizationFeeLamports: prioritizationFee,
     };
   };
 
@@ -206,7 +206,7 @@ export default function SwapModal({
 
         console.log(
           "Executing swap transaction:",
-          transactionResponse.swap_transaction,
+          transactionResponse.swapTransaction,
         );
 
         setSuccess(true);
@@ -463,7 +463,7 @@ export default function SwapModal({
                     Price Impact:
                   </Typography>
                   <Typography variant="body2" fontWeight="bold">
-                    {quote.price_impact_pct}%
+                    {quote.priceImpactPct}%
                   </Typography>
                 </Stack>
                 <Stack direction="row" justifyContent="space-between">
@@ -471,7 +471,7 @@ export default function SwapModal({
                     Route:
                   </Typography>
                   <Typography variant="body2" fontWeight="bold">
-                    {quote.route_plan[0]?.swap_info.label || "Direct"}
+                    {quote.routePlan[0]?.swapInfo.label || "Direct"}
                   </Typography>
                 </Stack>
               </Stack>
@@ -500,7 +500,7 @@ export default function SwapModal({
                     Block Height:
                   </Typography>
                   <Typography variant="body2" fontWeight="bold">
-                    {transactionResponse.last_valid_block_height.toLocaleString()}
+                    {transactionResponse.lastValidBlockHeight.toLocaleString()}
                   </Typography>
                 </Stack>
                 <Stack direction="row" justifyContent="space-between">
@@ -509,7 +509,7 @@ export default function SwapModal({
                   </Typography>
                   <Typography variant="body2" fontWeight="bold">
                     {(
-                      transactionResponse.prioritization_fee_lamports / 1e9
+                      transactionResponse.prioritizationFeeLamports / 1e9
                     ).toFixed(6)}{" "}
                     SOL
                   </Typography>
@@ -519,7 +519,7 @@ export default function SwapModal({
                     Compute Units:
                   </Typography>
                   <Typography variant="body2" fontWeight="bold">
-                    {transactionResponse.compute_unit_limit.toLocaleString()}
+                    {transactionResponse.computeUnitLimit.toLocaleString()}
                   </Typography>
                 </Stack>
                 <Stack direction="row" justifyContent="space-between">
@@ -528,15 +528,15 @@ export default function SwapModal({
                   </Typography>
                   <Typography variant="body2" fontWeight="bold">
                     {(
-                      transactionResponse.dynamic_slippage_report.slippage_bps /
+                      transactionResponse.dynamicSlippageReport.slippageBps /
                       100
                     ).toFixed(2)}
                     %
                   </Typography>
                 </Stack>
-                {transactionResponse.simulation_error && (
+                {transactionResponse.simulationError && (
                   <Alert severity="warning" sx={{ mt: 1 }}>
-                    Simulation Warning: {transactionResponse.simulation_error}
+                    Simulation Warning: {transactionResponse.simulationError}
                   </Alert>
                 )}
               </Stack>

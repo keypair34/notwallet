@@ -111,83 +111,102 @@ export const THE_STABLE_FOUNDATION_TREASURY_ADDRESS = "3YAyrP4mjiLRuHZQjfskmmVBb
 
 export const BACH_MINT_ACCOUNT = "CTQBjyrX8pYyqbNa8vAhQfnRXfu9cUxnvrxj5PvbzTmf";
 
+export const BACH_DECIMALS = 12;
+
 /** Solana */
 export const SOLANA_MINT_ACCOUNT = "So11111111111111111111111111111111111111112";
+
+export const SOL_DECIMALS = 9;
 
 export const SPL_TOKEN_PROGRAM_ID = "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA";
 
 export interface SwapInfo {
-  amm_key: string;
+  ammKey: string;
   label: string;
-  input_mint: string;
-  output_mint: string;
-  in_amount: string;
-  out_amount: string;
-  fee_amount: string;
-  fee_mint: string;
+  inputMint: string;
+  outputMint: string;
+  inAmount: string;
+  outAmount: string;
+  feeAmount: string;
+  feeMint: string;
 }
 
 export interface RoutePlan {
-  swap_info: SwapInfo;
+  swapInfo: SwapInfo;
   percent: number;
 }
 
 export interface SwapQuoteResponse {
-  input_mint: string;
-  in_amount: string;
-  output_mint: string;
-  out_amount: string;
-  other_amount_threshold: string;
-  swap_mode: string;
-  slippage_bps: number;
-  platform_fee?: string;
-  price_impact_pct: string;
-  route_plan: Array<RoutePlan>;
-  context_slot: number;
-  time_taken: number;
+  inputMint: string;
+  outputMint: string;
+  inAmount: string;
+  outAmount: string;
+  otherAmountThreshold: string;
+  swapMode: string;
+  slippageBps: number;
+  platformFee?: PlatformFee;
+  priceImpactPct: string;
+  routePlan: Array<RoutePlan>;
+  contextSlot: number;
+  timeTaken: number;
+  swapUsdValue?: string;
+  simplerRouteUsed?: boolean;
+  mostReliableAmmsQuoteReport?: MostReliableAmmsQuoteReportInfo;
+  useIncurredSlippageForQuoting?: boolean;
+  otherRoutePlans?: Array<RoutePlan>;
+  aggregatorVersion?: string;
+}
+
+export interface MostReliableAmmsQuoteReportInfo {
+  info: Record<string, string>;
 }
 
 export interface PriorityLevelWithMaxLamports {
-  max_lamports: number;
-  priority_level: string;
+  maxLamports: number;
+  priorityLevel: string;
+}
+
+export interface PlatformFee {
+  amount: string;
+  feeBps: number;
 }
 
 export interface PrioritizationFeeLamports {
-  priority_level_with_max_lamports: PriorityLevelWithMaxLamports;
+  priorityLevelWithMaxLamports: PriorityLevelWithMaxLamports;
 }
 
 export interface SwapTransactionPayload {
-  quote_response: SwapQuoteResponse;
-  user_public_key: string;
-  dynamic_compute_unit_limit: boolean;
-  dynamic_slippage: boolean;
-  prioritization_fee_lamports: PrioritizationFeeLamports;
+  quoteResponse: SwapQuoteResponse;
+  userPublicKey: string;
+  dynamicComputeUnitLimit: boolean;
+  dynamicSlippage: boolean;
+  prioritizationFeeLamports: PrioritizationFeeLamports;
 }
 
 export interface ComputeBudget {
-  micro_lamports: number;
-  estimated_micro_lamports: number;
+  microLamports: number;
+  estimatedMicroLamports: number;
 }
 
 export interface PrioritizationType {
-  compute_budget: ComputeBudget;
+  computeBudget: ComputeBudget;
 }
 
 export interface DynamicSlippageReport {
-  slippage_bps: number;
-  other_amount: number;
-  simulated_incurred_slippage_bps: number;
-  amplification_ratio: string;
-  category_name: string;
-  heuristic_max_slippage_bps: number;
+  slippageBps: number;
+  otherAmount: number;
+  simulatedIncurredSlippageBps: number;
+  amplificationRatio: string;
+  categoryName: string;
+  heuristicMaxSlippageBps: number;
 }
 
 export interface SwapTransactionResponse {
-  swap_transaction: string;
-  last_valid_block_height: number;
-  prioritization_fee_lamports: number;
-  compute_unit_limit: number;
-  prioritization_type: PrioritizationType;
-  dynamic_slippage_report: DynamicSlippageReport;
-  simulation_error?: string;
+  swapTransaction: string;
+  lastValidBlockHeight: number;
+  prioritizationFeeLamports: number;
+  computeUnitLimit: number;
+  prioritizationType: PrioritizationType;
+  dynamicSlippageReport: DynamicSlippageReport;
+  simulationError?: string;
 }
