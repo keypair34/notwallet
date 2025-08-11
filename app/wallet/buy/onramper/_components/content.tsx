@@ -40,7 +40,7 @@ export default function Content() {
       const url = new URLSearchParams(onramperParams);
 
       // Create signature content - must include wallets parameter for signing
-      const signContent = address ? `wallets=solana:${address}` : "";
+      const signContent = address ? `wallets=SOL:${address}` : "";
 
       // Only add signature if we have content to sign (i.e., when address is provided)
       if (signContent) {
