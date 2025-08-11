@@ -1,17 +1,43 @@
-use crate::constants::store::{store, STORE_ACTIVE_KEYPAIR};
-use crate::model::airdrop::AirdropResponse;
-use crate::model::keypair::SolanaWallet;
+use crate::constants::{
+    store::{store, STORE_ACTIVE_KEYPAIR},
+    rpc::rpc_url,
+};
+use crate::model::{airdrop::AirdropResponse, keypair::SolanaWallet};
 use crate::network::airdrop::airdrop;
 use bs58;
 use network::model::{ErrorCode, ErrorResponse};
-use solana_sdk::signature::{Keypair, Signer};
+use solana_sdk::signature::{Keypair, Signature, Signer};
 use tauri::{command, AppHandle};
+use wallet_kit::{
+    models::swap::{SwapQuoteResponse, SwapTransactionPayload, SwapTransactionResponse},
+    swap::{
+        build_swap_transaction as build_swap_tx, get_jupiter_swap_quote,
+        send_jupiter_swap_transaction,
+    },
+};
 
-#[command]
-pub async fn sign_message(
+#[tauri::command]
+pub async fn get_swap_quote(
+    from_token: &str,
+    to_token: &str,
+    amount: f64,
+    slippage_bps: u64,
+) -> Result<SwapQuoteResponse, ErrorResponse> {
+    get_jupiter_swap_quote(from_token, to_token, amount, slippage_bps).await
+}
+
+#[tauri::command]
+pub async fn build_swap_transaction(
+    payload: SwapTransactionPayload,
+) -> Result<SwapTransactionResponse, ErrorResponse> {
+    build_swap_tx(payload).await
+}
+
+#[tauri::command]
+pub async fn send_swap_transaction(
     app: AppHandle,
-    message: String,
-) -> Result<AirdropResponse, ErrorResponse> {
+    swap_transaction: String,
+) -> Result<Signature, ErrorResponse> {
     // Load wallet from store
     let store = store(&app).map_err(|_| ErrorResponse::Error {
         code: ErrorCode::Unknown,
@@ -43,11 +69,5 @@ pub async fn sign_message(
         code: ErrorCode::ParseError,
         message: "Failed to create keypair from private key".to_string(),
     })?;
-
-    // Sign the message
-    let signature = keypair.sign_message(message.as_bytes());
-    let signature_b58 = bs58::encode(signature).into_string();
-
-    // Call the airdrop function with pubkey and signature
-    airdrop(wallet.pubkey.clone(), signature_b58.clone()).await
+    send_jupiter_swap_transaction(rpc_url(), swap_transaction, keypair).await
 }

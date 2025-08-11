@@ -90,35 +90,41 @@ export default function ActivityComponent({ item }: { item: ActivityItem }) {
         />
       )}
       <CardContent sx={{ pb: 1 }}>
-        <Typography variant="subtitle1" fontWeight="bold" sx={{ mb: 0.5 }}>
-          {item.action}
-        </Typography>
-        <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-          {item.description}
-        </Typography>
-        <Typography
-          variant="body2"
-          fontWeight="bold"
+        <Box
           sx={{
-            color: item.amount.startsWith("+") ? "#43a047" : "#e53935",
-            fontFamily: "monospace",
-            fontSize: "1.1rem",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "flex-start",
             mb: 1,
           }}
         >
-          {item.amount}
+          <Typography variant="subtitle1" fontWeight="bold" sx={{ flex: 1 }}>
+            {item.action}
+          </Typography>
+          <Typography
+            variant="body2"
+            fontWeight="bold"
+            sx={{
+              color: "#9932CC",
+              bgcolor: "rgba(153, 50, 204, 0.1)",
+              px: 1.5,
+              py: 0.5,
+              borderRadius: 1,
+              fontFamily: "monospace",
+              fontSize: "0.95rem",
+              ml: 1,
+            }}
+          >
+            {item.amount}
+          </Typography>
+        </Box>
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{ mb: 1, lineHeight: 1.5 }}
+        >
+          {item.description}
         </Typography>
-        {/* <Box sx={{ display: "flex", gap: 2 }}>
-          <IconButton>
-            <FavoriteBorderIcon />
-          </IconButton>
-          <IconButton>
-            <ChatBubbleOutlineIcon />
-          </IconButton>
-          <IconButton>
-            <ShareIcon />
-          </IconButton>
-        </Box> */}
       </CardContent>
     </Card>
   );
