@@ -1,8 +1,8 @@
 "use client";
 import * as React from "react";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import LoadingCard from "@/lib/components/loading-card";
+import ErrorCard from "@/lib/components/error-card";
 import { store } from "../../lib/store/store";
 import {
   SolanaWallet,
@@ -10,13 +10,15 @@ import {
   STORE_KEYPAIRS,
 } from "../../lib/crate/generated";
 import { debug } from "@tauri-apps/plugin-log";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useAppLock } from "../../lib/context/app-lock-context";
 import WalletCard from "./components/wallet-card";
 import ActivityCard from "./components/activity_card";
 import { invoke } from "@tauri-apps/api/core";
 import { selectionFeedback } from "@tauri-apps/plugin-haptics";
 import ActiveKeypairSelectionModal from "./components/active-keypair-selection";
+import { SET_ACTIVE_KEYPAIR } from "@/lib/commands";
+import PageTitleBar from "@/lib/components/page-title-bar";
 
 enum State {
   Loading,
@@ -63,7 +65,7 @@ export default function WalletHome() {
   const onSelectWallet = async (wallet: SolanaWallet) => {
     setState(State.Loading);
     try {
-      await invoke("set_active_keypair", { keypair: wallet });
+      await invoke(SET_ACTIVE_KEYPAIR, { keypair: wallet });
       setTimeout(() => {
         setWallet(wallet);
         setState(State.Loaded);
@@ -91,51 +93,6 @@ export default function WalletHome() {
     fetchKeypairs();
   }, []);
 
-  // Add onDeposit function
-  const onDeposit = React.useCallback(async () => {
-    await selectionFeedback();
-    router.push("/deposit");
-  }, [router]);
-
-  if (state === State.Loading) {
-    return (
-      <Box
-        sx={{
-          minHeight: "100vh",
-          bgcolor: "#f5f6fa",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <LoadingCard />
-      </Box>
-    );
-  }
-
-  if (state === State.Error) {
-    return (
-      <Box
-        sx={{
-          minHeight: "100vh",
-          bgcolor: "#f5f6fa",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <span style={{ color: "red" }}>Failed to load wallet.</span>
-      </Box>
-    );
-  }
-
-  if (!wallet) {
-    lock();
-    return redirect("/");
-  }
-
   return (
     <Box
       sx={{
@@ -148,41 +105,36 @@ export default function WalletHome() {
         alignItems: "center",
       }}
     >
-      <Box sx={{ width: "100%", maxWidth: 480 }}>
-        <Typography
-          variant="h5"
-          component="h1"
-          fontWeight="bold"
-          align="center"
-          sx={{ mb: 2 }}
-        >
-          Wallet
-        </Typography>
-      </Box>
-      <Box sx={{ width: "100%", maxWidth: 480 }}>
-        <WalletCard
-          userName={userName}
-          wallet={wallet}
-          onLock={async () => {
-            await selectionFeedback();
-            lock();
-            router.replace("/");
-          }}
-          onDeposit={onDeposit}
-          onSwitchKeypair={async () => {
-            await selectionFeedback();
-            setShowSwitchModal(true);
-          }}
-        />
-        <ActivityCard />
-      </Box>
-      <ActiveKeypairSelectionModal
-        open={showSwitchModal}
-        onClose={() => setShowSwitchModal(false)}
-        keypairs={allKeypairs}
-        activePubkey={wallet?.pubkey}
-        onSelect={onSelectWallet}
-      />
+      <PageTitleBar title="Wallet" />
+      {state === State.Loading && <LoadingCard />}
+      {state === State.Error && <ErrorCard />}
+      {state === State.Loaded && wallet && (
+        <>
+          <Box sx={{ width: "100%", maxWidth: 480 }}>
+            <WalletCard
+              userName={userName}
+              wallet={wallet}
+              onLock={async () => {
+                await selectionFeedback();
+                lock();
+                router.replace("/");
+              }}
+              onSwitchKeypair={async () => {
+                await selectionFeedback();
+                setShowSwitchModal(true);
+              }}
+            />
+            <ActivityCard />
+          </Box>
+          <ActiveKeypairSelectionModal
+            open={showSwitchModal}
+            onClose={() => setShowSwitchModal(false)}
+            keypairs={allKeypairs}
+            activePubkey={wallet?.pubkey}
+            onSelect={onSelectWallet}
+          />
+        </>
+      )}
     </Box>
   );
 }

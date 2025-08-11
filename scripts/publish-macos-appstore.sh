@@ -2,14 +2,14 @@
 
 # Universal app (Intel and Apple chip)
 #
-cargo tauri build --bundles app --target universal-apple-darwin --config src-tauri/tauri.appstore.conf.json
+cargo tauri build --bundles app --target universal-apple-darwin -c src-tauri/tauri.prod-macos-appstore.conf.json
 
 # Apple chip only app
 # Intel chip build system
 # Add the target: `rustup target add aarch64-apple-darwin`
 #
 # rustup target add aarch64-apple-darwin
-# tauri build --bundles app --target aarch64-apple-darwin --config src-tauri/tauri.appstore.conf.json
+# tauri build --bundles app --target aarch64-apple-darwin -c src-tauri/tauri.prod-macos-appstore.conf.json
 
 # Sign, Apple chip build system
 #

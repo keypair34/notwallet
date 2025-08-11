@@ -1,15 +1,21 @@
 mod constants;
 mod model;
 mod network;
+mod onramp;
 mod setup;
+mod swap;
 mod wallet;
 
 use crate::{
+    onramp::commands::onramp_session,
     setup::{commands::get_installation_id, setup},
+    swap::commands::{build_swap_transaction, get_swap_quote, send_swap_transaction},
     wallet::{
         check_pubkey::check_pubkey,
         commands::{
-            derive_next_keypair, get_bach_balance, get_token_info, onboarding_create_wallet,
+            derive_next_keypair, get_all_keypairs, get_bach_balance, get_sol_balance,
+            get_token_info, get_treasury_bach_balance, get_treasury_sol_balance,
+            onboarding_create_wallet, send_token,
         },
         import_wallet::{derive_new_keypair, import_solana_wallet},
         set_active_keypair::set_active_keypair,
@@ -46,7 +52,16 @@ pub fn run() {
             set_active_keypair,
             get_installation_id,
             get_bach_balance,
+            get_sol_balance,
             get_token_info,
+            onramp_session,
+            get_all_keypairs,
+            send_token,
+            get_treasury_bach_balance,
+            get_treasury_sol_balance,
+            get_swap_quote,
+            build_swap_transaction,
+            send_swap_transaction,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

@@ -1,4 +1,4 @@
-name: "publish Android"
+name: "Build Android for Release"
 
 on:
   workflow_dispatch:
@@ -84,12 +84,16 @@ jobs:
           echo "PATH=$PATH:$TOOLCHAIN/bin" >> $GITHUB_ENV
 
       - name: Initialize Android project
-        run: cargo tauri android init
+        run: cargo tauri android init -c src-tauri/tauri.prod.conf.json
 
-      - name: Copy build.gradle.kts
+      - name: Copy Override Gen
         run: |
+          rm src-tauri/gen/android/build.gradle.kts
           rm src-tauri/gen/android/app/build.gradle.kts
-          yes | cp -rf scripts/android/build.gradle.kts src-tauri/gen/android/app/build.gradle.kts
+          rm src-tauri/gen/android/app/src/main/AndroidManifest.xml
+          yes | cp -rf override-gen/gen/android/build.gradle.kts src-tauri/gen/android/build.gradle.kts
+          yes | cp -rf override-gen/gen/android/app/build.gradle.kts src-tauri/gen/android/app/build.gradle.kts
+          yes | cp -rf override-gen/gen/android/app/src/main/AndroidManifest.xml src-tauri/gen/android/app/src/main/AndroidManifest.xml
 
       - name: Install OpenSSL development packages
         run: |

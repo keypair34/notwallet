@@ -1,0 +1,11 @@
+{
+  "productName": "NotWallet",
+  "identifier": "xyz.notwallet.NotWalletApp",
+  "app": {
+    "windows": [
+      {
+        "title": "NotWallet"
+      }
+    ]
+  }
+}

@@ -1,10 +1,9 @@
 import * as React from "react";
 import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
 import LoadingCard from "@/lib/components/loading-card";
 import ActivityListView from "./activity_list_view";
-import { activitiesTestnet } from "./transactions";
+import { activities } from "./transactions";
 
 enum State {
   Loading,
@@ -21,7 +20,7 @@ export default function ActivityCard({}: ActivityCardProps) {
   const loadActivities = async () => {
     setTimeout(() => {
       setState(State.Loaded);
-    }, 2000); // 2 seconds delay
+    }, 1500); // 1.5 seconds delay
   };
 
   React.useEffect(() => {
@@ -30,12 +29,12 @@ export default function ActivityCard({}: ActivityCardProps) {
   return (
     <Card
       sx={{
-        mb: 3,
-        borderRadius: 3,
+        mb: 2,
+        borderRadius: 2,
         boxShadow: 2,
         background: "linear-gradient(135deg, #f5f6fa 60%, #e3f2fd 100%)",
         overflow: "hidden",
-        p: 4,
+        p: 2,
       }}
     >
       <Typography
@@ -45,11 +44,8 @@ export default function ActivityCard({}: ActivityCardProps) {
       >
         Recent Activity (demo)
       </Typography>
-      <Divider sx={{ mb: 2 }} />
       {state === State.Loading && <LoadingCard />}
-      {state === State.Loaded && (
-        <ActivityListView activities={activitiesTestnet} />
-      )}
+      {state === State.Loaded && <ActivityListView activities={activities} />}
     </Card>
   );
 }

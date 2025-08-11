@@ -1,3 +1,14 @@
-export const ONBOARDING_CREATE_WALLET = 'onboarding_create_wallet';
-export const DERIVE_NEW_KEYPAIR = 'derive_new_keypair';
-export const DERIVE_NEXT_KEYPAIR = 'derive_next_keypair';
+export const ONBOARDING_CREATE_WALLET = "onboarding_create_wallet";
+export const DERIVE_NEW_KEYPAIR = "derive_new_keypair";
+export const DERIVE_NEXT_KEYPAIR = "derive_next_keypair";
+export const SET_ACTIVE_KEYPAIR = "set_active_keypair";
+export const ONRAMP_SESSION = "onramp_session";
+export const GET_BACH_BALANCE = "get_bach_balance";
+export const GET_SOL_BALANCE = "get_sol_balance";
+export const GET_TOKEN_INFO = "get_token_info";
+export const SEND_TOKEN = "send_token";
+export const GET_TREASURY_BACH_BALANCE = "get_treasury_bach_balance";
+export const GET_TREASURY_SOL_BALANCE = "get_treasury_sol_balance";
+export const GET_SWAP_QUOTE = "get_swap_quote";
+export const BUILD_SWAP_TRANSACTION = "build_swap_transaction";
+export const CHECK_PUBKEY = "check_pubkey";
