@@ -200,9 +200,13 @@ export interface DynamicSlippageReport {
   slippageBps: number;
   otherAmount: number;
   simulatedIncurredSlippageBps: number;
-  amplificationRatio: string;
+  amplificationRatio?: string;
   categoryName: string;
-  heuristicMaxSlippageBps: number;
+  heuristicMaxSlippageBps?: number;
+  rtseSlippageBps?: number;
+  failedTxnEstSlippage?: number;
+  emaEstSlippage?: number;
+  useIncurredSlippageForQuoting?: boolean;
 }
 
 export interface SwapTransactionResponse {
@@ -211,6 +215,8 @@ export interface SwapTransactionResponse {
   prioritizationFeeLamports: number;
   computeUnitLimit: number;
   prioritizationType: PrioritizationType;
+  simulationSlot?: number;
   dynamicSlippageReport: DynamicSlippageReport;
   simulationError?: string;
+  addressesByLookupTableAddress?: Array<string>;
 }
