@@ -71,11 +71,54 @@ export default function ActivityListView({
       // Simulate loading more data
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      // For demo purposes, we'll duplicate some activities with new IDs
-      const moreActivities = initialFeed.slice(0, 3).map((item, index) => ({
-        ...item,
-        id: `${item.id}-more-${activities.length + index}`,
-      }));
+      // Generate more BACH earning activities
+      const taskTemplates = [
+        {
+          action: "Earned 25 BACH",
+          description:
+            "Completed task: Fixed tempo metadata for 15 classical music pieces.",
+          amount: "+25 BACH",
+        },
+        {
+          action: "Earned 60 BACH",
+          description:
+            "Completed task: Imported Apple Music playlist 'Hip-Hop Classics' (98 songs) to database.",
+          amount: "+60 BACH",
+        },
+        {
+          action: "Earned 45 BACH",
+          description:
+            "Completed task: Verified song credits for 30 tracks from various indie artists.",
+          amount: "+45 BACH",
+        },
+        {
+          action: "Earned 80 BACH",
+          description:
+            "Completed task: Transcribed lyrics for 5 unreleased Johnny Cash demos.",
+          amount: "+80 BACH",
+        },
+        {
+          action: "Earned 35 BACH",
+          description:
+            "Completed task: Added genre tags to 40 world music recordings.",
+          amount: "+35 BACH",
+        },
+      ];
+
+      const moreActivities = taskTemplates
+        .slice(0, 3)
+        .map((template, index) => ({
+          id: `generated-${activities.length + index}`,
+          user: {
+            name: `Contributor ${activities.length + index + 1} (demo)`,
+            avatar: `https://api.dicebear.com/7.x/identicon/svg?seed=user${activities.length + index}`,
+            wallet: `${Math.random().toString(36).substr(2, 4)}...${Math.random().toString(36).substr(2, 4)}`,
+          },
+          time: `${Math.floor(Math.random() * 12) + 1} hours ago`,
+          image:
+            "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=480&q=80",
+          ...template,
+        }));
 
       setActivities((prev) => [...prev, ...moreActivities]);
 
