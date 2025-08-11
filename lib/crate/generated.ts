@@ -108,3 +108,105 @@ export interface OnboardingCreateWallet {
 export const THE_STABLE_FOUNDATION_ADDRESS = "9DWkPYFKcjpGVjwCjgAnYM8T6H4hssEnW27rLDtfU8y5";
 
 export const THE_STABLE_FOUNDATION_TREASURY_ADDRESS = "3YAyrP4mjiLRuHZQjfskmmVBbF7urtfDLfnLtW2jzgx3";
+
+export const BACH_MINT_ACCOUNT = "CTQBjyrX8pYyqbNa8vAhQfnRXfu9cUxnvrxj5PvbzTmf";
+
+export const BACH_DECIMALS = 12;
+
+/** Solana */
+export const SOLANA_MINT_ACCOUNT = "So11111111111111111111111111111111111111112";
+
+export const SOL_DECIMALS = 9;
+
+export const SPL_TOKEN_PROGRAM_ID = "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA";
+
+export interface SwapInfo {
+  ammKey: string;
+  label: string;
+  inputMint: string;
+  outputMint: string;
+  inAmount: string;
+  outAmount: string;
+  feeAmount: string;
+  feeMint: string;
+}
+
+export interface RoutePlan {
+  swapInfo: SwapInfo;
+  percent: number;
+}
+
+export interface SwapQuoteResponse {
+  inputMint: string;
+  outputMint: string;
+  inAmount: string;
+  outAmount: string;
+  otherAmountThreshold: string;
+  swapMode: string;
+  slippageBps: number;
+  platformFee?: PlatformFee;
+  priceImpactPct: string;
+  routePlan: Array<RoutePlan>;
+  contextSlot: number;
+  timeTaken: number;
+  swapUsdValue?: string;
+  simplerRouteUsed?: boolean;
+  mostReliableAmmsQuoteReport?: MostReliableAmmsQuoteReportInfo;
+  useIncurredSlippageForQuoting?: boolean;
+  otherRoutePlans?: Array<RoutePlan>;
+  aggregatorVersion?: string;
+}
+
+export interface MostReliableAmmsQuoteReportInfo {
+  info: Record<string, string>;
+}
+
+export interface PriorityLevelWithMaxLamports {
+  maxLamports: number;
+  priorityLevel: string;
+}
+
+export interface PlatformFee {
+  amount: string;
+  feeBps: number;
+}
+
+export interface PrioritizationFeeLamports {
+  priorityLevelWithMaxLamports: PriorityLevelWithMaxLamports;
+}
+
+export interface SwapTransactionPayload {
+  quoteResponse: SwapQuoteResponse;
+  userPublicKey: string;
+  dynamicComputeUnitLimit: boolean;
+  dynamicSlippage: boolean;
+  prioritizationFeeLamports: PrioritizationFeeLamports;
+}
+
+export interface ComputeBudget {
+  microLamports: number;
+  estimatedMicroLamports: number;
+}
+
+export interface PrioritizationType {
+  computeBudget: ComputeBudget;
+}
+
+export interface DynamicSlippageReport {
+  slippageBps: number;
+  otherAmount: number;
+  simulatedIncurredSlippageBps: number;
+  amplificationRatio: string;
+  categoryName: string;
+  heuristicMaxSlippageBps: number;
+}
+
+export interface SwapTransactionResponse {
+  swapTransaction: string;
+  lastValidBlockHeight: number;
+  prioritizationFeeLamports: number;
+  computeUnitLimit: number;
+  prioritizationType: PrioritizationType;
+  dynamicSlippageReport: DynamicSlippageReport;
+  simulationError?: string;
+}

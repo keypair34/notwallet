@@ -469,7 +469,7 @@ pub async fn estimate_token_transaction_cost(
     let rpc_client = RpcClient::new(rpc_url);
 
     // Parse addresses
-    let from_wallet = Pubkey::from_str(&from_pubkey)
+    let _from_wallet = Pubkey::from_str(&from_pubkey)
         .map_err(|_| TransactionError::InvalidAddress(from_pubkey.clone()))?;
     let to_wallet = Pubkey::from_str(&to_pubkey)
         .map_err(|_| TransactionError::InvalidAddress(to_pubkey.clone()))?;
