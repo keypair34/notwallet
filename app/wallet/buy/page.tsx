@@ -12,26 +12,23 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import Button from "@mui/material/Button";
+import PageChildrenTitleBar from "@/lib/components/page-children-title-bar";
 import { useRouter } from "next/navigation";
 import { selectionFeedback } from "@tauri-apps/plugin-haptics";
+import { useSearchParams } from "next/navigation";
 
 export default function Page() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const address = searchParams.get("address");
 
   const handleClick = async (type: "onramper" | "stripe") => {
     await selectionFeedback();
     if (type === "onramper") {
-      router.push("/wallet/buy/onramper");
+      router.push("/wallet/buy/onramper?address=" + address);
     } else if (type === "stripe") {
-      router.push("/wallet/buy/stripe");
+      router.push("/wallet/buy/stripe?address=" + address);
     }
-  };
-
-  const handleBack = async () => {
-    await selectionFeedback();
-    router.back();
   };
 
   const onRampProviders = [
@@ -138,57 +135,7 @@ export default function Page() {
           pb: 8,
         }}
       >
-        {/* Header */}
-        <Box
-          sx={{
-            width: "100%",
-            maxWidth: 420,
-            px: 2,
-            mb: 3,
-          }}
-        >
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              py: 2,
-            }}
-          >
-            <Button
-              startIcon={<ArrowBackIcon />}
-              onClick={handleBack}
-              sx={{
-                minWidth: 0,
-                px: 2,
-                py: 1,
-                fontSize: "16px",
-                fontWeight: 500,
-                color: "#8B5CF6",
-                borderRadius: "12px",
-                textTransform: "none",
-                "&:hover": {
-                  bgcolor: "rgba(139, 92, 246, 0.08)",
-                },
-              }}
-            >
-              Back
-            </Button>
-            <Typography
-              variant="h5"
-              sx={{
-                fontSize: "20px",
-                fontWeight: 600,
-                color: "#1F2937",
-                letterSpacing: "-0.02em",
-              }}
-            >
-              Buy Crypto
-            </Typography>
-            <Box sx={{ width: 80 }} /> {/* Spacer for center alignment */}
-          </Box>
-        </Box>
-
+        <PageChildrenTitleBar title="Buy Crypto" />
         <Box sx={{ width: "100%", maxWidth: 420, px: 2 }}>
           {/* On-Ramp Providers Section */}
           <Card

@@ -66,7 +66,13 @@ export default function Content() {
   }, []);
 
   return (
-    <>
+    <Box
+      sx={{
+        justifyContent: "center",
+        alignItems: "center",
+        height: "unset",
+      }}
+    >
       {state === State.Loading && <LoadingCard />}
       {state === State.Error && <ErrorCard />}
       {state === State.Loaded && clientSecret && (
@@ -76,14 +82,7 @@ export default function Content() {
         />
       )}
       {state === State.PurchaseComplete && (
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100vh",
-          }}
-        >
+        <>
           <Confetti width={dimensions.width} height={dimensions.height} />
           <Typography variant="h4" color="primary">
             Thank you for your purchase!
@@ -92,8 +91,8 @@ export default function Content() {
             Your purchase has been successfully completed. You will be
             redirected to your wallet shortly.
           </Typography>
-        </Box>
+        </>
       )}
-    </>
+    </Box>
   );
 }
