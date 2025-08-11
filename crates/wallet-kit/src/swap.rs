@@ -5,12 +5,12 @@ use crate::constants::{
 use crate::models::swap::{SwapQuoteResponse, SwapTransactionPayload, SwapTransactionResponse};
 use base64::{engine::general_purpose, Engine as _};
 use bincode;
+use log::debug;
 use network::{model::ErrorResponse, request};
 use reqwest::{header::CONTENT_TYPE, Client};
 use solana_client::rpc_client::RpcClient;
 use solana_sdk::signature::{Keypair, Signature};
 use solana_sdk::signer::Signer;
-
 use solana_sdk::transaction::VersionedTransaction;
 
 /// Get a swap quote from Jupiter for exchanging tokens.
@@ -132,11 +132,12 @@ pub async fn build_swap_transaction(
 ///
 /// This function takes a base64 encoded transaction from Jupiter's swap API,
 /// deserializes it, signs it with the provided keypair, and submits it to the Solana network.
+/// The transaction is properly signed using `VersionedTransaction::try_new()` before submission.
 ///
 /// # Arguments
 ///
 /// * `rpc_url` - The Solana RPC endpoint URL
-/// * `swap_transaction` - The base64 encoded transaction from Jupiter
+/// * `swap_transaction` - The base64 encoded unsigned transaction from Jupiter
 /// * `keypair` - The keypair to sign the transaction with
 ///
 /// # Returns
@@ -155,6 +156,11 @@ pub async fn build_swap_transaction(
 ///     keypair
 /// ).await?;
 /// ```
+///
+/// # Notes
+///
+/// The function follows Jupiter's recommended approach by using `VersionedTransaction::try_new()`
+/// to properly sign the transaction message with the provided keypair before sending it to the network.
 pub async fn send_jupiter_swap_transaction(
     rpc_url: String,
     swap_transaction: String,
@@ -169,30 +175,30 @@ pub async fn send_jupiter_swap_transaction(
         })?;
 
     // Deserialize the transaction
-    let mut transaction: VersionedTransaction =
-        bincode::deserialize(&transaction_bytes).map_err(|e| ErrorResponse::Error {
+    let versioned_transaction: VersionedTransaction = bincode::deserialize(&transaction_bytes)
+        .map_err(|e| ErrorResponse::Error {
             code: network::model::ErrorCode::ParseError,
             message: format!("Failed to deserialize transaction: {}", e),
         })?;
 
-    // Get the message hash for signing
-    let message_hash = transaction.message.hash();
+    debug!(
+        "Transaction deserialized successfully: {:?}",
+        versioned_transaction
+    );
 
-    // Sign the message hash with the keypair
-    let signature = keypair.sign_message(&message_hash.as_ref());
+    // Sign the transaction with the provided keypair
+    let signed_versioned_transaction =
+        VersionedTransaction::try_new(versioned_transaction.message, &[&keypair]).map_err(|e| {
+            ErrorResponse::Error {
+                code: network::model::ErrorCode::ParseError,
+                message: format!("Failed to sign transaction: {}", e),
+            }
+        })?;
 
-    // Add the signature to the transaction
-    // Note: We assume the first signature slot is for this keypair
-    if !transaction.signatures.is_empty() {
-        transaction.signatures[0] = signature;
-    } else {
-        transaction.signatures.push(signature);
-    }
-
-    // Create RPC client and send the transaction
+    // Create RPC client and send the signed transaction
     let rpc_client = RpcClient::new(rpc_url);
     let signature = rpc_client
-        .send_and_confirm_transaction(&transaction)
+        .send_and_confirm_transaction(&signed_versioned_transaction)
         .map_err(|e| ErrorResponse::Error {
             code: network::model::ErrorCode::NetworkError,
             message: format!("Failed to send transaction: {}", e),
