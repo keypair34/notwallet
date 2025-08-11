@@ -10,6 +10,7 @@ import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import { error as logError, debug } from "@tauri-apps/plugin-log";
 
 enum State {
   Loading,
@@ -38,10 +39,11 @@ export default function Content() {
       const result = await invoke<OnrampSession>(ONRAMP_SESSION, {
         solanaAddress: address,
       });
-      console.log(result);
+      debug(`result: ${JSON.stringify(result)}`);
       setClientSecret(result.client_secret);
       setState(State.Loaded);
     } catch (error) {
+      logError(`error: ${JSON.stringify(error)}`);
       setState(State.Error);
     }
   };

@@ -89,7 +89,7 @@ export default function WalletCard({
 
   const onBuySol = React.useCallback(async () => {
     await selectionFeedback();
-    router.push("/wallet/buy/onramper?address=" + wallet.pubkey);
+    router.push("/wallet/buy?address=" + wallet.pubkey);
   }, [router, wallet]);
 
   const init = async () => {
