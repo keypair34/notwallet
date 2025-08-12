@@ -269,20 +269,6 @@ export default function SettingsPage() {
             onClick={() => handleClick("footer")}
           >
             NotWallet - A Crypto Dollar Wallet
-            <br />
-            <Box
-              component="span"
-              sx={{
-                color: "#8B5CF6",
-                fontWeight: 500,
-                textDecoration: "none",
-                "&:hover": {
-                  textDecoration: "underline",
-                },
-              }}
-            >
-              bach.money
-            </Box>
             <br />© {new Date().getFullYear()} The Stable Foundation
           </Typography>
         </Box>
