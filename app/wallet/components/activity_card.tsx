@@ -1,31 +1,24 @@
 import * as React from "react";
 import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
-import LoadingCard from "@/lib/components/loading-card";
-import ActivityListView from "./activity_list_view";
-import { activities } from "./transactions";
+import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import { SolanaWallet } from "@/lib/crate/generated";
+import { openUrl } from "@tauri-apps/plugin-opener";
+import { selectionFeedback } from "@tauri-apps/plugin-haptics";
 
-enum State {
-  Loading,
-  Loaded,
-  Error,
+interface ActivityCardProps {
+  wallet: SolanaWallet;
 }
 
-interface ActivityCardProps {}
-
-export default function ActivityCard({}: ActivityCardProps) {
-  // Add loading state
-  const [state, setState] = React.useState(State.Loading);
-
-  const loadActivities = async () => {
-    setTimeout(() => {
-      setState(State.Loaded);
-    }, 1500); // 1.5 seconds delay
+export default function ActivityCard({ wallet }: ActivityCardProps) {
+  const handleOpenSolscan = async () => {
+    await selectionFeedback();
+    const solscanUrl = `https://solscan.io/account/${wallet.pubkey}`;
+    await openUrl(solscanUrl);
   };
 
-  React.useEffect(() => {
-    loadActivities();
-  }, []);
   return (
     <Card
       sx={{
@@ -42,10 +35,33 @@ export default function ActivityCard({}: ActivityCardProps) {
         fontWeight="bold"
         sx={{ mb: 2, color: "#212529" }}
       >
-        Recent Activity (demo)
+        Activity
       </Typography>
-      {state === State.Loading && <LoadingCard />}
-      {state === State.Loaded && <ActivityListView activities={activities} />}
+
+      <Box sx={{ textAlign: "center" }}>
+        <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+          View your wallet activity and transaction history on Solscan
+        </Typography>
+
+        <Button
+          variant="outlined"
+          startIcon={<OpenInNewIcon />}
+          onClick={handleOpenSolscan}
+          sx={{
+            borderRadius: 2,
+            textTransform: "none",
+            fontWeight: 600,
+            borderColor: "#9932CC",
+            color: "#9932CC",
+            "&:hover": {
+              borderColor: "#7B2CBF",
+              backgroundColor: "rgba(153, 50, 204, 0.04)",
+            },
+          }}
+        >
+          Open in Solscan
+        </Button>
+      </Box>
     </Card>
   );
 }
