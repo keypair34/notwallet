@@ -4,6 +4,9 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Link from "@mui/material/Link";
 import ActivityComponent, { ActivityItem } from "./activity_component";
 import { useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
@@ -159,6 +162,68 @@ export default function ActivityListView({
       >
         Activity Feed
       </Typography>
+
+      {/* BACH Airdrop Banner */}
+      <Card
+        sx={{
+          mb: 3,
+          background: "linear-gradient(135deg, #9932CC 0%, #7B1FA2 100%)",
+          color: "white",
+          borderRadius: 2,
+          boxShadow: "0 4px 12px rgba(153, 50, 204, 0.2)",
+        }}
+      >
+        <CardContent sx={{ py: 2.5 }}>
+          <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
+            <Typography
+              variant="h6"
+              sx={{
+                fontWeight: 700,
+                fontSize: "1.1rem",
+                mr: 1,
+              }}
+            >
+              🪂 BACH Airdrop Live!
+            </Typography>
+          </Box>
+          <Typography
+            variant="body2"
+            sx={{
+              mb: 2,
+              opacity: 0.95,
+              lineHeight: 1.5,
+            }}
+          >
+            Multiple ways to earn your BACH tokens! Complete tasks, contribute
+            to the music database, and participate in the ecosystem.
+          </Typography>
+          <Link
+            href="https://bach.money/airdrop"
+            target="_blank"
+            rel="noopener noreferrer"
+            sx={{
+              display: "inline-flex",
+              alignItems: "center",
+              bgcolor: "rgba(255, 255, 255, 0.2)",
+              color: "white",
+              px: 2,
+              py: 1,
+              borderRadius: 1.5,
+              textDecoration: "none",
+              fontSize: "0.875rem",
+              fontWeight: 600,
+              transition: "all 0.2s ease",
+              "&:hover": {
+                bgcolor: "rgba(255, 255, 255, 0.3)",
+                transform: "translateY(-1px)",
+                boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+              },
+            }}
+          >
+            Claim Your Airdrop →
+          </Link>
+        </CardContent>
+      </Card>
 
       {state === ActivityState.Loading && (
         <Box sx={{ display: "flex", justifyContent: "center", py: 4 }}>
