@@ -124,7 +124,7 @@ export default function WalletHome() {
                 setShowSwitchModal(true);
               }}
             />
-            <ActivityCard />
+            <ActivityCard wallet={wallet} />
           </Box>
           <ActiveKeypairSelectionModal
             open={showSwitchModal}
