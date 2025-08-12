@@ -21,7 +21,6 @@ export default function BottomTabBar() {
     pathname === "/wallet/buy" ||
     pathname === "/wallet/buy/onramper" ||
     pathname === "/wallet/buy/stripe" ||
-    pathname === "/deposit" ||
     pathname === "/create-new-wallet"
   )
     value = 1;
@@ -34,7 +33,7 @@ export default function BottomTabBar() {
     value = 2;
   else if (
     pathname === "/home" ||
-    pathname.startsWith("/activity") ||
+    pathname.startsWith("/home/activity") ||
     pathname.startsWith("/home/dao") ||
     pathname.startsWith("/home/learn")
   )

@@ -29,7 +29,7 @@ export default function ActivityComponent({ item }: { item: ActivityItem }) {
     try {
       await selectionFeedback();
     } catch {}
-    router.push(`/activity?id=${item.id}`);
+    router.push(`/home/activity?id=${item.id}`);
   };
   return (
     <Card
