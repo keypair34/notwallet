@@ -21,7 +21,6 @@ export default function BottomTabBar() {
     pathname === "/wallet/buy" ||
     pathname === "/wallet/buy/onramper" ||
     pathname === "/wallet/buy/stripe" ||
-    pathname === "/deposit" ||
     pathname === "/create-new-wallet"
   )
     value = 1;
