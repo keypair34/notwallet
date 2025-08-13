@@ -221,8 +221,8 @@ export default function MemePage() {
               </Typography>
             </Box>
             <Typography variant="body2" sx={{ opacity: 0.9, mb: 2 }}>
-              Create and launch meme tokens on Solana. You'll need SOL and BACH
-              tokens to execute smart contracts!
+              Create and launch meme tokens on Solana. You&apos;ll need SOL and
+              BACH tokens to execute smart contracts!
             </Typography>
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
               <AttachMoneyIcon sx={{ fontSize: 18 }} />
@@ -524,7 +524,7 @@ export default function MemePage() {
         {!hasMoreTokens && displayedTokens.length > 3 && (
           <Box sx={{ textAlign: "center", my: 3 }}>
             <Typography variant="body2" sx={{ color: "#666" }}>
-              That's all the trending memes for now! 🎉
+              That&apos;s all the trending memes for now! 🎉
             </Typography>
           </Box>
         )}
