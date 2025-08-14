@@ -87,12 +87,11 @@ export default function AboutPage() {
                 borderRadius: "20px",
                 mx: "auto",
                 mb: 3,
-                boxShadow: "0 8px 32px rgba(139, 92, 246, 0.3)",
                 overflow: "hidden",
               }}
             >
               <img
-                src="/images/app-icon-v2.png"
+                src="/images/app-icon-v4.svg"
                 alt="NotWallet App Icon"
                 style={{
                   width: "100%",
@@ -122,7 +121,7 @@ export default function AboutPage() {
                 mb: 3,
               }}
             >
-              A Crypto Dollar Wallet
+              A Solana non-custodial crypto wallet and more.
             </Typography>
           </Box>
 
