@@ -68,7 +68,7 @@ export default function LockedWalletView({
           fontWeight="bold"
           align="center"
         >
-          A Crypto Dollar Wallet
+          A Solana non-custodial crypto wallet and more.
         </Typography>
       </Box>
       <Card sx={{ maxWidth: 400, width: "100%", boxShadow: 3 }}>

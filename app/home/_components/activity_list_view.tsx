@@ -14,6 +14,8 @@ import { debug as tauriDebug } from "@tauri-apps/plugin-log";
 import OnboardingCard from "./onboarding_card";
 import { CHECK_PUBKEY } from "@/lib/commands";
 import { CheckPubkeyResponse } from "@/lib/crate/generated";
+import { openUrl } from "@tauri-apps/plugin-opener";
+import { selectionFeedback } from "@tauri-apps/plugin-haptics";
 
 enum ActivityState {
   Loading,
@@ -197,10 +199,11 @@ export default function ActivityListView({
             Multiple ways to earn your BACH tokens! Complete tasks, contribute
             to the music database, and participate in the ecosystem.
           </Typography>
-          <Link
-            href="https://bach.money/airdrop"
-            target="_blank"
-            rel="noopener noreferrer"
+          <Button
+            onClick={async () => {
+              await selectionFeedback();
+              openUrl("https://bach.money/airdrop");
+            }}
             sx={{
               display: "inline-flex",
               alignItems: "center",
@@ -221,7 +224,7 @@ export default function ActivityListView({
             }}
           >
             Claim Your Airdrop →
-          </Link>
+          </Button>
         </CardContent>
       </Card>
 

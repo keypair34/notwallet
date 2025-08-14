@@ -266,17 +266,56 @@ export default function WalletCard({
           </Box>
         </Box>
       </Stack>
-      <Typography
-        variant="subtitle2"
-        sx={{
-          color: "#000",
-          fontFamily: "Inter, Helvetica Neue, Arial, sans-serif",
-          mb: 1,
-          letterSpacing: 1,
-        }}
+      <Stack
+        direction="row"
+        alignItems="start"
+        justifyContent="space-between"
+        spacing={2}
+        sx={{ mb: 2 }}
       >
-        Balance
-      </Typography>
+        <Typography
+          variant="h6"
+          fontWeight="bold"
+          sx={{ mb: 2, color: "#212529" }}
+        >
+          Balance
+        </Typography>
+        <Stack
+          direction="row"
+          alignItems="center"
+          spacing={1}
+          sx={{ flex: 1, justifyContent: "flex-end" }}
+        >
+          <Tooltip title="Send">
+            <IconButton
+              sx={{
+                color: "#9932CC",
+                bgcolor: "#f5f6fa",
+                "&:hover": { bgcolor: "#EDE7F6" },
+                borderRadius: 2,
+              }}
+              onClick={handleSend}
+              size="small"
+            >
+              <SendIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Swap">
+            <IconButton
+              sx={{
+                color: "#9932CC",
+                bgcolor: "#f5f6fa",
+                "&:hover": { bgcolor: "#EDE7F6" },
+                borderRadius: 2,
+              }}
+              onClick={handleSwap}
+              size="small"
+            >
+              <SwapHorizIcon />
+            </IconButton>
+          </Tooltip>
+        </Stack>
+      </Stack>
       {/* BACH Balance with Token Icon */}
       <Stack
         direction="row"
@@ -312,41 +351,6 @@ export default function WalletCard({
           >
             {bachBalance}
           </Typography>
-        </Stack>
-        <Stack
-          direction="row"
-          alignItems="center"
-          spacing={1}
-          sx={{ flex: 1, justifyContent: "flex-end" }}
-        >
-          <Tooltip title="Send">
-            <IconButton
-              sx={{
-                color: "#9932CC",
-                bgcolor: "#f5f6fa",
-                "&:hover": { bgcolor: "#EDE7F6" },
-                borderRadius: 2,
-              }}
-              onClick={handleSend}
-              size="small"
-            >
-              <SendIcon />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Swap">
-            <IconButton
-              sx={{
-                color: "#9932CC",
-                bgcolor: "#f5f6fa",
-                "&:hover": { bgcolor: "#EDE7F6" },
-                borderRadius: 2,
-              }}
-              onClick={handleSwap}
-              size="small"
-            >
-              <SwapHorizIcon />
-            </IconButton>
-          </Tooltip>
         </Stack>
       </Stack>
       {/* SOL Balance with Solana Icon */}

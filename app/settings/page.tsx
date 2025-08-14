@@ -292,6 +292,7 @@ export default function SettingsPage() {
         >
           <Typography
             variant="body2"
+            fontWeight="bold"
             sx={{
               fontSize: "14px",
               color: "#6B7280",
@@ -304,8 +305,7 @@ export default function SettingsPage() {
             }}
             onClick={() => handleClick("footer")}
           >
-            NotWallet - A Crypto Dollar Wallet
-            <br />© {new Date().getFullYear()} The Stable Foundation
+            © {new Date().getFullYear()} The Stable Foundation
           </Typography>
         </Box>
       </Box>
