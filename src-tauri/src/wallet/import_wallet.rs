@@ -51,6 +51,7 @@ pub fn import_solana_wallet(
     let name = format!("Account {}", 0).to_string();
     let wallet = SolanaWallet {
         name,
+        username: None,
         id: Uuid::new_v4(),
         account: 0,
         pubkey,
@@ -96,6 +97,7 @@ pub fn derive_new_keypair(
     let name = format!("Account {}", account).to_string();
     let wallet = SolanaWallet {
         id: Uuid::new_v4(),
+        username: None,
         name,
         account,
         pubkey,
