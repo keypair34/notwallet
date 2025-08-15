@@ -8,6 +8,8 @@ pub(crate) struct SolanaWallet {
     /// The unique identifier for the wallet, typically a UUID.
     /// This ID is used to reference the wallet in various operations.
     pub id: Uuid,
+    /// The unique username of the wallet that is human-readable.
+    pub username: Option<String>,
     /// The name of the wallet, which is a human-readable identifier.
     /// This can be used to differentiate between multiple wallets.
     pub name: String,

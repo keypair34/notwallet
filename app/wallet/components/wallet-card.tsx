@@ -7,6 +7,7 @@ import Typography from "@mui/material/Typography";
 import AddIcon from "@mui/icons-material/Add";
 import SettingsIcon from "@mui/icons-material/Settings";
 import LockIcon from "@mui/icons-material/Lock";
+import BorderColorRoundedIcon from "@mui/icons-material/BorderColorRounded";
 import { SolanaWallet } from "@/lib/crate/generated";
 import IconButton from "@mui/material/IconButton";
 import SendIcon from "@mui/icons-material/Send";
@@ -24,17 +25,16 @@ import {
 } from "@/lib/commands";
 import SendModal from "./send-modal";
 import SwapModal from "./swap-modal";
+import EditKeyPairModal from "./edit-keypair-modal";
 import { SolanaIcon, BachIcon } from "@/lib/components/token-icons";
 
 interface WalletCardProps {
-  userName: string;
   wallet: SolanaWallet;
   onLock: () => void;
   onSwitchKeypair: () => void;
 }
 
 export default function WalletCard({
-  userName,
   wallet,
   onLock,
   onSwitchKeypair,
@@ -42,11 +42,21 @@ export default function WalletCard({
   const router = useRouter();
   const [bachBalance, setBachBalance] = React.useState<string>("-");
   const [solBalance, setSolBalance] = React.useState<string>("-");
+  const [walletUsername, setWalletUsername] = React.useState<string>(
+    wallet.username || "NowhereMan",
+  );
   const [sendModalOpen, setSendModalOpen] = React.useState<boolean>(false);
   const [swapModalOpen, setSwapModalOpen] = React.useState<boolean>(false);
+  const [editKeyPairModalOpen, setEditKeyPairModalOpen] =
+    React.useState<boolean>(false);
   const [availableKeypairs, setAvailableKeypairs] = React.useState<
     SolanaWallet[]
   >([]);
+
+  // Update walletUsername when wallet.username changes
+  React.useEffect(() => {
+    setWalletUsername(wallet.username || "NowhereMan");
+  }, [wallet.username]);
 
   const handleWalletSettings = async () => {
     await selectionFeedback();
@@ -91,10 +101,22 @@ export default function WalletCard({
     init();
   };
 
+  const handleCloseEditKeyPairModal = (updatedUsername: string) => {
+    setEditKeyPairModalOpen(false);
+    if (updatedUsername && updatedUsername !== walletUsername) {
+      setWalletUsername(updatedUsername);
+    }
+  };
+
   const onBuySol = React.useCallback(async () => {
     await selectionFeedback();
     router.push("/wallet/buy?address=" + wallet.pubkey);
   }, [router, wallet]);
+
+  const onEditKeypair = async () => {
+    await selectionFeedback();
+    setEditKeyPairModalOpen(true);
+  };
 
   const init = async () => {
     try {
@@ -136,14 +158,29 @@ export default function WalletCard({
         justifyContent="space-between"
         sx={{ mb: 2 }}
       >
-        <Typography
-          variant="h6"
-          fontWeight="bold"
-          color="#fff"
-          sx={{ fontSize: 16 }}
-        >
-          {userName}
-        </Typography>
+        <Stack direction="row" spacing={1}>
+          <Typography
+            variant="h6"
+            fontWeight="bold"
+            color="#fff"
+            sx={{ fontSize: 16 }}
+          >
+            {walletUsername}
+          </Typography>
+          <IconButton
+            size="small"
+            onClick={onEditKeypair}
+            sx={{
+              fontWeight: "bold",
+              background: "#fff",
+              color: "#9932CC",
+              boxShadow: "0 1px 6px #9932CC22",
+              "&:hover": { background: "#f5f6fa" },
+            }}
+          >
+            <BorderColorRoundedIcon fontSize="small" />
+          </IconButton>
+        </Stack>
         <Stack direction="row" spacing={1}>
           <Tooltip title="Toggle Lock Wallet" arrow>
             <IconButton
@@ -182,8 +219,8 @@ export default function WalletCard({
       <Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 2 }}>
         <Avatar sx={{ width: 56, height: 56, bgcolor: "#fff" }}>
           <Typography variant="h5" color="#9932CC">
-            {userName[0]}
-            {userName[1]}
+            {walletUsername[0]}
+            {walletUsername[1]}
           </Typography>
         </Avatar>
         <Box sx={{ flex: 1 }}>
@@ -439,6 +476,11 @@ export default function WalletCard({
         availableKeypairs={availableKeypairs}
         bachBalance={bachBalance}
         solBalance={solBalance}
+      />
+      <EditKeyPairModal
+        open={editKeyPairModalOpen}
+        onClose={handleCloseEditKeyPairModal}
+        wallet={wallet}
       />
     </Card>
   );
