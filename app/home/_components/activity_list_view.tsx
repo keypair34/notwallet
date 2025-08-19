@@ -63,7 +63,7 @@ export default function ActivityListView() {
       // Check onboarding
       // Move this call to backend
       const res = await invoke<CheckPubkeyResponse>(CHECK_PUBKEY, {
-        pubkey,
+        pubkey: wallet.pubkey,
       });
       debug(`check_pubkey exists: ${res.exists}, pubkey: ${pubkey}`);
       setShowOnboardingCard(!res.exists);
