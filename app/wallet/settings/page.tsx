@@ -12,18 +12,25 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import AddIcon from "@mui/icons-material/Add";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { useRouter } from "next/navigation";
 import { selectionFeedback } from "@tauri-apps/plugin-haptics";
 import WalletSettingsSeedPhraseModal from "../components/wallet-settings-seed-phrase-modal";
+import DestroyWalletsModal from "../components/destroy-wallets-modal";
 import PageChildrenTitleBar from "@/lib/components/page-children-title-bar";
 
 export default function WalletSettingsPage() {
   const router = useRouter();
   const [showSeedPhraseModal, setShowSeedPhraseModal] = React.useState(false);
+  const [showDestroyModal, setShowDestroyModal] = React.useState(false);
 
   const handleClick = async (
-    type: "addWallet" | "showSeedPhrase" | "importSeedPhrase",
+    type:
+      | "addWallet"
+      | "showSeedPhrase"
+      | "importSeedPhrase"
+      | "destroyWallets",
   ) => {
     await selectionFeedback();
     if (type === "addWallet") {
@@ -32,6 +39,8 @@ export default function WalletSettingsPage() {
       setShowSeedPhraseModal(true);
     } else if (type === "importSeedPhrase") {
       router.push("/wallet/import");
+    } else if (type === "destroyWallets") {
+      setShowDestroyModal(true);
     }
   };
 
@@ -65,6 +74,18 @@ export default function WalletSettingsPage() {
     },
   ];
 
+  const dangerItems = [
+    {
+      id: "destroyWallets",
+      label: "Destroy All Wallets",
+      description: "Permanently delete all wallet data",
+      icon: <DeleteForeverIcon />,
+      action: () => handleClick("destroyWallets"),
+      hasChevron: true,
+      isDanger: true,
+    },
+  ];
+
   const renderListItem = (item: any, isLast: boolean = false) => (
     <React.Fragment key={item.id}>
       <ListItem
@@ -90,7 +111,7 @@ export default function WalletSettingsPage() {
       >
         <ListItemIcon
           sx={{
-            color: "#8B5CF6",
+            color: item.isDanger ? "#DC2626" : "#8B5CF6",
             minWidth: 48,
             ml: 2,
           }}
@@ -253,11 +274,63 @@ export default function WalletSettingsPage() {
             </Box>
           </Typography>
         </Box>
+
+        {/* Danger Zone Section */}
+        <Card
+          sx={{
+            width: "100%",
+            borderRadius: "20px",
+            boxShadow: "0 4px 20px rgba(220, 38, 38, 0.08)",
+            border: "1px solid rgba(220, 38, 38, 0.12)",
+            mb: 4,
+            overflow: "hidden",
+            bgcolor: "#FFFFFF",
+          }}
+        >
+          <Box sx={{ p: 3, pb: 1 }}>
+            <Typography
+              variant="h6"
+              sx={{
+                fontSize: "18px",
+                fontWeight: 600,
+                color: "#DC2626",
+                mb: 1,
+                letterSpacing: "-0.02em",
+              }}
+            >
+              Danger Zone
+            </Typography>
+            <Typography
+              variant="body2"
+              sx={{
+                fontSize: "14px",
+                color: "#6B7280",
+                mb: 1,
+              }}
+            >
+              Irreversible actions that will permanently delete your data
+            </Typography>
+          </Box>
+          <List sx={{ p: 0, pb: 1 }}>
+            {dangerItems.map((item, index) =>
+              renderListItem(item, index === dangerItems.length - 1),
+            )}
+          </List>
+        </Card>
       </Box>
 
       <WalletSettingsSeedPhraseModal
         open={showSeedPhraseModal}
         onClose={() => setShowSeedPhraseModal(false)}
+      />
+
+      <DestroyWalletsModal
+        open={showDestroyModal}
+        onClose={() => setShowDestroyModal(false)}
+        onSuccess={() => {
+          // Optionally redirect to onboarding or show success message
+          router.push("/");
+        }}
       />
     </Box>
   );
