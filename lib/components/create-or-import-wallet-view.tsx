@@ -47,7 +47,7 @@ export default function CreateOrImportWalletView() {
             NotWallet
           </Typography>
           <Typography variant="body2" color="text.secondary" align="center">
-            Crypto Dollar Wallet: Secure & easy USD stablecoin wallet
+            A Solana non-custodial crypto wallet and more.
           </Typography>
         </CardContent>
         <CardActions sx={{ flexDirection: "column", gap: 2, pb: 2 }}>
