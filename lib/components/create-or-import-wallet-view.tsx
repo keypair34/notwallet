@@ -65,7 +65,7 @@ export default function CreateOrImportWalletView() {
             }}
             onClick={async () => {
               await selectionFeedback();
-              router.push("/onboarding/import-wallet");
+              router.push("/wallet/onboarding/import-wallet");
             }}
           >
             Import Seed Phrase
@@ -83,7 +83,7 @@ export default function CreateOrImportWalletView() {
             }}
             onClick={async () => {
               await selectionFeedback();
-              router.push("/onboarding/create-wallet-disclaimer");
+              router.push("/wallet/onboarding/create-wallet-disclaimer");
             }}
           >
             Create New Wallet
