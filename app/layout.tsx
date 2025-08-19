@@ -1,9 +1,9 @@
 "use client";
 
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
-import { AppLockProvider } from "../lib/context/app-lock-context";
+import { AppLockProvider } from "@/lib/context/app-lock-context";
 import React from "react";
-import LayoutWithBottomBar from "./components/layout-with-bottom-bar";
+import LayoutWithBottomBar from "./_components/layout-with-bottom-bar";
 import {
   ThemeProvider,
   createTheme,

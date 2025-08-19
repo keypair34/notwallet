@@ -41,7 +41,7 @@ export default function LayoutWithBottomBar({
       >
         {children}
       </Container>
-      {!isAndroidTv && initialized && !locked && <BottomTabBar />}
+      {initialized && !locked && <BottomTabBar />}
     </>
   );
 }
