@@ -21,8 +21,9 @@ export default function BottomTabBar() {
     pathname === "/wallet/buy" ||
     pathname === "/wallet/buy/onramper" ||
     pathname === "/wallet/buy/stripe" ||
-    pathname === "/deposit" ||
-    pathname === "/create-new-wallet"
+    pathname === "/wallet/create-new-wallet" ||
+    pathname === "/wallet/import" ||
+    pathname.startsWith("/wallet/onboarding")
   )
     value = 1;
   else if (
@@ -34,8 +35,9 @@ export default function BottomTabBar() {
     value = 2;
   else if (
     pathname === "/home" ||
-    pathname.startsWith("/activity") ||
-    pathname.startsWith("/dao")
+    pathname.startsWith("/home/activity") ||
+    pathname.startsWith("/home/dao") ||
+    pathname.startsWith("/home/learn")
   )
     value = 0;
 

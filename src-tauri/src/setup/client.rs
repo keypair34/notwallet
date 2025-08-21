@@ -1,10 +1,13 @@
-use crate::constants::{network::API_BASE_URL, store::store};
-use crate::model::client::{ClientApp, ClientInfoPayload, RegisterClientResponse};
-use log::{error, info};
-use reqwest::Client as HttpClient;
-use std::error::Error as StdError;
-use tauri::{async_runtime, App};
-use uuid::Uuid;
+use {
+    crate::{
+        constants::{network::API_BASE_URL, store::store},
+        model::client::{ClientApp, ClientInfoPayload, RegisterClientResponse},
+        network::client::send_client_info,
+    },
+    log::{error, info},
+    tauri::{async_runtime, App},
+    uuid::Uuid,
+};
 
 pub const INSTALLATION_ID_KEY: &str = "installation_id";
 
@@ -95,56 +98,4 @@ pub fn setup_client(app: &App) -> Result<(), Box<dyn std::error::Error>> {
 
     // Return success immediately, as the registration happens in the background
     Ok(())
-}
-
-/// Send client information to the server
-async fn send_client_info(
-    client_info: &ClientInfoPayload,
-) -> Result<RegisterClientResponse, Box<dyn StdError>> {
-    if client_info.app == ClientApp::Splitfire {
-        return Err(Box::new(std::io::Error::new(
-            std::io::ErrorKind::Other,
-            "Client app is NotWallet",
-        )));
-    }
-
-    let client = HttpClient::new();
-
-    // API endpoint
-    let url = format!("{}/api/v1/setup-client", API_BASE_URL);
-
-    let response = client
-        .post(url)
-        .json(client_info)
-        .send()
-        .await
-        .map_err(|e| {
-            Box::<dyn StdError>::from(std::io::Error::new(
-                std::io::ErrorKind::Other,
-                format!("Request error: {}", e),
-            ))
-        })?;
-
-    if response.status().is_success() {
-        response
-            .json::<RegisterClientResponse>()
-            .await
-            .map_err(|e| {
-                Box::<dyn StdError>::from(std::io::Error::new(
-                    std::io::ErrorKind::Other,
-                    format!("Failed to parse response: {}", e),
-                ))
-            })
-    } else {
-        let status = response.status();
-        let error_text = response
-            .text()
-            .await
-            .unwrap_or_else(|_| "Failed to get error text".to_string());
-
-        Err(Box::new(std::io::Error::new(
-            std::io::ErrorKind::Other,
-            format!("Server error: {} - {}", status, error_text),
-        )))
-    }
 }

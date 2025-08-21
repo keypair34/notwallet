@@ -7,6 +7,7 @@ import Typography from "@mui/material/Typography";
 import AddIcon from "@mui/icons-material/Add";
 import SettingsIcon from "@mui/icons-material/Settings";
 import LockIcon from "@mui/icons-material/Lock";
+import BorderColorRoundedIcon from "@mui/icons-material/BorderColorRounded";
 import { SolanaWallet } from "@/lib/crate/generated";
 import IconButton from "@mui/material/IconButton";
 import SendIcon from "@mui/icons-material/Send";
@@ -17,20 +18,26 @@ import { useRouter } from "next/navigation";
 import { selectionFeedback } from "@tauri-apps/plugin-haptics";
 import { writeText } from "@tauri-apps/plugin-clipboard-manager";
 import { invoke } from "@tauri-apps/api/core";
-import { GET_BACH_BALANCE, GET_SOL_BALANCE } from "@/lib/commands";
+import {
+  GET_BACH_BALANCE,
+  GET_SOL_BALANCE,
+  GET_ALL_KEYPAIRS,
+} from "@/lib/commands";
 import SendModal from "./send-modal";
 import SwapModal from "./swap-modal";
+import EditKeyPairModal from "./edit-keypair-modal";
 import { SolanaIcon, BachIcon } from "@/lib/components/token-icons";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import { openUrl } from "@tauri-apps/plugin-opener";
+import { BACH_MINT_ACCOUNT } from "@/lib/crate/generated";
 
 interface WalletCardProps {
-  userName: string;
   wallet: SolanaWallet;
   onLock: () => void;
   onSwitchKeypair: () => void;
 }
 
 export default function WalletCard({
-  userName,
   wallet,
   onLock,
   onSwitchKeypair,
@@ -38,11 +45,21 @@ export default function WalletCard({
   const router = useRouter();
   const [bachBalance, setBachBalance] = React.useState<string>("-");
   const [solBalance, setSolBalance] = React.useState<string>("-");
+  const [walletUsername, setWalletUsername] = React.useState<string>(
+    wallet.username || "NowhereMan",
+  );
   const [sendModalOpen, setSendModalOpen] = React.useState<boolean>(false);
   const [swapModalOpen, setSwapModalOpen] = React.useState<boolean>(false);
+  const [editKeyPairModalOpen, setEditKeyPairModalOpen] =
+    React.useState<boolean>(false);
   const [availableKeypairs, setAvailableKeypairs] = React.useState<
     SolanaWallet[]
   >([]);
+
+  // Update walletUsername when wallet.username changes
+  React.useEffect(() => {
+    setWalletUsername(wallet.username || "NowhereMan");
+  }, [wallet.username]);
 
   const handleWalletSettings = async () => {
     await selectionFeedback();
@@ -53,7 +70,7 @@ export default function WalletCard({
     await selectionFeedback();
     // Get all available keypairs for the dropdown
     try {
-      const keypairs = await invoke<SolanaWallet[]>("get_all_keypairs");
+      const keypairs = await invoke<SolanaWallet[]>(GET_ALL_KEYPAIRS);
       setAvailableKeypairs(keypairs || []);
     } catch (error) {
       console.error("Error fetching keypairs:", error);
@@ -66,7 +83,7 @@ export default function WalletCard({
     await selectionFeedback();
     // Get all available keypairs for the dropdown
     try {
-      const keypairs = await invoke<SolanaWallet[]>("get_all_keypairs");
+      const keypairs = await invoke<SolanaWallet[]>(GET_ALL_KEYPAIRS);
       setAvailableKeypairs(keypairs || []);
     } catch (error) {
       console.error("Error fetching keypairs:", error);
@@ -87,10 +104,31 @@ export default function WalletCard({
     init();
   };
 
+  const handleCloseEditKeyPairModal = (updatedUsername: string) => {
+    setEditKeyPairModalOpen(false);
+    if (updatedUsername && updatedUsername !== walletUsername) {
+      setWalletUsername(updatedUsername);
+    }
+  };
+
   const onBuySol = React.useCallback(async () => {
     await selectionFeedback();
     router.push("/wallet/buy?address=" + wallet.pubkey);
   }, [router, wallet]);
+
+  const onEditKeypair = async () => {
+    await selectionFeedback();
+    setEditKeyPairModalOpen(true);
+  };
+
+  const handleOpenTokenInformation = async (token: "BACH" | "SOL") => {
+    await selectionFeedback();
+    const url =
+      token === "BACH"
+        ? `https://birdeye.so/token/${BACH_MINT_ACCOUNT}?chain=solana`
+        : "https://solana.org";
+    openUrl(url);
+  };
 
   const init = async () => {
     try {
@@ -132,14 +170,29 @@ export default function WalletCard({
         justifyContent="space-between"
         sx={{ mb: 2 }}
       >
-        <Typography
-          variant="h6"
-          fontWeight="bold"
-          color="#fff"
-          sx={{ fontSize: 16 }}
-        >
-          {userName}
-        </Typography>
+        <Stack direction="row" spacing={1}>
+          <Typography
+            variant="h6"
+            fontWeight="bold"
+            color="#fff"
+            sx={{ fontSize: 16 }}
+          >
+            {walletUsername}
+          </Typography>
+          <IconButton
+            size="small"
+            onClick={onEditKeypair}
+            sx={{
+              fontWeight: "bold",
+              background: "#fff",
+              color: "#9932CC",
+              boxShadow: "0 1px 6px #9932CC22",
+              "&:hover": { background: "#f5f6fa" },
+            }}
+          >
+            <BorderColorRoundedIcon fontSize="small" />
+          </IconButton>
+        </Stack>
         <Stack direction="row" spacing={1}>
           <Tooltip title="Toggle Lock Wallet" arrow>
             <IconButton
@@ -178,8 +231,8 @@ export default function WalletCard({
       <Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 2 }}>
         <Avatar sx={{ width: 56, height: 56, bgcolor: "#fff" }}>
           <Typography variant="h5" color="#9932CC">
-            {userName[0]}
-            {userName[1]}
+            {walletUsername[0]}
+            {walletUsername[1]}
           </Typography>
         </Avatar>
         <Box sx={{ flex: 1 }}>
@@ -262,17 +315,56 @@ export default function WalletCard({
           </Box>
         </Box>
       </Stack>
-      <Typography
-        variant="subtitle2"
-        sx={{
-          color: "#000",
-          fontFamily: "Inter, Helvetica Neue, Arial, sans-serif",
-          mb: 1,
-          letterSpacing: 1,
-        }}
+      <Stack
+        direction="row"
+        alignItems="start"
+        justifyContent="space-between"
+        spacing={2}
+        sx={{ mb: 2 }}
       >
-        Balance
-      </Typography>
+        <Typography
+          variant="h6"
+          fontWeight="bold"
+          sx={{ mb: 2, color: "#212529" }}
+        >
+          Balance
+        </Typography>
+        <Stack
+          direction="row"
+          alignItems="center"
+          spacing={1}
+          sx={{ flex: 1, justifyContent: "flex-end" }}
+        >
+          <Tooltip title="Send">
+            <IconButton
+              sx={{
+                color: "#9932CC",
+                bgcolor: "#f5f6fa",
+                "&:hover": { bgcolor: "#EDE7F6" },
+                borderRadius: 2,
+              }}
+              onClick={handleSend}
+              size="small"
+            >
+              <SendIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Swap">
+            <IconButton
+              sx={{
+                color: "#9932CC",
+                bgcolor: "#f5f6fa",
+                "&:hover": { bgcolor: "#EDE7F6" },
+                borderRadius: 2,
+              }}
+              onClick={handleSwap}
+              size="small"
+            >
+              <SwapHorizIcon />
+            </IconButton>
+          </Tooltip>
+        </Stack>
+      </Stack>
       {/* BACH Balance with Token Icon */}
       <Stack
         direction="row"
@@ -308,41 +400,17 @@ export default function WalletCard({
           >
             {bachBalance}
           </Typography>
-        </Stack>
-        <Stack
-          direction="row"
-          alignItems="center"
-          spacing={1}
-          sx={{ flex: 1, justifyContent: "flex-end" }}
-        >
-          <Tooltip title="Send">
-            <IconButton
-              sx={{
-                color: "#9932CC",
-                bgcolor: "#f5f6fa",
-                "&:hover": { bgcolor: "#EDE7F6" },
-                borderRadius: 2,
-              }}
-              onClick={handleSend}
-              size="small"
-            >
-              <SendIcon />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Swap">
-            <IconButton
-              sx={{
-                color: "#9932CC",
-                bgcolor: "#f5f6fa",
-                "&:hover": { bgcolor: "#EDE7F6" },
-                borderRadius: 2,
-              }}
-              onClick={handleSwap}
-              size="small"
-            >
-              <SwapHorizIcon />
-            </IconButton>
-          </Tooltip>
+          <IconButton
+            onClick={() => handleOpenTokenInformation("BACH")}
+            sx={{
+              color: "#fff",
+              textShadow: "0 2px 12px #9932CC55",
+              fontFamily: "Inter, Helvetica Neue, Arial, sans-serif",
+              fontSize: 16,
+            }}
+          >
+            <OpenInNewIcon />
+          </IconButton>
         </Stack>
       </Stack>
       {/* SOL Balance with Solana Icon */}
@@ -431,6 +499,11 @@ export default function WalletCard({
         availableKeypairs={availableKeypairs}
         bachBalance={bachBalance}
         solBalance={solBalance}
+      />
+      <EditKeyPairModal
+        open={editKeyPairModalOpen}
+        onClose={handleCloseEditKeyPairModal}
+        wallet={wallet}
       />
     </Card>
   );

@@ -43,6 +43,8 @@ export interface SolanaWallet {
    * This ID is used to reference the wallet in various operations.
    */
   id: string;
+  /** The unique username of the wallet that is human-readable. */
+  username?: string;
   /**
    * The name of the wallet, which is a human-readable identifier.
    * This can be used to differentiate between multiple wallets.

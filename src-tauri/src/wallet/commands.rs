@@ -1,23 +1,26 @@
-use crate::constants::{
-    address::{BACH_TOKEN_ADDRESS, BACH_TOKEN_ADDRESS_LOCAL},
-    rpc::{rpc_url, USE_LOCAL_RPC},
-    store::{store, STORE_KEYPAIRS, STORE_SEEDS},
-};
-use crate::model::keypair::SolanaWallet;
-use crate::model::seed::{Seed, SeedType};
-use crate::model::wallet::OnboardingCreateWallet;
-use bip39::{Language, Mnemonic};
-use chrono::Utc;
-use log::{debug, error, info};
-use solana_sdk::signature::Signer;
-use tauri::{command, AppHandle};
-use uuid::Uuid;
-use wallet_kit::{
-    balance::{bach_balance, sol_balance},
-    constants::SPL_TOKEN_PROGRAM_ID,
-    derive_keypair::derive_keypair_default,
-    token_info::token_info,
-    transactions::{create_token_transfer_ix, create_transfer_ix},
+use {
+    crate::constants::{
+        address::{BACH_TOKEN_ADDRESS, BACH_TOKEN_ADDRESS_LOCAL},
+        rpc::{rpc_url, USE_LOCAL_RPC},
+        store::{store, STORE_ACTIVE_KEYPAIR, STORE_KEYPAIRS, STORE_SEEDS},
+    },
+    crate::model::keypair::SolanaWallet,
+    crate::model::seed::{Seed, SeedType},
+    crate::model::wallet::OnboardingCreateWallet,
+    bip39::{Language, Mnemonic},
+    chrono::Utc,
+    log::{debug, error, info},
+    network::model::{ErrorCode, ErrorResponse},
+    solana_sdk::signature::Signer,
+    tauri::{command, AppHandle},
+    uuid::Uuid,
+    wallet_kit::{
+        balance::{sol_balance, spl_balance},
+        constants::SPL_TOKEN_PROGRAM_ID,
+        derive_keypair::derive_keypair_default,
+        token_info::token_info,
+        transactions::{create_token_transfer_ix, create_transfer_ix},
+    },
 };
 
 #[command]
@@ -64,6 +67,7 @@ pub fn onboarding_create_wallet(app: AppHandle) -> Result<OnboardingCreateWallet
     let name = "Account 0".to_string();
     let wallet = SolanaWallet {
         name,
+        username: None,
         account: 0,
         pubkey,
         privkey,
@@ -124,6 +128,7 @@ pub async fn derive_next_keypair(app: AppHandle, seed_uuid: Uuid) -> Result<Sola
     let name = format!("Account {}", count as u32).to_string();
     let wallet = SolanaWallet {
         id: Uuid::new_v4(),
+        username: None,
         name,
         account: count as u32,
         pubkey,
@@ -153,7 +158,7 @@ pub fn get_bach_balance(pubkey: String) -> String {
     } else {
         BACH_TOKEN_ADDRESS.to_string()
     };
-    bach_balance(
+    spl_balance(
         rpc_url(),
         pubkey,
         SPL_TOKEN_PROGRAM_ID.to_string(),
@@ -258,7 +263,7 @@ pub fn get_treasury_bach_balance() -> String {
     } else {
         BACH_TOKEN_ADDRESS.to_string()
     };
-    bach_balance(
+    spl_balance(
         rpc_url(),
         treasury_address.to_string(),
         SPL_TOKEN_PROGRAM_ID.to_string(),
@@ -271,4 +276,59 @@ pub fn get_treasury_sol_balance() -> String {
     info!("Getting treasury SOL balance");
     let treasury_address = "3YAyrP4mjiLRuHZQjfskmmVBbF7urtfDLfnLtW2jzgx3";
     sol_balance(rpc_url(), treasury_address.to_string())
+}
+#[command]
+pub async fn update_username(
+    app: AppHandle,
+    uid: String,
+    username: String,
+) -> Result<String, ErrorResponse> {
+    // Load wallet from store
+    let store = store(&app).map_err(|_| ErrorResponse::Error {
+        code: ErrorCode::Unknown,
+        message: "Failed to load store".to_string(),
+    })?;
+    let wallet_value = store
+        .get(STORE_ACTIVE_KEYPAIR)
+        .ok_or(ErrorResponse::Error {
+            code: ErrorCode::Unknown,
+            message: "No wallet found".to_string(),
+        })?;
+    let mut active_wallet: SolanaWallet =
+        serde_json::from_value(wallet_value).map_err(|_| ErrorResponse::Error {
+            code: ErrorCode::ParseError,
+            message: "Failed to parse wallet".to_string(),
+        })?;
+    // Sanity check - parse the uid string to Uuid
+    let wallet_id: Uuid = Uuid::parse_str(&uid).map_err(|_| ErrorResponse::Error {
+        code: ErrorCode::ParseError,
+        message: "Invalid UUID format".to_string(),
+    })?;
+    if active_wallet.id != wallet_id {
+        return Err(ErrorResponse::Error {
+            code: ErrorCode::ParseError,
+            message: "Invalid wallet ID".to_string(),
+        });
+    }
+    active_wallet.username = Some(username.clone());
+    // Update the active wallet in the store
+    store.set(STORE_ACTIVE_KEYPAIR, serde_json::json!(&active_wallet));
+    // Load existing keypairs, update the wallet with uuid
+    let mut keypairs: Vec<SolanaWallet> = match store.get(STORE_KEYPAIRS) {
+        Some(value) => serde_json::from_value(value).unwrap_or_default(),
+        None => Vec::new(),
+    };
+    // Find the wallet with the same uuid as the active wallet and update it
+    for wallet in &mut keypairs {
+        if wallet.id == active_wallet.id {
+            wallet.username = Some(username.clone());
+            break;
+        }
+    }
+    store.set(STORE_KEYPAIRS, serde_json::json!(keypairs));
+    store.save().map_err(|_| ErrorResponse::Error {
+        code: ErrorCode::ParseError,
+        message: "Failed to update keypair".to_string(),
+    })?;
+    Ok("Username updated successfully".to_string())
 }
