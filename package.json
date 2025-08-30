@@ -21,6 +21,7 @@
     "@mui/material": "7.1.1",
     "@mui/material-nextjs": "7.1.1",
     "@rive-app/react-canvas": "^4.23.1",
+    "@smbcloud/tauri-plugin-android-tv-check-api": "1.1.4",
     "@stripe/crypto": "^0.0.4",
     "@stripe/stripe-js": "^7.9.0",
     "@tauri-apps/api": "^2.8.0",

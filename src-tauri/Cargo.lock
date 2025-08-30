@@ -3902,6 +3902,7 @@ dependencies = [
  "solana-sdk",
  "tauri",
  "tauri-build",
+ "tauri-plugin-android-tv-check",
  "tauri-plugin-clipboard-manager",
  "tauri-plugin-haptics",
  "tauri-plugin-log",
@@ -8971,6 +8972,18 @@ dependencies = [
  "tauri-utils",
  "toml 0.9.5",
  "walkdir",
+]
+
+[[package]]
+name = "tauri-plugin-android-tv-check"
+version = "1.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "124cb8ae441fbe20cac5e1af4679c4f10e323bf47675e41534523dbb174f60fb"
+dependencies = [
+ "serde",
+ "tauri",
+ "tauri-plugin",
+ "thiserror 2.0.16",
 ]
 
 [[package]]
