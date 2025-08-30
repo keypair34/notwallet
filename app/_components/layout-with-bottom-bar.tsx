@@ -1,10 +1,12 @@
 "use client";
+
 import { Container } from "@mui/material";
 import BottomTabBar from "@/lib/components/create-or-import-wallet-view";
 import { useAppLock } from "@/lib/context/app-lock-context";
 import React from "react";
 import { check } from "@smbcloud/tauri-plugin-android-tv-check-api";
 import { info } from "@tauri-apps/plugin-log";
+import AndroidTvLayout from "@/lib/components/android-tv-layout";
 
 export default function LayoutWithBottomBar({
   children,
@@ -39,9 +41,9 @@ export default function LayoutWithBottomBar({
           flex: "none",
         }}
       >
-        {children}
+        {isAndroidTv ? <AndroidTvLayout>{children}</AndroidTvLayout> : children}
       </Container>
-      {initialized && !locked && <BottomTabBar />}
+      {initialized && !locked && !isAndroidTv && <BottomTabBar />}
     </>
   );
 }
