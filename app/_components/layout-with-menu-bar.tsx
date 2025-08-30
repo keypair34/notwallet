@@ -7,12 +7,6 @@ import React from "react";
 import { check } from "@smbcloud/tauri-plugin-android-tv-check-api";
 import { info } from "@tauri-apps/plugin-log";
 import AndroidTvLayout from "./android-tv-layout";
-import LoadingCard from "@/lib/components/loading-card";
-
-enum State {
-  INITIALIZING,
-  INITIALIZED,
-}
 
 export default function LayoutWithMenuBar({
   children,
@@ -22,7 +16,6 @@ export default function LayoutWithMenuBar({
   const { locked } = useAppLock();
   const [initialized, setInitialized] = React.useState(false);
   const [isAndroidTv, setIsAndroidTv] = React.useState(false);
-  const [state, setState] = React.useState(State.INITIALIZING);
 
   const init = async () => {
     setInitialized(true);
@@ -31,32 +24,26 @@ export default function LayoutWithMenuBar({
 
     const checkResult = await check();
     info(`Android TV: ${JSON.stringify(checkResult)}`);
-    setIsAndroidTv(true);
-    setState(State.INITIALIZED);
+    setIsAndroidTv(checkResult.isAndroidTv);
   };
 
   React.useEffect(() => {
     init();
   }, [locked]);
 
-  if (state === State.INITIALIZING) {
-    return <LoadingCard />;
-  }
-  if (state === State.INITIALIZED) {
-    return (
-      <>
-        <Container
-          sx={{
-            height: "auto",
-            minHeight: "unset",
-            display: "block",
-            flex: "none",
-          }}
-        >
-          {isAndroidTv ? <AndroidTvLayout children={children} /> : children}
-        </Container>
-        {initialized && !locked && !isAndroidTv && <BottomTabBar />}
-      </>
-    );
-  }
+  return (
+    <>
+      <Container
+        sx={{
+          height: "auto",
+          minHeight: "unset",
+          display: "block",
+          flex: "none",
+        }}
+      >
+        {isAndroidTv ? <AndroidTvLayout children={children} /> : children}
+      </Container>
+      {initialized && !locked && !isAndroidTv && <BottomTabBar />}
+    </>
+  );
 }
