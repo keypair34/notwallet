@@ -25,6 +25,10 @@ pub fn spl_balance(
     spl_token_program_id: String,
     token_address: String,
 ) -> String {
+    debug!(
+        "Fetching SPL balance for {}, token {}",
+        pubkey, token_address
+    );
     let balance = aggregate_spl_token_balance(rpc_url, pubkey, spl_token_program_id, token_address);
     format!("{} BACH", balance)
 }
