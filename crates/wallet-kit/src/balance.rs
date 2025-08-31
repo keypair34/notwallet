@@ -12,46 +12,65 @@ pub fn spl_balance(
     spl_token_program_id: String,
     token_address: String,
 ) -> String {
+    debug!(
+        "Fetching SPL balance for {}, token {}",
+        pubkey, token_address
+    );
+    let balance = aggregate_spl_token_balance(rpc_url, pubkey, spl_token_program_id, token_address);
+    format!("{} BACH", balance)
+}
+
+pub fn aggregate_spl_token_balance(
+    rpc_url: String,
+    pubkey: String,
+    spl_token_program_id: String,
+    token_address: String,
+) -> f64 {
     let connection = RpcClient::new(rpc_url);
 
-    let bach_pubkey = Pubkey::from_str(&spl_token_program_id).unwrap();
+    let spl_token_program_id_pubkey = Pubkey::from_str(&spl_token_program_id).unwrap();
     let pubkey = Pubkey::from_str(&pubkey).unwrap();
 
     // Get all token accounts owned by the pubkey
-    let token_accounts = match connection
-        .get_token_accounts_by_owner(&pubkey, TokenAccountsFilter::ProgramId(bach_pubkey))
-    {
+    let spl_token_accounts = match connection.get_token_accounts_by_owner(
+        &pubkey,
+        TokenAccountsFilter::ProgramId(spl_token_program_id_pubkey),
+    ) {
         Ok(accounts) => accounts,
         Err(err) => {
             error!("Error getting token accounts: {}", err);
-            return String::new();
+            return 0.0;
         }
     };
 
-    debug!("Number of token accounts: {}", token_accounts.len());
+    debug!("Number of token accounts: {}", spl_token_accounts.len());
 
     // Get bach token accounts
-    let bach_account = token_accounts
+    let target_spl_token_accounts = spl_token_accounts
         .iter()
         .map(|account| account.account.clone())
         .filter_map(|account| get_token_account(&account.data))
         .filter(|account| account.mint == token_address)
         .collect::<Vec<_>>();
 
-    debug!("Number of bach token accounts: {}", bach_account.len());
-
-    if bach_account.is_empty() {
-        return "0".to_string();
-    }
-
     debug!(
-        "Bach balance: {}",
-        bach_account[0].token_amount.ui_amount_string
+        "Number of target token accounts: {}",
+        target_spl_token_accounts.len()
     );
 
-    format!("{} BACH", bach_account[0]
-        .token_amount
-        .ui_amount_string)
+    if target_spl_token_accounts.is_empty() {
+        return 0.0;
+    }
+
+    // Get aggregated amount
+    let mut aggregated_amount = 0.0;
+    for account in target_spl_token_accounts {
+        if let Some(ui_amount) = account.token_amount.ui_amount {
+            aggregated_amount += ui_amount;
+        }
+    }
+
+    aggregated_amount
 }
 
 pub fn sol_balance(rpc_url: String, pubkey: String) -> String {
