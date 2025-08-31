@@ -24,11 +24,11 @@ import {
   GET_BACH_BALANCE,
   GET_SOL_BALANCE,
   GET_ALL_KEYPAIRS,
+  GET_WALLET_BALANCE,
 } from "@/lib/commands";
 import SendModal from "./send-modal";
 import SwapModal from "./swap-modal";
 import EditKeyPairModal from "./edit-keypair-modal";
-import { SolanaIcon, BachIcon } from "@/lib/components/token-icons";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import { BACH_MINT_ACCOUNT } from "@/lib/crate/generated";
@@ -47,6 +47,7 @@ export default function WalletCard({
   const router = useRouter();
   const [bachBalance, setBachBalance] = React.useState<string>("-");
   const [solBalance, setSolBalance] = React.useState<string>("-");
+  const [walletBalance, setWalletBalance] = React.useState<string>("-");
   const [walletUsername, setWalletUsername] = React.useState<string>(
     wallet.username || "NowhereMan",
   );
@@ -142,6 +143,10 @@ export default function WalletCard({
         pubkey: wallet.pubkey,
       });
       setSolBalance(`${solBalance}`);
+      const walletBalance = await invoke<string>(GET_WALLET_BALANCE, {
+        pubkey: wallet.pubkey,
+      });
+      setWalletBalance(`${walletBalance}`);
     } catch (error) {
       console.error("Error fetching balance:", error);
     }
@@ -386,7 +391,7 @@ export default function WalletCard({
               fontSize: 24,
             }}
           >
-            {bachBalance}
+            {walletBalance}
           </Typography>
           <IconButton
             onClick={() => handleOpenTokenInformation("BACH")}

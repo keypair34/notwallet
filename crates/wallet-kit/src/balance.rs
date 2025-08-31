@@ -7,7 +7,10 @@ use {
         models::{currency::FiatCurrency, price::PricesResponse},
     },
     log::{debug, error},
-    network::{model::ErrorResponse, request},
+    network::{
+        model::{ErrorCode::BalanceError, ErrorResponse},
+        request,
+    },
     reqwest::Client,
     serde::{Deserialize, Serialize},
     solana_account_decoder::{parse_token::UiTokenAccount, UiAccountData},
@@ -84,7 +87,11 @@ pub fn sol_balance(rpc_url: String, pubkey: String) -> String {
     format!("{:.9} SOL", pretty_balance)
 }
 
-pub fn wallet_balance(rpc_url: String, pubkey: String, currency: Option<FiatCurrency>) -> String {
+pub async fn wallet_balance(
+    rpc_url: String,
+    pubkey: String,
+    currency: Option<FiatCurrency>,
+) -> Result<String, ErrorResponse> {
     // Get SOL balance
     let sol_balance_str = sol_balance(rpc_url.clone(), pubkey.clone());
     let sol_amount = parse_sol_amount(&sol_balance_str);
@@ -102,7 +109,7 @@ pub fn wallet_balance(rpc_url: String, pubkey: String, currency: Option<FiatCurr
 
     // Get current prices in the target currency
     let sol_price = get_sol_price(&target_currency);
-    let bach_price = get_bach_price(&target_currency);
+    let bach_price = get_bach_price().await?;
 
     // Calculate total value
     let sol_value = sol_amount * sol_price;
@@ -115,7 +122,7 @@ pub fn wallet_balance(rpc_url: String, pubkey: String, currency: Option<FiatCurr
         FiatCurrency::SEK => "kr",
     };
 
-    format!("{}{:.2}", currency_symbol, total_value)
+    Ok(format!("{}{:.2}", currency_symbol, total_value))
 }
 
 fn parse_sol_amount(balance_str: &str) -> f64 {
@@ -130,6 +137,23 @@ fn parse_bach_amount(balance_str: &str) -> f64 {
 fn get_sol_price(currency: &FiatCurrency) -> f64 {
     // Using CoinGecko API as it's free and reliable
     0.0
+}
+
+async fn get_bach_price() -> Result<f64, ErrorResponse> {
+    // Using CoinGecko API as it's free and reliable
+    match get_asset_price(BACH_MINT_ACCOUNT).await {
+        Ok(price) => {
+            if price.prices.contains_key(BACH_MINT_ACCOUNT) {
+                Ok(price.prices[BACH_MINT_ACCOUNT].usd_price)
+            } else {
+                Err(ErrorResponse::Error {
+                    code: BalanceError,
+                    message: "No price data available".to_string(),
+                })
+            }
+        }
+        Err(err) => Err(err),
+    }
 }
 
 async fn get_asset_price(asset: &str) -> Result<PricesResponse, ErrorResponse> {
