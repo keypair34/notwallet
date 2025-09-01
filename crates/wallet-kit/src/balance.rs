@@ -2,7 +2,7 @@ use {
     crate::{
         constants::{
             BACH_MINT_ACCOUNT, BIRDEYE_API_KEY, BIRDEYE_BASE_URL, BIRDEYE_PRICE_PATH,
-            LAMPORTS_PER_SOL, SOLANA_MINT_ACCOUNT, SPL_TOKEN_PROGRAM_ID,
+            LAMPORTS_PER_SOL, SOLANA_MINT_ACCOUNT, SPL_TOKEN_PROGRAM_ID, USER_AGENT,
         },
         models::{currency::FiatCurrency, price::BirdeyePriceResponse},
     },
@@ -218,7 +218,11 @@ async fn get_asset_price(asset: &str) -> Result<BirdeyePriceResponse, ErrorRespo
         "{}{}?address={}",
         BIRDEYE_BASE_URL, BIRDEYE_PRICE_PATH, asset
     );
-    let client = Client::new().get(url).header("X-API-KEY", BIRDEYE_API_KEY);
+    debug!("URL: {}", url);
+    let client = Client::new()
+        .get(url)
+        .header("X-API-KEY", BIRDEYE_API_KEY)
+        .header("User-Agent", USER_AGENT);
     request(client).await
 }
 
