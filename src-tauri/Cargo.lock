@@ -3833,7 +3833,7 @@ dependencies = [
  "strum_macros",
  "thiserror 1.0.69",
  "tokio",
- "tsync 1.7.0",
+ "tsync",
 ]
 
 [[package]]
@@ -3885,7 +3885,7 @@ checksum = "38bf9645c8b145698bb0b18a4637dcacbc421ea49bef2317e4fd8065a387cf21"
 
 [[package]]
 name = "notwallet"
-version = "0.4.13"
+version = "1.0.0"
 dependencies = [
  "base64 0.21.7",
  "bip39",
@@ -3910,7 +3910,7 @@ dependencies = [
  "tauri-plugin-shell",
  "tauri-plugin-store",
  "thiserror 1.0.69",
- "tsync 2.2.1",
+ "tsync",
  "uuid",
  "wallet_kit",
 ]
@@ -9718,21 +9718,6 @@ checksum = "e421abadd41a4225275504ea4d6566923418b7f05506fbc9c0fe86ba7396114b"
 
 [[package]]
 name = "tsync"
-version = "1.7.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "540f98d808992235114dc08263e1b083507a133abfa36097cdd2c60ac56e7f4b"
-dependencies = [
- "convert_case 0.6.0",
- "proc-macro2",
- "quote",
- "structopt",
- "syn 1.0.109",
- "tsync-macro",
- "walkdir",
-]
-
-[[package]]
-name = "tsync"
 version = "2.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4fc20a25899c5ae43735253244214f3d5eb75dd28d9cc8491732294a985adb8c"
@@ -10187,7 +10172,7 @@ dependencies = [
  "spl-token 7.0.0",
  "thiserror 1.0.69",
  "tokio",
- "tsync 2.2.1",
+ "tsync",
  "uniffi",
 ]
 
