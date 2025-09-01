@@ -29,6 +29,7 @@ import {
 import SendModal from "./send-modal";
 import SwapModal from "./swap-modal";
 import EditKeyPairModal from "./edit-keypair-modal";
+import { error, debug } from "@tauri-apps/plugin-log";
 
 interface WalletCardProps {
   wallet: SolanaWallet;
@@ -72,8 +73,8 @@ export default function WalletCard({
     try {
       const keypairs = await invoke<SolanaWallet[]>(GET_ALL_KEYPAIRS);
       setAvailableKeypairs(keypairs || []);
-    } catch (error) {
-      console.error("Error fetching keypairs:", error);
+    } catch (err) {
+      error(`Error fetching keypairs: ${JSON.stringify(err)}`);
       setAvailableKeypairs([]);
     }
     setSendModalOpen(true);
@@ -85,8 +86,8 @@ export default function WalletCard({
     try {
       const keypairs = await invoke<SolanaWallet[]>(GET_ALL_KEYPAIRS);
       setAvailableKeypairs(keypairs || []);
-    } catch (error) {
-      console.error("Error fetching keypairs:", error);
+    } catch (err) {
+      error(`Error fetching keypairs: ${JSON.stringify(err)}`);
       setAvailableKeypairs([]);
     }
     setSwapModalOpen(true);
@@ -135,8 +136,8 @@ export default function WalletCard({
         pubkey: wallet.pubkey,
       });
       setWalletBalance(`${walletBalance}`);
-    } catch (error) {
-      console.error("Error fetching balance:", error);
+    } catch (err) {
+      error(`Error fetching balance: ${JSON.stringify(err)}`);
     }
   };
 
