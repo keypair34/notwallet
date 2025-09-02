@@ -17,6 +17,8 @@ import IconButton from "@mui/material/IconButton";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import { BACH_MINT_ACCOUNT } from "@/lib/crate/generated";
 import { selectionFeedback } from "@tauri-apps/plugin-haptics";
+import { GET_BACH_BALANCE, GET_SOL_BALANCE } from "@/lib/commands";
+import { error } from "@tauri-apps/plugin-log";
 
 interface Asset {
   logo: React.ReactNode;
@@ -32,7 +34,6 @@ interface AssetsViewProps {
 export default function AssetsView({ wallet }: AssetsViewProps) {
   const [assets, setAssets] = React.useState<Asset[]>([]);
   const [loading, setLoading] = React.useState(true);
-  const [totalBalance, setTotalBalance] = React.useState<string>("$0.00");
 
   React.useEffect(() => {
     const fetchBalances = async () => {
@@ -40,26 +41,14 @@ export default function AssetsView({ wallet }: AssetsViewProps) {
         setLoading(true);
 
         // Fetch SOL balance
-        const solBalance = await invoke<string>("get_sol_balance", {
+        const solBalance = await invoke<string>(GET_SOL_BALANCE, {
           pubkey: wallet.pubkey,
         });
 
         // Fetch BACH balance
-        const bachBalance = await invoke<string>("get_bach_balance", {
+        const bachBalance = await invoke<string>(GET_BACH_BALANCE, {
           pubkey: wallet.pubkey,
         });
-
-        // Fetch total wallet balance in USD (optional parameter, defaults to USD)
-        let walletBalance = "$0.00";
-        try {
-          walletBalance = await invoke<string>("get_wallet_balance", {
-            pubkey: wallet.pubkey,
-            currency: null, // Let backend default to USD
-          });
-        } catch (error) {
-          console.warn("Could not fetch wallet balance in USD:", error);
-          // Continue without USD conversion
-        }
 
         const assetsList: Asset[] = [];
 
@@ -70,7 +59,6 @@ export default function AssetsView({ wallet }: AssetsViewProps) {
             logo: <SolanaIcon size={20} />,
             symbol: "SOL",
             balance: `${parseFloat(solAmount).toFixed(4)} SOL`,
-            usdValue: "~$" + (parseFloat(solAmount) * 100).toFixed(2), // Mock USD value
           });
         }
 
@@ -81,16 +69,13 @@ export default function AssetsView({ wallet }: AssetsViewProps) {
             logo: <BachIcon size={20} />,
             symbol: "BACH",
             balance: `${parseFloat(bachAmount).toFixed(4)} BACH`,
-            usdValue: "~$" + (parseFloat(bachAmount) * 0.01).toFixed(2), // Mock USD value
           });
         }
 
         setAssets(assetsList);
-        setTotalBalance(walletBalance);
-      } catch (error) {
-        console.error("Error fetching balances:", error);
+      } catch (err) {
+        error(`Error fetching balances: ${err}`);
         setAssets([]);
-        setTotalBalance("$0.00");
       } finally {
         setLoading(false);
       }
