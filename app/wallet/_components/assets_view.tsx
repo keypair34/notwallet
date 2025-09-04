@@ -11,7 +11,7 @@ import Divider from "@mui/material/Divider";
 import CircularProgress from "@mui/material/CircularProgress";
 import { SolanaWallet } from "@/lib/crate/generated";
 import { invoke } from "@tauri-apps/api/core";
-import { BachIcon, SolanaIcon, AssetIcon } from "@/lib/components/token-icons";
+import { AssetIcon } from "@/lib/components/token-icons";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import IconButton from "@mui/material/IconButton";
 import { openUrl } from "@tauri-apps/plugin-opener";
@@ -30,6 +30,7 @@ import { BACH_TOKEN, SOLANA, AssetBalance } from "@/lib/crate/generated";
 interface Asset {
   logo: React.ReactNode;
   symbol: string;
+  name: string;
   balance: string;
   usdValue?: string;
   address: string;
@@ -64,8 +65,9 @@ export default function AssetsView({ wallet }: AssetsViewProps) {
         if (solBalance && solBalance !== "0.000000000 SOL") {
           const solAmount = solBalance.replace(" SOL", "");
           assetsList.push({
-            logo: <SolanaIcon size={16} />,
+            logo: <AssetIcon id={SOLANA} />,
             symbol: "SOL",
+            name: "Solana",
             balance: `${parseFloat(solAmount).toFixed(4)} SOL`,
             address: SOLANA,
           });
@@ -75,8 +77,9 @@ export default function AssetsView({ wallet }: AssetsViewProps) {
         if (bachBalance && bachBalance !== "0" && bachBalance !== "0 BACH") {
           const bachAmount = bachBalance.replace(" BACH", "");
           assetsList.push({
-            logo: <BachIcon size={16} />,
+            logo: <AssetIcon id={BACH_TOKEN} />,
             symbol: "BACH",
+            name: "Bach Token",
             balance: `${parseFloat(bachAmount).toFixed(4)} BACH`,
             address: BACH_TOKEN,
           });
@@ -90,8 +93,9 @@ export default function AssetsView({ wallet }: AssetsViewProps) {
           },
         );
         const otherAssets = otherAssetsBalance.map((asset) => ({
-          logo: <AssetIcon name={asset.id} />,
+          logo: <AssetIcon id={asset.id} />,
           symbol: asset.id,
+          name: asset.id,
           balance: `${asset.balance.toFixed(4)}`,
           address: asset.id,
         }));
@@ -109,12 +113,12 @@ export default function AssetsView({ wallet }: AssetsViewProps) {
     fetchBalances();
   }, [wallet.pubkey]);
 
-  const handleOpenTokenInformation = async (token: "BACH" | "SOL") => {
+  const handleOpenTokenInformation = async (token: string) => {
     await selectionFeedback();
     const url =
-      token === "BACH"
-        ? `https://birdeye.so/token/${SOLANA}?chain=solana`
-        : "https://solana.org";
+      token === SOLANA
+        ? "https://solana.org"
+        : `https://solscan.io/token/${token}`;
     openUrl(url);
   };
 
@@ -169,7 +173,7 @@ export default function AssetsView({ wallet }: AssetsViewProps) {
                         fontWeight="600"
                         fontSize="0.9rem"
                       >
-                        {asset.symbol}
+                        {asset.symbol.substring(0, 6)}
                       </Typography>
                       {isAssetVerified(asset.address) && (
                         <VerifiedBadge size={14} />
@@ -182,7 +186,7 @@ export default function AssetsView({ wallet }: AssetsViewProps) {
                       color="text.secondary"
                       fontSize="0.75rem"
                     >
-                      {asset.symbol === "SOL" ? "Solana" : "Bach Token"}
+                      {asset.symbol}
                     </Typography>
                   }
                 />
@@ -209,9 +213,7 @@ export default function AssetsView({ wallet }: AssetsViewProps) {
                   )}
                 </Box>
                 <IconButton
-                  onClick={() =>
-                    handleOpenTokenInformation(asset.symbol as "BACH" | "SOL")
-                  }
+                  onClick={() => handleOpenTokenInformation(asset.address)}
                   sx={{
                     color: "#9932CC",
                     ml: 1,

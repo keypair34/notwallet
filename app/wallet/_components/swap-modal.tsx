@@ -29,7 +29,7 @@ import Alert from "@mui/material/Alert";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
-import { SolanaIcon, BachIcon } from "@/lib/components/token-icons";
+import { AssetIcon } from "@/lib/components/token-icons";
 import { info, debug } from "@tauri-apps/plugin-log";
 
 interface SwapModalProps {
@@ -271,7 +271,8 @@ export default function SwapModal({
   };
 
   const getTokenIcon = (token: "SOL" | "BACH") => {
-    return token === "SOL" ? <SolanaIcon size={20} /> : <BachIcon size={20} />;
+    const id = token === "SOL" ? SOLANA : BACH_TOKEN;
+    return <AssetIcon id={id} size={20} />;
   };
 
   return (
