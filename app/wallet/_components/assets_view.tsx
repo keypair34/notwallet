@@ -11,7 +11,7 @@ import Divider from "@mui/material/Divider";
 import CircularProgress from "@mui/material/CircularProgress";
 import { SolanaWallet } from "@/lib/crate/generated";
 import { invoke } from "@tauri-apps/api/core";
-import { BachIcon, SolanaIcon } from "@/lib/components/token-icons";
+import { BachIcon, SolanaIcon, AssetIcon } from "@/lib/components/token-icons";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import IconButton from "@mui/material/IconButton";
 import { openUrl } from "@tauri-apps/plugin-opener";
@@ -25,7 +25,7 @@ import {
 import { error } from "@tauri-apps/plugin-log";
 import VerifiedBadge from "./verified-badge";
 import { isAssetVerified } from "./verified-assets";
-import { SOLANA_MINT_ACCOUNT, BACH_MINT_ACCOUNT } from "@/lib/crate/generated";
+import { BACH_TOKEN, SOLANA, AssetBalance } from "@/lib/crate/generated";
 
 interface Asset {
   logo: React.ReactNode;
@@ -67,7 +67,7 @@ export default function AssetsView({ wallet }: AssetsViewProps) {
             logo: <SolanaIcon size={16} />,
             symbol: "SOL",
             balance: `${parseFloat(solAmount).toFixed(4)} SOL`,
-            address: SOLANA_MINT_ACCOUNT,
+            address: SOLANA,
           });
         }
 
@@ -78,18 +78,25 @@ export default function AssetsView({ wallet }: AssetsViewProps) {
             logo: <BachIcon size={16} />,
             symbol: "BACH",
             balance: `${parseFloat(bachAmount).toFixed(4)} BACH`,
-            address: BACH_MINT_ACCOUNT,
+            address: BACH_TOKEN,
           });
         }
 
         // Fetch other SPL token balance
-        const otherAssetsBalance = await invoke<string>(
+        const otherAssetsBalance = await invoke<AssetBalance[]>(
           GET_OTHER_ASSETS_BALANCE,
           {
             pubkey: wallet.pubkey,
           },
         );
+        const otherAssets = otherAssetsBalance.map((asset) => ({
+          logo: <AssetIcon name={asset.id} />,
+          symbol: asset.id,
+          balance: `${asset.balance.toFixed(4)}`,
+          address: asset.id,
+        }));
 
+        assetsList.push(...otherAssets);
         setAssets(assetsList);
       } catch (err) {
         error(`Error fetching balances: ${err}`);
@@ -106,7 +113,7 @@ export default function AssetsView({ wallet }: AssetsViewProps) {
     await selectionFeedback();
     const url =
       token === "BACH"
-        ? `https://birdeye.so/token/${BACH_MINT_ACCOUNT}?chain=solana`
+        ? `https://birdeye.so/token/${SOLANA}?chain=solana`
         : "https://solana.org";
     openUrl(url);
   };

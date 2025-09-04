@@ -5,7 +5,7 @@ use {
             BIRDEYE_API_KEY, BIRDEYE_BASE_URL, BIRDEYE_PRICE_PATH, LAMPORTS_PER_SOL,
             SPL_TOKEN_PROGRAM_ID, USER_AGENT,
         },
-        models::{currency::FiatCurrency, price::BirdeyePriceResponse},
+        models::{asset::AssetBalance, currency::FiatCurrency, price::BirdeyePriceResponse},
         spl_token::{spl_token_accounts, spl_token_accounts_for},
     },
     log::{debug, error},
@@ -16,7 +16,7 @@ use {
     reqwest::Client,
     solana_client::rpc_client::RpcClient,
     solana_program::pubkey::Pubkey,
-    std::str::FromStr,
+    std::{collections::HashMap, str::FromStr},
 };
 
 pub fn spl_balance(
@@ -132,8 +132,7 @@ pub async fn wallet_balance(
 pub async fn other_assets_balance(
     rpc_url: String,
     pubkey: String,
-    currency: Option<FiatCurrency>,
-) -> Result<Vec<String>, ErrorResponse> {
+) -> Result<Vec<AssetBalance>, ErrorResponse> {
     let token_accounts = match spl_token_accounts(rpc_url, pubkey, SPL_TOKEN_PROGRAM_ID.to_string())
     {
         Ok(accounts) => accounts,
@@ -142,7 +141,45 @@ pub async fn other_assets_balance(
             return Ok(vec![]);
         }
     };
-    Ok(vec![])
+    let token_accounts_with_balance = token_accounts
+        .into_iter()
+        .filter_map(|account| {
+            // Only non-SOL and non-BCH tokens
+            if account.mint == SOLANA || account.mint == BACH_TOKEN {
+                return None;
+            }
+
+            if let Some(ui_amount) = account.token_amount.ui_amount {
+                if ui_amount > 0.0 {
+                    Some(account)
+                } else {
+                    None
+                }
+            } else {
+                None
+            }
+        })
+        .collect::<Vec<_>>();
+    let mut aggregated_balance: HashMap<String, f64> = HashMap::new();
+
+    for account in token_accounts_with_balance {
+        if let Some(ui_amount) = account.token_amount.ui_amount {
+            if aggregated_balance.contains_key(&account.mint) {
+                let current_balance = aggregated_balance.get(&account.mint).unwrap();
+                aggregated_balance.insert(account.mint, current_balance + ui_amount);
+            } else {
+                aggregated_balance.insert(account.mint, ui_amount);
+            }
+        }
+    }
+    let mut assets_balance = Vec::new();
+    for (mint, balance) in aggregated_balance {
+        assets_balance.push(AssetBalance {
+            id: mint,
+            balance: balance as u64,
+        });
+    }
+    Ok(assets_balance)
 }
 
 // Private or crate level access.

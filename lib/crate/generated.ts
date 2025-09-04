@@ -163,6 +163,11 @@ export interface Asset {
   logo_url: string;
 }
 
+export interface AssetBalance {
+  id: string;
+  balance: number;
+}
+
 export interface SwapInfo {
   ammKey: string;
   label: string;

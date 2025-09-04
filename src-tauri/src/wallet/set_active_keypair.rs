@@ -1,10 +1,7 @@
 use {
     crate::{
         constants::store::{store, STORE_ACTIVE_KEYPAIR},
-        model::{
-            keypair::SolanaWallet,
-            seed::{Seed, SeedType},
-        },
+        model::keypair::SolanaWallet,
     },
     serde_json::json,
     tauri::{command, AppHandle},

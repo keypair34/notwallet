@@ -1,4 +1,4 @@
-use tsync::tsync;
+use {crate::models::asset::Asset, std::collections::HashMap, tsync::tsync};
 
 #[tsync]
 pub const SOLANA: &str = "So11111111111111111111111111111111111111112";
@@ -38,3 +38,15 @@ pub const JITO_STAKED_SOL: &str = "J1toso1uCk3RLmjorhTtrVwY9HJ7X8V9yYac6Y7kGCPn"
 pub const ZBTC: &str = "zBTCug3er3tLyffELcvDNrKkCymbPWysGcWihESYfLg";
 #[tsync]
 pub const USD1: &str = "USD1ttGY1N17NEEHLmELoaybftRBUSErhqYiQzvEmuB";
+
+/*
+pub const ASSETS_REGISTRY: HashMap<String, Asset> = HashMap::from([
+    (
+        SOLANA.to_string(),
+        Asset::new(SOLANA, "SOLANA", "SOL", 9, ""),
+    ),
+    (
+        BACH_TOKEN.to_string(),
+        Asset::new(BACH_TOKEN, "BACH Token", "BACH", 12, "https://raw.githubusercontent.com/solana-labs/token-list/badd1dbe8c2d1e38c4f77b77f1d5fd5c60d3cccb/assets/mainnet/CTQBjyrX8pYyqbNa8vAhQfnRXfu9cUxnvrxj5PvbzTmf/bach-token-logo-Est.2022.png"),
+    ),
+]); */
