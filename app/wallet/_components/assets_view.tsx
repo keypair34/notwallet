@@ -15,16 +15,20 @@ import { BachIcon, SolanaIcon } from "@/lib/components/token-icons";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import IconButton from "@mui/material/IconButton";
 import { openUrl } from "@tauri-apps/plugin-opener";
-import { BACH_MINT_ACCOUNT } from "@/lib/crate/generated";
+
 import { selectionFeedback } from "@tauri-apps/plugin-haptics";
 import { GET_BACH_BALANCE, GET_SOL_BALANCE } from "@/lib/commands";
 import { error } from "@tauri-apps/plugin-log";
+import VerifiedBadge from "./verified-badge";
+import { isAssetVerified } from "./verified-assets";
+import { SOLANA_MINT_ACCOUNT, BACH_MINT_ACCOUNT } from "@/lib/crate/generated";
 
 interface Asset {
   logo: React.ReactNode;
   symbol: string;
   balance: string;
   usdValue?: string;
+  address: string;
 }
 
 interface AssetsViewProps {
@@ -56,9 +60,10 @@ export default function AssetsView({ wallet }: AssetsViewProps) {
         if (solBalance && solBalance !== "0.000000000 SOL") {
           const solAmount = solBalance.replace(" SOL", "");
           assetsList.push({
-            logo: <SolanaIcon size={20} />,
+            logo: <SolanaIcon size={16} />,
             symbol: "SOL",
             balance: `${parseFloat(solAmount).toFixed(4)} SOL`,
+            address: SOLANA_MINT_ACCOUNT,
           });
         }
 
@@ -66,9 +71,10 @@ export default function AssetsView({ wallet }: AssetsViewProps) {
         if (bachBalance && bachBalance !== "0" && bachBalance !== "0 BACH") {
           const bachAmount = bachBalance.replace(" BACH", "");
           assetsList.push({
-            logo: <BachIcon size={20} />,
+            logo: <BachIcon size={16} />,
             symbol: "BACH",
             balance: `${parseFloat(bachAmount).toFixed(4)} BACH`,
+            address: BACH_MINT_ACCOUNT,
           });
         }
 
@@ -125,7 +131,8 @@ export default function AssetsView({ wallet }: AssetsViewProps) {
               <ListItem
                 sx={{
                   px: 0,
-                  py: 2,
+                  py: 1,
+                  minHeight: "56px",
                   "&:hover": {
                     backgroundColor: "rgba(153, 50, 204, 0.04)",
                     borderRadius: 2,
@@ -135,18 +142,37 @@ export default function AssetsView({ wallet }: AssetsViewProps) {
                 <ListItemAvatar>{asset.logo}</ListItemAvatar>
                 <ListItemText
                   primary={
-                    <Typography variant="body1" fontWeight="600">
-                      {asset.symbol}
-                    </Typography>
+                    <Box
+                      sx={{ display: "flex", alignItems: "center", gap: 0.5 }}
+                    >
+                      <Typography
+                        variant="body2"
+                        fontWeight="600"
+                        fontSize="0.9rem"
+                      >
+                        {asset.symbol}
+                      </Typography>
+                      {isAssetVerified(asset.address) && (
+                        <VerifiedBadge size={14} />
+                      )}
+                    </Box>
                   }
                   secondary={
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography
+                      variant="caption"
+                      color="text.secondary"
+                      fontSize="0.75rem"
+                    >
                       {asset.symbol === "SOL" ? "Solana" : "Bach Token"}
                     </Typography>
                   }
                 />
                 <Box sx={{ textAlign: "right" }}>
-                  <Typography variant="body1" fontWeight="600">
+                  <Typography
+                    variant="body2"
+                    fontWeight="600"
+                    fontSize="0.85rem"
+                  >
                     {asset.balance}
                   </Typography>
                   {asset.usdValue && (
