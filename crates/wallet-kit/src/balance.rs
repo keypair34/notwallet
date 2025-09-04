@@ -229,22 +229,6 @@ async fn get_sol_price() -> Result<f64, ErrorResponse> {
     }
 }
 
-async fn get_bach_price() -> Result<f64, ErrorResponse> {
-    match get_asset_price(BACH_TOKEN).await {
-        Ok(result) => {
-            if result.is_valid() {
-                Ok(result.data.value)
-            } else {
-                Err(ErrorResponse::Error {
-                    code: BalanceError,
-                    message: "No price data available".to_string(),
-                })
-            }
-        }
-        Err(err) => Err(err),
-    }
-}
-
 async fn get_asset_price(asset: &str) -> Result<BirdeyePriceResponse, ErrorResponse> {
     // For now, return 0 as BACH price fetching would need specific token address and DEX integration
     // This could be implemented using Birdeye API or similar service
