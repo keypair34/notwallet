@@ -14,6 +14,7 @@ use {
         wallet::{
             check_pubkey::check_pubkey,
             command_balance::get_wallet_balance,
+            command_other_assets_balance::get_other_assets_balance,
             commands::{
                 derive_next_keypair, destroy_all_wallets, get_all_keypairs, get_bach_balance,
                 get_sol_balance, get_token_info, get_treasury_bach_balance,
@@ -68,6 +69,7 @@ pub fn run() {
             get_treasury_bach_balance,
             get_treasury_sol_balance,
             get_swap_quote,
+            get_other_assets_balance,
             build_swap_transaction,
             send_swap_transaction,
         ])
