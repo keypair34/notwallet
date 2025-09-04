@@ -5,6 +5,7 @@ use {
             LAMPORTS_PER_SOL, SOLANA_MINT_ACCOUNT, SPL_TOKEN_PROGRAM_ID, USER_AGENT,
         },
         models::{currency::FiatCurrency, price::BirdeyePriceResponse},
+        spl_token::{spl_token_accounts, spl_token_accounts_for},
     },
     log::{debug, error},
     network::{
@@ -12,9 +13,7 @@ use {
         request,
     },
     reqwest::Client,
-    serde::{Deserialize, Serialize},
-    solana_account_decoder::{parse_token::UiTokenAccount, UiAccountData},
-    solana_client::{rpc_client::RpcClient, rpc_request::TokenAccountsFilter},
+    solana_client::rpc_client::RpcClient,
     solana_program::pubkey::Pubkey,
     std::str::FromStr,
 };
@@ -40,45 +39,15 @@ pub fn aggregate_spl_token_balance(
     spl_token_program_id: String,
     token_address: String,
 ) -> f64 {
-    let connection = RpcClient::new(rpc_url);
-
-    let spl_token_program_id_pubkey = match Pubkey::from_str(&spl_token_program_id) {
-        Ok(pubkey) => pubkey,
-        Err(err) => {
-            error!("Error parsing SPL token program ID: {}", err);
-            return 0.0;
-        }
-    };
-
-    let pubkey = match Pubkey::from_str(&pubkey) {
-        Ok(pubkey) => pubkey,
-        Err(err) => {
-            error!("Error parsing wallet pubkey: {}", err);
-            return 0.0;
-        }
-    };
-
-    // Get all token accounts owned by the pubkey
-    let spl_token_accounts = match connection.get_token_accounts_by_owner(
-        &pubkey,
-        TokenAccountsFilter::ProgramId(spl_token_program_id_pubkey),
-    ) {
-        Ok(accounts) => accounts,
-        Err(err) => {
-            error!("Error getting token accounts: {}", err);
-            return 0.0;
-        }
-    };
-
-    debug!("Number of token accounts: {}", spl_token_accounts.len());
-
-    // Get bach token accounts
-    let target_spl_token_accounts = spl_token_accounts
-        .iter()
-        .map(|account| account.account.clone())
-        .filter_map(|account| get_token_account(&account.data))
-        .filter(|account| account.mint == token_address)
-        .collect::<Vec<_>>();
+    // Get token accounts for the given public key and token address
+    let target_spl_token_accounts =
+        match spl_token_accounts_for(rpc_url, pubkey, spl_token_program_id, token_address) {
+            Ok(accounts) => accounts,
+            Err(err) => {
+                error!("Failed to fetch token accounts: {}", err);
+                return 0.0;
+            }
+        };
 
     debug!(
         "Number of target token accounts: {}",
@@ -106,24 +75,6 @@ pub fn sol_balance(rpc_url: String, pubkey: String) -> String {
     println!("{:#?} SOL", pretty_balance);
     // Display SOL balance
     format!("{:.9} SOL", pretty_balance)
-}
-
-fn _sol_balance(rpc_url: String, pubkey: String) -> f64 {
-    let connection = RpcClient::new(rpc_url);
-    let pubkey = match Pubkey::from_str(&pubkey) {
-        Ok(pubkey) => pubkey,
-        Err(e) => {
-            println!("Error parsing pubkey: {}", e);
-            return 0.0;
-        }
-    };
-    match connection.get_balance(&pubkey) {
-        Ok(balance) => balance as f64,
-        Err(e) => {
-            println!("Error getting balance: {}", e);
-            return 0.0;
-        }
-    }
 }
 
 pub async fn wallet_balance(
@@ -177,6 +128,42 @@ pub async fn wallet_balance(
     Ok(format!("{}{:.2}", currency_symbol, total_value))
 }
 
+pub async fn other_assets_balance(
+    rpc_url: String,
+    pubkey: String,
+    currency: Option<FiatCurrency>,
+) -> Result<Vec<String>, ErrorResponse> {
+    let token_accounts = match spl_token_accounts(rpc_url, pubkey, SPL_TOKEN_PROGRAM_ID.to_string())
+    {
+        Ok(accounts) => accounts,
+        Err(err) => {
+            error!("Failed to get token accounts: {:?}", err);
+            return Ok(vec![]);
+        }
+    };
+    Ok(vec![])
+}
+
+// Private or crate level access.
+
+fn _sol_balance(rpc_url: String, pubkey: String) -> f64 {
+    let connection = RpcClient::new(rpc_url);
+    let pubkey = match Pubkey::from_str(&pubkey) {
+        Ok(pubkey) => pubkey,
+        Err(e) => {
+            println!("Error parsing pubkey: {}", e);
+            return 0.0;
+        }
+    };
+    match connection.get_balance(&pubkey) {
+        Ok(balance) => balance as f64,
+        Err(e) => {
+            println!("Error getting balance: {}", e);
+            return 0.0;
+        }
+    }
+}
+
 async fn get_sol_price() -> Result<f64, ErrorResponse> {
     match get_asset_price(SOLANA_MINT_ACCOUNT).await {
         Ok(price) => {
@@ -224,32 +211,6 @@ async fn get_asset_price(asset: &str) -> Result<BirdeyePriceResponse, ErrorRespo
         .header("X-API-KEY", BIRDEYE_API_KEY)
         .header("User-Agent", USER_AGENT);
     request(client).await
-}
-
-#[derive(Debug, PartialEq, Serialize, Deserialize)]
-struct TokenAccount {
-    pub info: UiTokenAccount,
-}
-
-fn get_token_account(data: &UiAccountData) -> Option<UiTokenAccount> {
-    let parsed_account = match data {
-        solana_account_decoder::UiAccountData::Json(parsed) => parsed,
-        _ => {
-            error!("Failed to parse account data - not in JSON format");
-            return None;
-        }
-    };
-    let token_account: TokenAccount = match serde_json::from_value(parsed_account.parsed.clone()) {
-        Ok(account) => {
-            debug!("Parsed Account: {:?}", account);
-            account
-        }
-        Err(e) => {
-            error!("Error parsing token account: {}", e);
-            return None;
-        }
-    };
-    Some(token_account.info)
 }
 
 #[cfg(test)]

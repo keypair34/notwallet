@@ -17,7 +17,11 @@ import IconButton from "@mui/material/IconButton";
 import { openUrl } from "@tauri-apps/plugin-opener";
 
 import { selectionFeedback } from "@tauri-apps/plugin-haptics";
-import { GET_BACH_BALANCE, GET_SOL_BALANCE } from "@/lib/commands";
+import {
+  GET_BACH_BALANCE,
+  GET_SOL_BALANCE,
+  GET_OTHER_ASSETS_BALANCE,
+} from "@/lib/commands";
 import { error } from "@tauri-apps/plugin-log";
 import VerifiedBadge from "./verified-badge";
 import { isAssetVerified } from "./verified-assets";
@@ -77,6 +81,14 @@ export default function AssetsView({ wallet }: AssetsViewProps) {
             address: BACH_MINT_ACCOUNT,
           });
         }
+
+        // Fetch other SPL token balance
+        const otherAssetsBalance = await invoke<string>(
+          GET_OTHER_ASSETS_BALANCE,
+          {
+            pubkey: wallet.pubkey,
+          },
+        );
 
         setAssets(assetsList);
       } catch (err) {
