@@ -22,9 +22,10 @@ env_logger = "0.10"
 log = "0.4.20"
 network = { path = "../network" }
 reqwest = { version = "0.12", features = ["json"] }
+ring = { git = "https://github.com/setoelkahfi/ring.git", branch = "main" }
+solana-client = { git = "https://github.com/setoelkahfi/agave", branch = "master" }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
-ring = { git = "https://github.com/setoelkahfi/ring.git", branch = "main" }
 thiserror = "1.0.56"
 tokio = { version = "1.35.1", features = ["full"] }
 tsync = "2"
