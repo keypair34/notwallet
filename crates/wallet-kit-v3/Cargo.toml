@@ -2,7 +2,7 @@
 name = "wallet_kit_v3"
 version = "0.1.0"
 edition = "2021"
-description = "Solana toolkit for Not Wallet"
+description = "Solana toolkit for NotWallet Crypto"
 license = "MIT"
 
 [lib]
@@ -24,15 +24,7 @@ network = { path = "../network" }
 reqwest = { version = "0.12", features = ["json"] }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
-solana-address = "1"
-solana-account-decoder = "3"
-solana-client = "3"
-solana-program = "3"
-solana-sdk = "3"
-solana-instruction = "3"
-solana-system-interface = { version = "2", features = ["bincode"] }
-#spl-associated-token-account = { version = "7", features = ["no-entrypoint"] }
-spl-token = { version = "8", features = ["no-entrypoint"] }
+ring = { git = "https://github.com/setoelkahfi/ring.git", branch = "main" }
 thiserror = "1.0.56"
 tokio = { version = "1.35.1", features = ["full"] }
 tsync = "2"
