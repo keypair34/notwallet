@@ -22,10 +22,15 @@ env_logger = "0.10"
 log = "0.4.20"
 network = { path = "../network" }
 reqwest = { version = "0.12", features = ["json"] }
-ring = { git = "https://github.com/setoelkahfi/ring.git", branch = "main" }
-solana-client = { git = "https://github.com/setoelkahfi/agave", branch = "master" }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
+solana-account-decoder = "3"
+solana-address = "1"
+solana-client = { git = "https://github.com/setoelkahfi/agave", branch = "master" }
+solana-instruction = "3"
+solana-program = "3"
+solana-sdk = "3"
+solana-system-interface = { version = "2", features = ["bincode"] }
 thiserror = "1.0.56"
 tokio = { version = "1.35.1", features = ["full"] }
 tsync = "2"
@@ -33,3 +38,6 @@ uniffi = { version = "0.28", features = ["cli"] }
 
 [build-dependencies]
 uniffi = { version = "0.28", features = ["build"] }
+
+[patch.crates-io]
+ring = { git = "https://github.com/setoelkahfi/ring.git", branch = "main" }
