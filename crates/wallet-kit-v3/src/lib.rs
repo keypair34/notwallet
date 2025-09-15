@@ -1,6 +1,6 @@
 use uniffi::setup_scaffolding;
 
-mod derive_keypair;
-pub mod models;
+pub(crate) mod commands;
+pub(crate) mod models;
 
 setup_scaffolding!();
