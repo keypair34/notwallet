@@ -34,11 +34,13 @@ pub fn spl_balance(
 }
 
 pub fn sol_balance(rpc_url: String, pubkey: String) -> String {
-    let balance = core_sol_balance(rpc_url, pubkey.to_string());
-    let pretty_balance = balance / LAMPORTS_PER_SOL;
-    println!("{:#?} SOL", pretty_balance);
+    let sol_amount = match core_sol_balance(rpc_url, pubkey.to_string()) {
+        Ok(balance) => balance / LAMPORTS_PER_SOL,
+        Err(_) => 0.0,
+    };
+    println!("{:#?} SOL", sol_amount);
     // Display SOL balance
-    format!("{:.9} SOL", pretty_balance)
+    format!("{:.9} SOL", sol_amount)
 }
 
 pub async fn wallet_balance(
@@ -47,7 +49,10 @@ pub async fn wallet_balance(
     currency: Option<FiatCurrency>,
 ) -> Result<String, ErrorResponse> {
     // Get SOL balance
-    let sol_amount = core_sol_balance(rpc_url.clone(), pubkey.clone()) / LAMPORTS_PER_SOL;
+    let sol_amount = match core_sol_balance(rpc_url.clone(), pubkey.clone()) {
+        Ok(balance) => balance / LAMPORTS_PER_SOL,
+        Err(_) => 0.0,
+    };
 
     // Get current prices in the target currency
     // If SOL balance is less than 0.000000001 SOL, we don't query the price.

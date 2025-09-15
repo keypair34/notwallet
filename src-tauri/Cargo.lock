@@ -11919,6 +11919,7 @@ version = "1.0.0"
 dependencies = [
  "bs58",
  "chrono",
+ "constants",
  "solana-sdk 3.0.0",
  "uniffi 0.29.4",
  "uuid",
