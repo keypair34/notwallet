@@ -2,8 +2,14 @@
 name = "wallet_kit_v3"
 version = "1.0.0"
 edition = "2021"
-description = "Solana toolkit for NotWallet Crypto"
+description = "Solana wallet toolkit for NotWallet Crypto non-custodial Solana crypto wallet."
+authors = ["Seto Elkahfi <work@setoelkahfi.se>"]
 license = "MIT"
+homepage = "https://thestablefoundation.org/"
+repository = "https://github.com/TheStableFoundation/not/"
+documentation = "https://github.com/TheStableFoundation/not/tree/main/docs"
+keywords = ["solana", "wallet", "crypto"]
+readme = "README.md"
 
 [lib]
 crate-type = ["lib", "cdylib", "staticlib"]
@@ -14,7 +20,7 @@ name = "uniffi-bindgen"
 path = "uniffi-bindgen.rs"
 
 [dependencies]
-wallet_core = { path = "../wallet-core" }
+wallet_core = { path = "../wallet-core", version = "1.0.0" }
 solana-sdk = "3"
 uniffi = { version = "0.29", features = ["cli"] }
 
