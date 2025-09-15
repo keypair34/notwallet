@@ -11,8 +11,12 @@ import WalletKitV3
 
 struct CreateWalletView: View {
 
-    init(viewModel: ViewModel) {
+    init(
+        viewModel: ViewModel,
+        onCreateWalletDone: @escaping () -> Void
+    ) {
         self.viewModel = viewModel
+        self.onCreateWalletDone = onCreateWalletDone
     }
 
     var body: some View {
@@ -62,7 +66,7 @@ struct CreateWalletView: View {
                         }
 
                     Button(action: {
-                        dismiss()
+                        onCreateWalletDone()
                     }) {
                         Text("Continue")
                             .foregroundColor(.primary)
@@ -88,9 +92,9 @@ struct CreateWalletView: View {
     }
 
     // MARK: - Private
-
-    @Environment(\.dismiss) private var dismiss
+    
     @ObservedObject private var viewModel: ViewModel
+    private let onCreateWalletDone: () -> Void
 }
 
 extension CreateWalletView {
@@ -297,5 +301,5 @@ extension SeedType: Codable {
 }
 
 #Preview {
-    CreateWalletView(viewModel: .init())
+    CreateWalletView(viewModel: .init(), onCreateWalletDone: {})
 }
