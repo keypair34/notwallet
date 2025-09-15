@@ -14,3 +14,5 @@ bip39 = { version = "2", features = ["rand"] }
 log = "0.4.20"
 solana-derivation-path = "3"
 solana-sdk = "3"
+solana-rpc-client = "3"
+solana-pubkey = "3"

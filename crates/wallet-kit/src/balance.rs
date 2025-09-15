@@ -14,9 +14,8 @@ use {
         request,
     },
     reqwest::Client,
-    solana_client::rpc_client::RpcClient,
-    solana_program::pubkey::Pubkey,
-    std::{collections::HashMap, str::FromStr},
+    std::collections::HashMap,
+    wallet_core::balance::sol_balance::sol_balance as core_sol_balance,
 };
 
 pub fn spl_balance(
@@ -35,7 +34,7 @@ pub fn spl_balance(
 }
 
 pub fn sol_balance(rpc_url: String, pubkey: String) -> String {
-    let balance = _sol_balance(rpc_url, pubkey.to_string());
+    let balance = core_sol_balance(rpc_url, pubkey.to_string());
     let pretty_balance = balance / LAMPORTS_PER_SOL;
     println!("{:#?} SOL", pretty_balance);
     // Display SOL balance
@@ -48,7 +47,7 @@ pub async fn wallet_balance(
     currency: Option<FiatCurrency>,
 ) -> Result<String, ErrorResponse> {
     // Get SOL balance
-    let sol_amount = _sol_balance(rpc_url.clone(), pubkey.clone()) / LAMPORTS_PER_SOL;
+    let sol_amount = core_sol_balance(rpc_url.clone(), pubkey.clone()) / LAMPORTS_PER_SOL;
 
     // Get current prices in the target currency
     // If SOL balance is less than 0.000000001 SOL, we don't query the price.
@@ -193,24 +192,6 @@ fn aggregate_spl_token_balance(
     }
 
     aggregated_amount
-}
-
-fn _sol_balance(rpc_url: String, pubkey: String) -> f64 {
-    let connection = RpcClient::new(rpc_url);
-    let pubkey = match Pubkey::from_str(&pubkey) {
-        Ok(pubkey) => pubkey,
-        Err(e) => {
-            println!("Error parsing pubkey: {}", e);
-            return 0.0;
-        }
-    };
-    match connection.get_balance(&pubkey) {
-        Ok(balance) => balance as f64,
-        Err(e) => {
-            println!("Error getting balance: {}", e);
-            return 0.0;
-        }
-    }
 }
 
 async fn get_sol_price() -> Result<f64, ErrorResponse> {

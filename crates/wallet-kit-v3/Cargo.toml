@@ -29,3 +29,6 @@ chrono = { version = "0.4", features = ["serde"] }
 
 [build-dependencies]
 uniffi = { version = "0.29", features = ["build"] }
+
+[patch.crates-io]
+ring = { git = "https://github.com/setoelkahfi/ring.git", branch = "main" }
