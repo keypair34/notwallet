@@ -2,7 +2,7 @@ use {
     crate::{
         assets::{BACH_TOKEN, SOLANA},
         models::{asset::AssetBalance, currency::FiatCurrency, price::BirdeyePriceResponse},
-        spl_token::{spl_token_accounts, spl_token_accounts_for, spl_token_accounts_with_balance},
+        spl_token::{spl_token_accounts_for, spl_token_accounts_with_balance},
     },
     constants::constants::{
         BIRDEYE_API_KEY, BIRDEYE_BASE_URL, BIRDEYE_PRICE_PATH, LAMPORTS_PER_SOL,
