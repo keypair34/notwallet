@@ -1,7 +1,6 @@
 use uniffi::setup_scaffolding;
 
 mod derive_keypair;
-mod fee;
-mod transactions;
+pub(crate) mod model;
 
 setup_scaffolding!();

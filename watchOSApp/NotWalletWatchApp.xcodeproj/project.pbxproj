@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -14,6 +14,7 @@
 		8A78CE102E434EDB0007B16F /* NotWalletWatchApp_Watch_AppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A78CE0F2E434EDB0007B16F /* NotWalletWatchApp_Watch_AppTests.swift */; };
 		8A78CE1A2E434EDB0007B16F /* NotWalletWatchApp_Watch_AppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A78CE192E434EDB0007B16F /* NotWalletWatchApp_Watch_AppUITests.swift */; };
 		8A78CE1C2E434EDB0007B16F /* NotWalletWatchApp_Watch_AppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A78CE1B2E434EDB0007B16F /* NotWalletWatchApp_Watch_AppUITestsLaunchTests.swift */; };
+		8A9369D12E78313A00B5A59F /* WalletKitV3 in Frameworks */ = {isa = PBXBuildFile; productRef = 8A9369D02E78313A00B5A59F /* WalletKitV3 */; };
 		8AC1B8852E436B380077652E /* MarqueeText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC1B8842E436B380077652E /* MarqueeText.swift */; };
 		8AC1B8862E436B380077652E /* PriceGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC1B8832E436B370077652E /* PriceGraphView.swift */; };
 		8AC1B88A2E436D720077652E /* TransactionDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC1B8882E436D720077652E /* TransactionDetailView.swift */; };
@@ -84,6 +85,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8A9369D12E78313A00B5A59F /* WalletKitV3 in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -282,6 +284,9 @@
 				Base,
 			);
 			mainGroup = 8A78CDEC2E434ED60007B16F;
+			packageReferences = (
+				8A9369CF2E78313A00B5A59F /* XCLocalSwiftPackageReference "../crates/wallet-kit-v3/WalletKitV3" */,
+			);
 			productRefGroup = 8A78CDF42E434ED60007B16F /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -711,6 +716,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		8A9369CF2E78313A00B5A59F /* XCLocalSwiftPackageReference "../crates/wallet-kit-v3/WalletKitV3" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = "../crates/wallet-kit-v3/WalletKitV3";
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		8A9369D02E78313A00B5A59F /* WalletKitV3 */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = WalletKitV3;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 8A78CDED2E434ED60007B16F /* Project object */;
 }
