@@ -32,7 +32,6 @@ struct BachInfoView: View {
                 }
                 Divider()
             }
-            .padding()
         }
     }
 }

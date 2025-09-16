@@ -69,7 +69,7 @@ struct CreateWalletView: View {
                         onCreateWalletDone()
                     }) {
                         Text("Continue")
-                            .foregroundColor(.primary)
+                            .foregroundColor(viewModel.isAcceptedToc ? .green : .gray)
                             .padding(.vertical, 6)
                             .frame(height: 18)
                             .clipShape(Rectangle())
@@ -80,7 +80,6 @@ struct CreateWalletView: View {
                     .frame(maxWidth: .infinity)
                 }
                 .toggleStyle(.automatic)
-                .padding()
             }
             .toolbar(content: {
                 /// Remove the (x) on watchOS 10

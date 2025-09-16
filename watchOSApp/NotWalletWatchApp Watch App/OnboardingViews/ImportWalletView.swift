@@ -67,7 +67,6 @@ struct ImportWalletView: View {
                     
                 }
                 .toggleStyle(.automatic)
-                .padding()
             }
         case .imported(let response):
             ScrollView {
@@ -111,7 +110,6 @@ struct ImportWalletView: View {
                     
                 }
                 .toggleStyle(.automatic)
-                .padding()
             }
             .toolbar(content: {
                 /// Remove the (x) on watchOS 10

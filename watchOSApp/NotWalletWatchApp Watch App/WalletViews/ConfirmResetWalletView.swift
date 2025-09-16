@@ -46,7 +46,6 @@ struct ConfirmResetWalletView: View {
             .buttonStyle(.bordered)
             .frame(maxWidth: .infinity)
         }
-        .padding()
     }
 
     // MARK: - Private

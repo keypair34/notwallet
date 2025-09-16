@@ -50,7 +50,6 @@ struct OnboardingView: View {
              .buttonStyle(.bordered)
              .frame(maxWidth: .infinity)
         }
-        .padding()
         .sheet(isPresented: $viewModel.showImport) {
             ImportWalletView(viewModel: .init(onImportWalletDone: onCreateWalletDone))
         }

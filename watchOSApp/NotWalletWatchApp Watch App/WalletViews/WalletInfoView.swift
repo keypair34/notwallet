@@ -36,7 +36,6 @@ struct WalletInfoView: View {
                 
                 AssetsListView()
             }
-            .padding()
         }
     }
     
