@@ -2,15 +2,17 @@ use {
     crate::{
         assets::SOLANA,
         models::{asset::AssetBalance, currency::FiatCurrency},
-        spl_token::{spl_token_accounts, spl_token_accounts_with_balance},
     },
     constants::constants::{BACH_TOKEN, LAMPORTS_PER_SOL, SPL_TOKEN_PROGRAM_ID},
     log::error,
-    network::model::{ErrorCode::BalanceError, ErrorResponse},
+    network::model::ErrorResponse,
     std::collections::HashMap,
     wallet_core::{
-        balance::sol_balance::sol_balance as core_sol_balance,
-        price_data::get_asset_price::get_asset_price,
+        balance::{
+            sol_balance::sol_balance as core_sol_balance, spl_token_accounts::spl_token_accounts,
+            spl_token_accounts_with_balance::spl_token_accounts_with_balance,
+        },
+        price_data::{get_asset_price::get_asset_price, get_sol_price::get_sol_price},
     },
 };
 
@@ -140,22 +142,6 @@ pub async fn other_assets_balance(
         });
     }
     Ok(assets_balance)
-}
-
-async fn get_sol_price() -> Result<f64, ErrorResponse> {
-    match get_asset_price(SOLANA).await {
-        Ok(price) => {
-            if price.is_valid() {
-                Ok(price.data.value)
-            } else {
-                Err(ErrorResponse::Error {
-                    code: BalanceError,
-                    message: "No price data available".to_string(),
-                })
-            }
-        }
-        Err(err) => Err(err),
-    }
 }
 
 #[cfg(test)]

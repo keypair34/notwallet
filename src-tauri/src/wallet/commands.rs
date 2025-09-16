@@ -19,7 +19,6 @@ use {
     wallet_core::{balance::spl_balance::spl_balance, derive_keypair::derive_keypair_default},
     wallet_kit::{
         balance::sol_balance,
-        token_info::token_info,
         transactions::{create_token_transfer_ix, create_transfer_ix},
     },
 };
@@ -98,12 +97,6 @@ pub fn get_bach_balance(pubkey: String) -> String {
 pub fn get_sol_balance(pubkey: String) -> String {
     info!("Getting balance for {}", pubkey);
     sol_balance(rpc_url(), pubkey)
-}
-
-#[command]
-pub fn get_token_info(id: String) -> String {
-    info!("Getting token info for {}", id);
-    token_info(id)
 }
 
 #[command]
