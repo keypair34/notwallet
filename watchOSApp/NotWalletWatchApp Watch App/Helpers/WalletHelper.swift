@@ -59,6 +59,6 @@ func saveCreateWalletResponse(userDefault: UserDefaults, wallet: CreateWalletRes
         print("Failed to encode seeds: \(error)")
     }
 
-    try await Task.sleep(nanoseconds: 3_000_000_000)
+    try await Task.sleep(nanoseconds: 2_000_000_000)
     
 }

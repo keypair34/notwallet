@@ -11,7 +11,7 @@ struct WalletInfoView: View {
     
     var body: some View {
         ScrollView {
-            VStack(spacing: 12) {
+            VStack(spacing: 8) {
                 Text("Addres")
                     .font(.system(size: 32, weight: .bold, design: .rounded))
                     .foregroundColor(.purple)

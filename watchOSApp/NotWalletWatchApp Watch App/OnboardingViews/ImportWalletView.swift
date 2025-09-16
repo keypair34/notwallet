@@ -39,7 +39,7 @@ struct ImportWalletView: View {
             }
         case .loaded:
             ScrollView {
-                VStack(spacing: 12) {
+                VStack(spacing: 8) {
                     Text("Seed Phrase")
                         .font(.system(size: 24, weight: .bold, design: .rounded))
                         .foregroundColor(.purple)
@@ -70,7 +70,7 @@ struct ImportWalletView: View {
             }
         case .imported(let response):
             ScrollView {
-                VStack(spacing: 12) {
+                VStack(spacing: 8) {
                     Text("Your Seed Phrase")
                         .font(.system(size: 24, weight: .bold, design: .rounded))
                         .foregroundColor(.purple)

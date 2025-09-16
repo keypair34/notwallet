@@ -43,7 +43,7 @@ struct CreateWalletView: View {
             Text(error.localizedDescription).frame(alignment: .center)
         case .loaded(let walletResponse):
             ScrollView {
-                VStack(spacing: 12) {
+                VStack(spacing: 8) {
                     Text("Seed Phrase")
                         .font(.system(size: 24, weight: .bold, design: .rounded))
                         .foregroundColor(.purple)
@@ -171,7 +171,7 @@ extension CreateWalletView {
                 print("Failed to encode seeds: \(error)")
             }
 
-            try await Task.sleep(nanoseconds: 3_000_000_000)
+            try await Task.sleep(nanoseconds: 2_000_000_000)
 
             state = .loaded(wallet)
         }
