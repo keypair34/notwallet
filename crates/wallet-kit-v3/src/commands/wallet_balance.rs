@@ -3,13 +3,13 @@ use {
         keypair::KeyPairError,
         network_type::{rpc_url, NetworkType},
     },
-    wallet_core::balance::sol_balance::sol_balance as core_sol_balance,
+    wallet_core::balance::wallet_balance::wallet_balance as core_wallet_balance,
 };
 
 #[uniffi::export]
-pub fn wallet_balance(network: NetworkType, pubkey: String) -> Result<f64, KeyPairError> {
-    match core_sol_balance(rpc_url(network), pubkey) {
-        Ok(balance) => Ok(balance as f64),
-        Err(e) => Err(KeyPairError::InvalidAddress(e)),
+pub async fn wallet_balance(network: NetworkType, pubkey: String) -> Result<String, KeyPairError> {
+    match core_wallet_balance(rpc_url(network), pubkey).await {
+        Ok(balance) => Ok(balance),
+        Err(e) => Err(KeyPairError::InvalidAddress(e.to_string())),
     }
 }
