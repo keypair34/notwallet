@@ -2,14 +2,16 @@ use {
     crate::{
         assets::SOLANA,
         models::{asset::AssetBalance, currency::FiatCurrency},
-        spl_token::{spl_token_accounts, spl_token_accounts_with_balance},
     },
     constants::constants::{BACH_TOKEN, LAMPORTS_PER_SOL, SPL_TOKEN_PROGRAM_ID},
     log::error,
     network::model::{ErrorCode::BalanceError, ErrorResponse},
     std::collections::HashMap,
     wallet_core::{
-        balance::sol_balance::sol_balance as core_sol_balance,
+        balance::{
+            sol_balance::sol_balance as core_sol_balance, spl_token_accounts::spl_token_accounts,
+            spl_token_accounts_with_balance::spl_token_accounts_with_balance,
+        },
         price_data::get_asset_price::get_asset_price,
     },
 };

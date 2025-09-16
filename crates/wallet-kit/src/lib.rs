@@ -5,7 +5,6 @@ pub mod balance;
 pub mod fee;
 pub mod foo;
 pub mod models;
-pub(crate) mod spl_token;
 pub mod swap;
 pub mod token_info;
 pub mod transactions;

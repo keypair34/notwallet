@@ -12,7 +12,7 @@ use {
     std::str::FromStr,
 };
 
-pub(crate) fn spl_token_accounts(
+pub fn spl_token_accounts(
     rpc_url: String,
     pubkey: String,
     spl_token_program_id: String,
