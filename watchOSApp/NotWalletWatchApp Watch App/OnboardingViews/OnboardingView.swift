@@ -25,7 +25,9 @@ struct OnboardingView: View {
             Text("Crypto")
                 .font(.system(size: 16, weight: .regular, design: .rounded))
                 .foregroundColor(.purple)
-            Divider()
+            
+            Divider().padding(.vertical, 4)
+            
             Button(action: { viewModel.showCreate = true }) {
                 Text("Create new")
                     .foregroundColor(.primary)

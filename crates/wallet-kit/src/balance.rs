@@ -2,7 +2,7 @@ use {
     crate::{
         assets::{BACH_TOKEN, SOLANA},
         models::{asset::AssetBalance, currency::FiatCurrency, price::BirdeyePriceResponse},
-        spl_token::{spl_token_accounts, spl_token_accounts_for, spl_token_accounts_with_balance},
+        spl_token::{spl_token_accounts_for, spl_token_accounts_with_balance},
     },
     constants::constants::{
         BIRDEYE_API_KEY, BIRDEYE_BASE_URL, BIRDEYE_PRICE_PATH, LAMPORTS_PER_SOL,
@@ -14,9 +14,8 @@ use {
         request,
     },
     reqwest::Client,
-    solana_client::rpc_client::RpcClient,
-    solana_program::pubkey::Pubkey,
-    std::{collections::HashMap, str::FromStr},
+    std::collections::HashMap,
+    wallet_core::balance::sol_balance::sol_balance as core_sol_balance,
 };
 
 pub fn spl_balance(
@@ -35,11 +34,13 @@ pub fn spl_balance(
 }
 
 pub fn sol_balance(rpc_url: String, pubkey: String) -> String {
-    let balance = _sol_balance(rpc_url, pubkey.to_string());
-    let pretty_balance = balance / LAMPORTS_PER_SOL;
-    println!("{:#?} SOL", pretty_balance);
+    let sol_amount = match core_sol_balance(rpc_url, pubkey.to_string()) {
+        Ok(balance) => balance / LAMPORTS_PER_SOL,
+        Err(_) => 0.0,
+    };
+    println!("{:#?} SOL", sol_amount);
     // Display SOL balance
-    format!("{:.9} SOL", pretty_balance)
+    format!("{:.9} SOL", sol_amount)
 }
 
 pub async fn wallet_balance(
@@ -48,7 +49,10 @@ pub async fn wallet_balance(
     currency: Option<FiatCurrency>,
 ) -> Result<String, ErrorResponse> {
     // Get SOL balance
-    let sol_amount = _sol_balance(rpc_url.clone(), pubkey.clone()) / LAMPORTS_PER_SOL;
+    let sol_amount = match core_sol_balance(rpc_url.clone(), pubkey.clone()) {
+        Ok(balance) => balance / LAMPORTS_PER_SOL,
+        Err(_) => 0.0,
+    };
 
     // Get current prices in the target currency
     // If SOL balance is less than 0.000000001 SOL, we don't query the price.
@@ -193,24 +197,6 @@ fn aggregate_spl_token_balance(
     }
 
     aggregated_amount
-}
-
-fn _sol_balance(rpc_url: String, pubkey: String) -> f64 {
-    let connection = RpcClient::new(rpc_url);
-    let pubkey = match Pubkey::from_str(&pubkey) {
-        Ok(pubkey) => pubkey,
-        Err(e) => {
-            println!("Error parsing pubkey: {}", e);
-            return 0.0;
-        }
-    };
-    match connection.get_balance(&pubkey) {
-        Ok(balance) => balance as f64,
-        Err(e) => {
-            println!("Error getting balance: {}", e);
-            return 0.0;
-        }
-    }
 }
 
 async fn get_sol_price() -> Result<f64, ErrorResponse> {

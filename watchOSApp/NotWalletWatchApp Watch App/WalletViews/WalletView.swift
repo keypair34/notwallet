@@ -134,7 +134,12 @@ extension WalletView {
         
         @MainActor
         func walletBalance() -> String {
-            "$99.00"
+            do {
+                let solBalance = try solBalance(network: .solanaTestnet, pubkey: activeKeyPair.pubkey)
+                return "$\(solBalance)"
+            } catch {
+                return "$0.00"
+            }
         }
     }
 }
