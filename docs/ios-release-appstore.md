@@ -6,7 +6,7 @@ This guide covers the steps to release the [NotWallet Crypto Solana non-custodia
 
 Tauri uses Xcode to build iOS apps. Follow [Tauri guide for iOS app development](https://v2.tauri.app/start/prerequisites/#ios), [iOS app code signing](https://v2.tauri.app/distribute/sign/ios/), and [AppStore distribution guide](https://v2.tauri.app/distribute/app-store/#ios).
 
-We have two Tauri config files for debug and production apps. First step is to add your Apple developer account team ID in the `tauri.prod-ios-appstore.json` file.
+We have two Tauri config files for debug and production apps. First step is to add your Apple developer account team ID in the main `tauri.conf.json` file.
 
 ```json
 "bundle": {
@@ -42,10 +42,10 @@ Below are the instructions.
 
 </details>
 
-Generate the icons using the `cargo tauri icon` command.
+Generate the icons using the `cargo tauri icon` command from the script.
 
 ```bash
-$ cargo tauri icon assets/app-icon-v4-no-alpha.png
+$ pnpm gim
 ```
 
 ## Production Keys and Credentials
