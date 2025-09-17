@@ -19,13 +19,13 @@ base64 = "0.21"
 bip39 = { version = "2", features = ["rand"] }
 bs58 = "0.5"
 chrono = { version = "0.4", features = ["serde"] }
+constants = { path = "./../crates/constants" }
 
 # Transitive dependencies override.
 curve25519-dalek = "4.1.3"
 log = "0.4"
 network = { path = "./../crates/network" }
 openssl = { version = "0.10", features = ["vendored"] }
-os_info = "2"
 reqwest = { version = "0.12", default-features = false, features = [
     "json",
     "native-tls-vendored",
@@ -33,8 +33,8 @@ reqwest = { version = "0.12", default-features = false, features = [
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 solana-sdk = "2.3.1"
+solana-signer = "3"
 tauri = { version = "2.0.0", features = [] }
-tauri-plugin-android-tv-check = "1"
 tauri-plugin-clipboard-manager = "2"
 tauri-plugin-haptics = "2"
 tauri-plugin-log = { version = "2", features = ["colored"] }
@@ -45,9 +45,15 @@ tauri-plugin-store = "2"
 thiserror = "1.0"
 tsync = "2"
 uuid = { version = "1", features = ["v4"] }
-
-# Local crates
+wallet_core = { path = "./../crates/wallet-core" }
 wallet_kit = { path = "./../crates/wallet-kit" }
+wallet_kit_v3 = { path = "./../crates/wallet-kit-v3" }
+
+[target.'cfg(any(target_os = "android"))'.dependencies]
+tauri-plugin-android-tv-check = "1"
 
 [build-dependencies]
 tauri-build = { version = "2.0.0", features = [] }
+
+[patch.crates-io]
+ring = { git = "https://github.com/setoelkahfi/ring.git", branch = "main" }
