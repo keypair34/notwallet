@@ -131,6 +131,9 @@ struct WalletView: View {
             .sheet(isPresented: $viewModel.confirmResetWallet) {
                 ConfirmResetWalletView(onResetWallet: onResetWallet)
             }
+            .onAppear {
+                viewModel.onAppear()
+            }
         }
     }
 
@@ -164,18 +167,22 @@ extension WalletView {
         @Published var showQrCode = false
         @Published var showWalletInfo = false
         @Published var confirmResetWallet = false
+        
+        func onAppear() {
+            state = .idle
+        }
 
         @MainActor
         func walletBalance() async {
             do {
                 state = .loading
-                
+                print("Will load balance")
                 // TODO: - CHANGE ME ON RELEASE
                 let balance = try await WalletKitV3.walletBalance(
                     network: .solanaDevnet,
                     pubkey: activeKeyPair.pubkey
                 )
-                
+                print("balance loaded: \(balance)")
                 state = .loaded(balance)
             } catch {
                 state = .failed(error)

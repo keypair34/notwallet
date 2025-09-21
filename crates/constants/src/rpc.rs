@@ -1,7 +1,7 @@
 use std::format;
 
-pub const SOLANA_TESTNET_RPC_BASE_URL: &str = "solana-testnet.quiknode.pro";
 pub const SOLANA_MAINNET_RPC_BASE_URL: &str = "solana-mainnet.quiknode.pro";
+pub const SOLANA_TESTNET_RPC_BASE_URL: &str = "solana-testnet.quiknode.pro";
 pub const SOLANA_DEVNET_RPC_BASE_URL: &str = "solana-devnet.quiknode.pro";
 pub const SOLANA_LOCALHOST_RPC_URL: &str = "http://localhost:8899";
 

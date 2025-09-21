@@ -182,7 +182,6 @@ extension WalletSettingView {
         }
 
         func onEditWalletDone(wallet: Wallet) {
-            print("Getting new \(wallet)")
             activeKeyPair = wallet
             onActiveKeyPairChanged(wallet)
         }
