@@ -32,8 +32,12 @@ pub fn rpc_url(network: NetworkType) -> String {
         NetworkType::Localhost => return "http://localhost:8899".to_string(),
     };
 
-    format!(
+    let rpc_url = format!(
         "https://{}.{}/{}",
         SOLANA_RPC_NAMESPACE, base_url, SOLANA_RPC_ID
-    )
+    );
+
+    println!("🦀🦀 RPC URL: {}", rpc_url);
+
+    rpc_url
 }

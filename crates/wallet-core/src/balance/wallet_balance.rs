@@ -36,7 +36,7 @@ pub async fn wallet_balance(rpc_url: String, pubkey: String) -> Result<String, E
     ) {
         Ok(tokens) => tokens,
         Err(err) => {
-            println!("RUST ==> Failed to get SPL token accounts: {:?}", err);
+            println!("🦀🦀  Failed to get SPL token accounts: {:?}", err);
             Vec::new()
         }
     };
@@ -47,7 +47,7 @@ pub async fn wallet_balance(rpc_url: String, pubkey: String) -> Result<String, E
             Ok(price) => price.data.value,
             Err(err) => {
                 println!(
-                    "RUST ==> Failed to get price for token {}: {:?}",
+                    "🦀🦀  Failed to get price for token {}: {:?}",
                     token.mint, err
                 );
                 0.0
@@ -56,7 +56,7 @@ pub async fn wallet_balance(rpc_url: String, pubkey: String) -> Result<String, E
         let token_amount = match token.token_amount.ui_amount {
             Some(amount) => amount,
             None => {
-                println!("RUST ==> Token amount is None for token {}", token.mint);
+                println!("🦀🦀  Token amount is None for token {}", token.mint);
                 0.0
             }
         };
