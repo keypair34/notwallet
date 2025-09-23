@@ -89,7 +89,7 @@ export default function BottomTabBar({ isMobile }: { isMobile: boolean }) {
           width: "100%",
           maxWidth: 420,
           margin: "0 auto",
-          bgcolor: "#fff",
+          bgcolor: "#f5f6fa",
         }}
       >
         <BottomNavigationAction
