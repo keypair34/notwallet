@@ -73,7 +73,7 @@ export default function BottomTabBar({ isMobile }: { isMobile: boolean }) {
     <Paper
       sx={{
         position: "fixed",
-        bottom: isMobile ? 46 : 0,
+        bottom: isMobile ? 8 : 0,
         left: 0,
         width: "100vw",
         zIndex: 100,
