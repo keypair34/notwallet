@@ -32,9 +32,14 @@ struct WalletView: View {
                         }
                     })
                 case .loaded(let balance):
-                    Text(balance)
-                        .font(.system(size: 32, weight: .bold, design: .rounded))
-                        .foregroundColor(.purple)
+                    Button(action: {
+                        viewModel.confirmResetWallet = true
+                    }) {
+                        Text(balance)
+                            .font(.system(size: 32, weight: .bold, design: .rounded))
+                            .foregroundColor(.purple)
+                    }
+                    .buttonStyle(.plain)
                 case .failed(_):
                     Text("N/A")
                         .font(.system(size: 32, weight: .bold, design: .rounded))
