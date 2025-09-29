@@ -22,7 +22,7 @@ pub async fn wallet_balance_aggregate(
             .map(|x| Balance {
                 mint: x.mint.clone(),
                 symbol: x.symbol.clone(),
-                balance: format!("{:.2}", x.balance),
+                balance: x.balance_string.clone(),
             })
             .collect()),
         Err(e) => Err(KeyPairError::InvalidAddress(e.to_string())),

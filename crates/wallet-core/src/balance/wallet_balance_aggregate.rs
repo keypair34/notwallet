@@ -6,7 +6,7 @@ use {
         },
         models::balance::Balance,
     },
-    constants::constants::{LAMPORTS_PER_SOL, SOLANA, SPL_TOKEN_PROGRAM_ID},
+    constants::constants::{LAMPORTS_PER_SOL, SOLANA, SOL_DECIMALS, SPL_TOKEN_PROGRAM_ID},
     network::model::ErrorResponse,
 };
 
@@ -28,6 +28,8 @@ pub async fn wallet_balance_aggregate(
         mint: SOLANA.to_string(),
         symbol: "SOL".to_string(),
         balance: sol_amount,
+        balance_string: format!("{:.9}", sol_amount),
+        decimal: SOL_DECIMALS,
     });
 
     // Try to get BACH price, but handle errors gracefully
@@ -58,6 +60,8 @@ pub async fn wallet_balance_aggregate(
             mint: token.mint,
             symbol,
             balance: token_amount,
+            balance_string: token.token_amount.ui_amount_string,
+            decimal: token.token_amount.decimals,
         });
     }
 

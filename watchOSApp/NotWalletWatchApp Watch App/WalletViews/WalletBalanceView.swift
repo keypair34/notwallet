@@ -55,7 +55,8 @@ struct WalletBalanceView: View {
                             .border(Color.purple)
                         }
                         .frame(minHeight: minRowHeight)
-
+                        
+                        /*
                         Divider()
 
                         Button(action: {
@@ -80,7 +81,7 @@ struct WalletBalanceView: View {
                                     .fill(Color(.darkGray).opacity(0.6))
                             )
                         }
-                        .buttonStyle(.plain)
+                        .buttonStyle(.plain)*/
 
                     }
                 }
