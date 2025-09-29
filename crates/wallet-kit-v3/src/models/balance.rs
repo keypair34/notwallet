@@ -1,5 +1,6 @@
 #[derive(uniffi::Record)]
 pub struct Balance {
-    pub id: String,
+    pub mint: String,
+    pub symbol: String,
     pub balance: String,
 }

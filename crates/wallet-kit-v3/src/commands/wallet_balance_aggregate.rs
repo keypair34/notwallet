@@ -20,7 +20,8 @@ pub async fn wallet_balance_aggregate(
         Ok(balances) => Ok(balances
             .iter()
             .map(|x| Balance {
-                id: x.mint.clone(),
+                mint: x.mint.clone(),
+                symbol: x.symbol.clone(),
                 balance: format!("{:.2}", x.balance),
             })
             .collect()),

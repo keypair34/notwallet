@@ -43,6 +43,8 @@ pub async fn wallet_balance_aggregate(
         }
     };
 
+    println!("🦀🦀  SPL tokens with balance: {:?}", spl_tokens);
+
     for token in spl_tokens {
         let token_amount = match token.token_amount.ui_amount {
             Some(amount) => amount,

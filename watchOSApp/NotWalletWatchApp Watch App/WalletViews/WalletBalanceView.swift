@@ -12,7 +12,7 @@ import WalletKitV3
 struct WalletBalanceView: View {
 
     init(
-        viewModel: ViewModel = .init(),
+        viewModel: ViewModel,
         onResetWallet: @escaping () -> Void
     ) {
         self.viewModel = viewModel
@@ -34,28 +34,30 @@ struct WalletBalanceView: View {
                         })
                     case .failed:
                         Text("N/A")
-                            .font(.system(size: 32, weight: .bold, design: .rounded))
+                            .font(.system(size: 24, weight: .bold, design: .rounded))
                             .foregroundColor(.purple)
                     case .loaded(let balances):
                         Text("Balance")
-                            .font(.title)
+                            .font(.system(size: 24, weight: .bold, design: .rounded))
                             .foregroundColor(.purple)
-                        
-                            ForEach(balances, id: \.id) { balance in
-                                    HStack(alignment: .lastTextBaseline) {
-                                        Text("\(balance.balance) \(balance.id)")
-                                            .alignmentGuide(.trailing) {  _ in
-                                                -10
-                                            }
+
+                        ForEach(balances, id: \.mint) { balance in
+                            VStack(alignment: .leading) {
+                                Text("\(balance.balance) \(balance.symbol)")
+                                    .alignmentGuide(.trailing) { _ in
+                                        -10
                                     }
-                                    .frame(width: .greatestFiniteMagnitude, height: minRowHeight, alignment: .trailing)
-                                    .border(Color.purple)
+                                Text(balance.mint)
+                                    .font(.system(size: 12, weight: .light, design: .rounded))
+                                    .foregroundColor(.yellow)
                             }
-                            .frame(minHeight: minRowHeight)
-                        
-                        
+                            .padding()
+                            .border(Color.purple)
+                        }
+                        .frame(minHeight: minRowHeight)
+
                         Divider()
-                        
+
                         Button(action: {
                             Task {
                                 // Call the callback
@@ -64,11 +66,11 @@ struct WalletBalanceView: View {
                         }) {
                             HStack {
                                 Image(systemName: "gear")
-                                Text("Balance Settings")
+                                Text("Balance settings")
                                     .font(.system(size: 18, weight: .medium, design: .rounded))
                                     .foregroundColor(.primary)
                                     .frame(height: 24)
-                                
+
                                 Spacer()
                             }
                             .padding(.horizontal, 16)
@@ -79,7 +81,7 @@ struct WalletBalanceView: View {
                             )
                         }
                         .buttonStyle(.plain)
-                         
+
                     }
                 }
             }
@@ -90,16 +92,17 @@ struct WalletBalanceView: View {
 
     @ObservedObject private var viewModel: ViewModel
     private let onResetWallet: () -> Void
-    
+
     // MARK: - Environment
-    
+
     @Environment(\.defaultMinListRowHeight) private var minRowHeight
 }
 
 extension WalletBalanceView {
     final class ViewModel: ObservableObject {
-        internal init(state: ViewState = ViewState.idle) {
+        internal init(state: ViewState = ViewState.idle, activeKeyPair: Wallet) {
             self.state = state
+            self.activeKeyPair = activeKeyPair
         }
 
         enum ViewState {
@@ -109,10 +112,6 @@ extension WalletBalanceView {
             case loaded([Balance])
         }
 
-        enum OnboardingState {
-            case done, new
-        }
-
         @Published private(set) var state = ViewState.idle
 
         @MainActor
@@ -120,15 +119,15 @@ extension WalletBalanceView {
             print("Get aggregate wallet balance")
             state = .loading
             let balances = try await walletBalanceAggregate(
-                network: .solanaMainnet,
-                pubkey: ""
+                network: .solanaDevnet,
+                pubkey: activeKeyPair.pubkey
             )
             state = .loaded(balances)
         }
 
         // MARK: - Private
 
-        private let userDefault = UserDefaults.standard
+        @Published private(set) var activeKeyPair: Wallet
     }
 }
 
@@ -136,9 +135,26 @@ extension WalletBalanceView {
     WalletBalanceView(
         viewModel: .init(
             state: .loaded([
-                Balance(id: "SOL", balance: "4.5"),
-                Balance(id: "BACH", balance: "7.6"),
-            ])
+                Balance(
+                    mint: "So11111111111111111111111111111111111111112",
+                    symbol: "SOL",
+                    balance: "4.5"
+                ),
+                Balance(
+                    mint: "CTQBjyrX8pYyqbNa8vAhQfnRXfu9cUxnvrxj5PvbzTmf",
+                    symbol: "BACH",
+                    balance: "7.6"
+                ),
+            ]),
+            activeKeyPair: .init(
+                id: "",
+                username: nil,
+                name: "",
+                account: 2,
+                pubkey: "",
+                privkey: "",
+                seedId: ""
+            )
         ),
         onResetWallet: {}
     )

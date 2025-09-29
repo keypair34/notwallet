@@ -35,9 +35,12 @@ struct WalletView: View {
                     Button(action: {
                         viewModel.showWalletBalance = true
                     }) {
-                        Text(balance)
-                            .font(.system(size: 32, weight: .bold, design: .rounded))
-                            .foregroundColor(.purple)
+                        HStack(alignment: .center) {
+                            Text(balance)
+                                .font(.system(size: 32, weight: .bold, design: .rounded))
+                                .foregroundColor(.purple)
+                            Image(systemName: "arrow.right")
+                        }
                     }
                     .buttonStyle(.plain)
                 case .failed(_):
@@ -54,12 +57,12 @@ struct WalletView: View {
                         .font(.system(size: 16, weight: .regular, design: .rounded))
                         .foregroundColor(.primary)
                         .tracking(0.8)
-                    
+
                     Text(viewModel.activeKeyPair.initial())
                         .font(.system(size: 18, weight: .regular, design: .rounded))
                         .foregroundColor(.purple)
                         .tracking(0.8)
-                    
+
                     Button(action: { viewModel.showQrCode = true }) {
                         Text(viewModel.activeKeyPair.name)
                             .font(.system(size: 18, weight: .medium, design: .rounded))
@@ -73,7 +76,7 @@ struct WalletView: View {
                     }
                     .buttonStyle(.plain)
                 }
-                
+
                 Divider()
 
                 NavigationLink(
@@ -106,9 +109,9 @@ struct WalletView: View {
                     viewModel.confirmResetWallet = true
                 }) {
                     HStack {
-                        
+
                         Image(systemName: "clear.fill")
-                        
+
                         Text("Reset Wallet")
                             .font(.system(size: 18, weight: .medium, design: .rounded))
                             .foregroundColor(.red)
@@ -137,7 +140,12 @@ struct WalletView: View {
                 ConfirmResetWalletView(onResetWallet: onResetWallet)
             }
             .sheet(isPresented: $viewModel.showWalletBalance) {
-                WalletBalanceView(onResetWallet: onResetWallet)
+                WalletBalanceView(
+                    viewModel: .init(
+                        activeKeyPair: viewModel.activeKeyPair
+                    ),
+                    onResetWallet: onResetWallet
+                )
             }
             .onAppear {
                 viewModel.onAppear()
@@ -176,7 +184,7 @@ extension WalletView {
         @Published var showWalletInfo = false
         @Published var showWalletBalance = false
         @Published var confirmResetWallet = false
-        
+
         func onAppear() {
             state = .idle
         }
@@ -185,20 +193,18 @@ extension WalletView {
         func walletBalance() async {
             do {
                 state = .loading
-                print("Will load balance")
+                print("🐦🐦  Will load balance.")
                 // TODO: - CHANGE ME ON RELEASE
                 let balance = try await WalletKitV3.walletBalance(
                     network: .solanaDevnet,
                     pubkey: activeKeyPair.pubkey
                 )
-                print("balance loaded: \(balance)")
                 state = .loaded(balance)
             } catch {
                 state = .failed(error)
             }
         }
-        
-        func onActiveKeyPairChanged(wallet: Wallet) -> Void {
+        func onActiveKeyPairChanged(wallet: Wallet) {
             activeKeyPair = wallet
         }
     }
