@@ -139,12 +139,16 @@ extension WalletBalanceView {
                 Balance(
                     mint: "So11111111111111111111111111111111111111112",
                     symbol: "SOL",
-                    balance: "4.5"
+                    balance: 4.5,
+                    balanceString: "4.5",
+                    decimal: 9
                 ),
                 Balance(
                     mint: "CTQBjyrX8pYyqbNa8vAhQfnRXfu9cUxnvrxj5PvbzTmf",
                     symbol: "BACH",
-                    balance: "7.6"
+                    balance: 7.6,
+                    balanceString: "7.6",
+                    decimal: 12
                 ),
             ]),
             activeKeyPair: .init(

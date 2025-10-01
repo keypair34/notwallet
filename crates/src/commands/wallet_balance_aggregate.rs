@@ -1,10 +1,10 @@
 use {
     crate::models::{
-        balance::Balance,
         keypair::KeyPairError,
         network_type::{rpc_url, NetworkType},
     },
     wallet_core::balance::wallet_balance_aggregate::wallet_balance_aggregate as core_wallet_balance_aggregate,
+    wallet_core_model::models::balance::Balance,
 };
 
 #[uniffi::export(async_runtime = "tokio")]
@@ -17,14 +17,7 @@ pub async fn wallet_balance_aggregate(
         pubkey, network
     );
     match core_wallet_balance_aggregate(rpc_url(network), pubkey).await {
-        Ok(balances) => Ok(balances
-            .iter()
-            .map(|x| Balance {
-                mint: x.mint.clone(),
-                symbol: x.symbol.clone(),
-                balance: x.balance_string.clone(),
-            })
-            .collect()),
+        Ok(balances) => Ok(balances),
         Err(e) => Err(KeyPairError::InvalidAddress(e.to_string())),
     }
 }
