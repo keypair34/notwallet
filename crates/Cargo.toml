@@ -23,14 +23,14 @@ path = "uniffi-bindgen.rs"
 
 [dependencies]
 bs58 = "0.5.0"
-wallet_core = { path = "./wallet-core" }
+chrono = { version = "0.4", features = ["serde"] }
 constants = { path = "./constants" }
-wallet_core_rpc = { path = "./wallet-core-rpc" }
-wallet_core_model = { path = "./wallet-core-model" }
 solana-sdk = "3"
 uniffi = { version = "0.29", features = ["cli", "tokio"] }
 uuid = { version = "1", features = ["v4"] }
-chrono = { version = "0.4", features = ["serde"] }
+wallet_core = { path = "./wallet-core" }
+wallet_core_model = { path = "./wallet-core-model" }
+wallet_core_rpc = { path = "./wallet-core-rpc" }
 
 [build-dependencies]
 uniffi = { version = "0.29", features = ["build"] }
