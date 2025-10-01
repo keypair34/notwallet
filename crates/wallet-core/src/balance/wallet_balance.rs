@@ -1,14 +1,14 @@
 use {
-    crate::balance::{
-        sol_balance::sol_balance as core_sol_balance,
-        spl_token_accounts_with_balance::spl_token_accounts_with_balance,
-    },
     constants::constants::{LAMPORTS_PER_SOL, SPL_TOKEN_PROGRAM_ID},
     network::model::ErrorResponse,
     std::time::Duration,
     tokio::time::sleep,
     wallet_core_http::price_data::{
         get_asset_price::get_asset_price, get_sol_price::get_sol_price,
+    },
+    wallet_core_rpc::balance::{
+        sol_balance::sol_balance as core_sol_balance,
+        spl_token_accounts_with_balance::spl_token_accounts_with_balance,
     },
 };
 
