@@ -134,6 +134,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8A662A8F2E7DB99E00279A65 /* QRCode in Frameworks */,
+				8A57513D2E8DE70800FF1480 /* WalletKitV3 in Frameworks */,
 				8A9369D12E78313A00B5A59F /* WalletKitV3 in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -398,8 +399,8 @@
 			);
 			mainGroup = 8A78CDEC2E434ED60007B16F;
 			packageReferences = (
-				8A9369CF2E78313A00B5A59F /* XCLocalSwiftPackageReference "../crates/wallet-kit-v3/WalletKitV3" */,
 				8A662A8D2E7DB99E00279A65 /* XCRemoteSwiftPackageReference "QRCode" */,
+				8A57513B2E8DE70800FF1480 /* XCLocalSwiftPackageReference "../crates/WalletKitV3" */,
 			);
 			productRefGroup = 8A78CDF42E434ED60007B16F /* Products */;
 			projectDirPath = "";
@@ -857,9 +858,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		8A9369CF2E78313A00B5A59F /* XCLocalSwiftPackageReference "../crates/wallet-kit-v3/WalletKitV3" */ = {
+		8A57513B2E8DE70800FF1480 /* XCLocalSwiftPackageReference "../crates/WalletKitV3" */ = {
 			isa = XCLocalSwiftPackageReference;
-			relativePath = "../crates/wallet-kit-v3/WalletKitV3";
+			relativePath = ../crates/WalletKitV3;
 		};
 /* End XCLocalSwiftPackageReference section */
 
@@ -875,6 +876,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		8A57513C2E8DE70800FF1480 /* WalletKitV3 */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = WalletKitV3;
+		};
 		8A662A8E2E7DB99E00279A65 /* QRCode */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 8A662A8D2E7DB99E00279A65 /* XCRemoteSwiftPackageReference "QRCode" */;

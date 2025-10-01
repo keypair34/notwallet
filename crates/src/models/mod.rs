@@ -4,4 +4,3 @@ pub(crate) mod response;
 pub(crate) mod seed;
 pub mod storage_key;
 pub(crate) mod wallet;
-pub(crate) mod balance;

@@ -43,8 +43,6 @@ perf.data.old
 .env
 .envrc
 
-# Generated Swift package
-WalletKitV3/
+# Swift Package
+WalletCoreModel/
 generated/
-out/
-jniLibs/
