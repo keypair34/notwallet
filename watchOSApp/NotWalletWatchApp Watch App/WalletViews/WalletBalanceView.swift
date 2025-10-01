@@ -120,7 +120,7 @@ extension WalletBalanceView {
             print("Get aggregate wallet balance")
             state = .loading
             let balances = try await walletBalanceAggregate(
-                network: .solanaDevnet,
+                network: .solanaMainnet,
                 pubkey: activeKeyPair.pubkey
             )
             state = .loaded(balances)

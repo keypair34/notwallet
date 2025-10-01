@@ -4,11 +4,14 @@ use {
     log::debug,
     network::{model::ErrorResponse, request},
     reqwest::Client,
+    std::time::Duration,
+    tokio::time::sleep,
 };
 
 pub async fn get_asset_price(asset: &str) -> Result<BirdeyePriceResponse, ErrorResponse> {
     debug!("Get asset price");
-
+    // By pass too many request error from BiredEye 😂
+    sleep(Duration::from_millis(800)).await;
     let url = format!(
         "{}{}?address={}",
         BIRDEYE_BASE_URL, BIRDEYE_PRICE_PATH, asset

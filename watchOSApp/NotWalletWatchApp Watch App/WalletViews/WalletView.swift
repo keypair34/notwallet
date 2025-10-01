@@ -31,22 +31,32 @@ struct WalletView: View {
                             await viewModel.walletBalance()
                         }
                     })
-                case .loaded(let balance):
+                case .loaded(let balance, let assetPrice):
                     Button(action: {
                         viewModel.showWalletBalance = true
                     }) {
-                        HStack(alignment: .center) {
-                            Text(balance)
+                        VStack {
+                            HStack(alignment: .center) {
+                                Text(balance)
+                                    .font(.system(size: 32, weight: .bold, design: .rounded))
+                                    .foregroundColor(.purple)
+                                Image(systemName: "arrow.right")
+                            }
+                            Text("Price: \(assetPrice)")
                                 .font(.system(size: 32, weight: .bold, design: .rounded))
                                 .foregroundColor(.purple)
-                            Image(systemName: "arrow.right")
                         }
                     }
                     .buttonStyle(.plain)
-                case .failed(_):
-                    Text("N/A")
-                        .font(.system(size: 32, weight: .bold, design: .rounded))
-                        .foregroundColor(.purple)
+                case .failed(let error):
+                    VStack {
+                        Text("N/A")
+                            .font(.system(size: 32, weight: .bold, design: .rounded))
+                            .foregroundColor(.purple)
+                        Text(error.localizedDescription)
+                            .font(.system(size: 16, weight: .regular, design: .rounded))
+                            .foregroundColor(.red)
+                    }
                 }
 
                 Divider()
@@ -170,7 +180,7 @@ extension WalletView {
             case idle
             case loading
             case failed(Error)
-            case loaded(String)
+            case loaded(String, Double)
         }
 
         enum OnboardingState {
@@ -195,17 +205,51 @@ extension WalletView {
                 state = .loading
                 print("🐦🐦  Will load balance.")
                 // TODO: - CHANGE ME ON RELEASE
+                /*
                 let balance = try await WalletKitV3.walletBalance(
-                    network: .solanaDevnet,
+                    network: .solanaMainnet,
                     pubkey: activeKeyPair.pubkey
                 )
-                state = .loaded(balance)
+                let assetPrice = try await WalletKitV3.assetPrice(asset: "CTQBjyrX8pYyqbNa8vAhQfnRXfu9cUxnvrxj5PvbzTmf")
+                 */
+                let assetPrice = try await getAssetPrice(asset: "CTQBjyrX8pYyqbNa8vAhQfnRXfu9cUxnvrxj5PvbzTmf")
+                
+                state = .loaded("N/A", assetPrice)
             } catch {
                 state = .failed(error)
             }
         }
+        
         func onActiveKeyPairChanged(wallet: Wallet) {
             activeKeyPair = wallet
+        }
+        
+        func getAssetPrice(asset: String) async throws -> Double {
+            /// Configure the URL for our request.
+            /// In this case, an example JSON response from httpbin.
+            let url = URL(string: "https://public-api.birdeye.so/defi/price?address=\(asset)")!
+            
+            /// Create a URLRequest for the POST request.
+            var request = URLRequest(url: url)
+            
+            /// Configure the HTTP method.
+            request.httpMethod = "GET"
+
+            /// Configure the proper content-type value to JSON.
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            
+            /// Configure BirdEye header
+            request.setValue("4f1d6617474442d299bfa3cbc5436fd9", forHTTPHeaderField: "X-API-KEY")
+            
+            /// Use URLSession to fetch the data asynchronously.
+            let (data, _) = try await URLSession.shared.data(for: request)
+            
+            /// Decode the JSON response into the PostResponse struct.
+            let decodedResponse = try JSONDecoder().decode(BirdeyePriceResponse.self, from: data)
+
+            print("The JSON response contains a name: \(decodedResponse.success) and an age: \(decodedResponse.data)")
+            
+            return decodedResponse.data.value
         }
     }
 }
