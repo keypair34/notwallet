@@ -4,13 +4,12 @@ use {
     uniffi::{Object, Record},
 };
 
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Object)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Record)]
 pub struct BirdeyePriceResponse {
     pub data: BirdeyePriceData,
     pub success: bool,
 }
 
-#[uniffi::export]
 impl BirdeyePriceResponse {
     /// Check if the response is successful and has data
     pub fn is_valid(&self) -> bool {
@@ -36,7 +35,7 @@ impl BirdeyePriceResponse {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Object)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, Record)]
 pub struct BirdeyePriceData {
     #[serde(rename = "isScaledUiToken")]
     pub is_scaled_ui_token: bool,
@@ -56,7 +55,6 @@ pub struct BirdeyePriceData {
     pub price_in_native: f64,
 }
 
-#[uniffi::export]
 impl BirdeyePriceData {
     /// Get the price change percentage as a formatted string
     pub fn price_change_percentage(&self) -> String {

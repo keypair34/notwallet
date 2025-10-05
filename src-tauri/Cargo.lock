@@ -12474,6 +12474,7 @@ dependencies = [
  "uniffi",
  "uuid",
  "wallet_core",
+ "wallet_core_http",
  "wallet_core_model",
  "wallet_core_rpc",
 ]

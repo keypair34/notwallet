@@ -35,17 +35,24 @@ struct WalletView: View {
                     Button(action: {
                         viewModel.showWalletBalance = true
                     }) {
-                        VStack {
+                        VStack(spacing: 4) {
                             HStack(alignment: .center) {
                                 Text(balance)
                                     .font(.system(size: 32, weight: .bold, design: .rounded))
                                     .foregroundColor(.purple)
-                                Image(systemName: "arrow.right")
+                                    .transition(.opacity)
                             }
-                            Text("Price: \(assetPrice)")
-                                .font(.system(size: 32, weight: .bold, design: .rounded))
+                            .padding(.horizontal)
+                            
+                            Text("USD \(String(format: "%.2f", ceil(assetPrice*100)/100)) / SOL")
+                                .font(.system(size: 14, weight: .bold, design: .rounded))
                                 .foregroundColor(.purple)
+                                .padding(.horizontal)
                         }
+                        .background(
+                            RoundedRectangle(cornerRadius: 8)
+                                .fill(Color(.white))
+                        )
                     }
                     .buttonStyle(.plain)
                 case .failed(let error):
@@ -205,16 +212,14 @@ extension WalletView {
                 state = .loading
                 print("🐦🐦  Will load balance.")
                 // TODO: - CHANGE ME ON RELEASE
-                /*
+                /**/
                 let balance = try await WalletKitV3.walletBalance(
                     network: .solanaMainnet,
                     pubkey: activeKeyPair.pubkey
-                )
-                let assetPrice = try await WalletKitV3.assetPrice(asset: "CTQBjyrX8pYyqbNa8vAhQfnRXfu9cUxnvrxj5PvbzTmf")
-                 */
-                let assetPrice = try await getAssetPrice(asset: "CTQBjyrX8pYyqbNa8vAhQfnRXfu9cUxnvrxj5PvbzTmf")
+                )/**/
+                let assetPrice = try await getAssetPrice(asset: "So11111111111111111111111111111111111111112")
                 
-                state = .loaded("N/A", assetPrice)
+                state = .loaded(balance, assetPrice)
             } catch {
                 state = .failed(error)
             }
@@ -222,34 +227,6 @@ extension WalletView {
         
         func onActiveKeyPairChanged(wallet: Wallet) {
             activeKeyPair = wallet
-        }
-        
-        func getAssetPrice(asset: String) async throws -> Double {
-            /// Configure the URL for our request.
-            /// In this case, an example JSON response from httpbin.
-            let url = URL(string: "https://public-api.birdeye.so/defi/price?address=\(asset)")!
-            
-            /// Create a URLRequest for the POST request.
-            var request = URLRequest(url: url)
-            
-            /// Configure the HTTP method.
-            request.httpMethod = "GET"
-
-            /// Configure the proper content-type value to JSON.
-            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            
-            /// Configure BirdEye header
-            request.setValue("4f1d6617474442d299bfa3cbc5436fd9", forHTTPHeaderField: "X-API-KEY")
-            
-            /// Use URLSession to fetch the data asynchronously.
-            let (data, _) = try await URLSession.shared.data(for: request)
-            
-            /// Decode the JSON response into the PostResponse struct.
-            let decodedResponse = try JSONDecoder().decode(BirdeyePriceResponse.self, from: data)
-
-            print("The JSON response contains a name: \(decodedResponse.success) and an age: \(decodedResponse.data)")
-            
-            return decodedResponse.data.value
         }
     }
 }

@@ -41,18 +41,26 @@ struct WalletBalanceView: View {
                             .font(.system(size: 24, weight: .bold, design: .rounded))
                             .foregroundColor(.purple)
 
-                        ForEach(balances, id: \.mint) { balance in
-                            VStack(alignment: .leading) {
-                                Text("\(balance.balance) \(balance.symbol)")
-                                    .alignmentGuide(.trailing) { _ in
-                                        -10
-                                    }
-                                Text(balance.mint)
-                                    .font(.system(size: 12, weight: .light, design: .rounded))
-                                    .foregroundColor(.yellow)
+                        ForEach(balances, id: \.meta.address) { balance in
+                            Button(action: { }) {
+                                VStack(alignment: .leading) {
+                                    Text("\(balance.display())")
+                                        .alignmentGuide(.trailing) { _ in
+                                            -10
+                                        }
+                                        .padding(.horizontal)
+                                    Text(balance.meta.address)
+                                        .font(.system(size: 12, weight: .light, design: .rounded))
+                                        .foregroundColor(.yellow)
+                                        .padding(.horizontal)
+                                }
+                                .background(
+                                    RoundedRectangle(cornerRadius: 8)
+                                        .fill(Color(.purple))
+                                )
+                                .padding()
                             }
-                            .padding()
-                            .border(Color.purple)
+                            .buttonStyle(.plain)
                         }
                         .frame(minHeight: minRowHeight)
                         
@@ -110,7 +118,7 @@ extension WalletBalanceView {
             case idle
             case loading
             case failed(Error)
-            case loaded([Balance])
+            case loaded([BalanceV1])
         }
 
         @Published private(set) var state = ViewState.idle
@@ -119,10 +127,7 @@ extension WalletBalanceView {
         func initialize() async throws {
             print("Get aggregate wallet balance")
             state = .loading
-            let balances = try await walletBalanceAggregate(
-                network: .solanaMainnet,
-                pubkey: activeKeyPair.pubkey
-            )
+            let balances = try await getWalletPortfolio(wallet: activeKeyPair.pubkey)
             state = .loaded(balances)
         }
 
@@ -135,22 +140,7 @@ extension WalletBalanceView {
 #Preview {
     WalletBalanceView(
         viewModel: .init(
-            state: .loaded([
-                Balance(
-                    mint: "So11111111111111111111111111111111111111112",
-                    symbol: "SOL",
-                    balance: 4.5,
-                    balanceString: "4.5",
-                    decimal: 9
-                ),
-                Balance(
-                    mint: "CTQBjyrX8pYyqbNa8vAhQfnRXfu9cUxnvrxj5PvbzTmf",
-                    symbol: "BACH",
-                    balance: 7.6,
-                    balanceString: "7.6",
-                    decimal: 12
-                ),
-            ]),
+            state: .loaded([]),
             activeKeyPair: .init(
                 id: "",
                 username: nil,

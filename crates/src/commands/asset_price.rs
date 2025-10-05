@@ -1,5 +1,6 @@
 use {
-    crate::models::keypair::KeyPairError, wallet_core::price_data::get_asset_price::get_asset_price,
+    crate::models::keypair::KeyPairError,
+    wallet_core_http::price_data::get_asset_price::get_asset_price,
 };
 
 #[uniffi::export(async_runtime = "tokio")]
