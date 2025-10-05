@@ -31,6 +31,7 @@ uuid = { version = "1", features = ["v4"] }
 wallet_core = { path = "./wallet-core" }
 wallet_core_model = { path = "./wallet-core-model" }
 wallet_core_rpc = { path = "./wallet-core-rpc" }
+wallet_core_http = { path = "./wallet-core-http" }
 
 [build-dependencies]
 uniffi = { version = "0.29", features = ["build"] }

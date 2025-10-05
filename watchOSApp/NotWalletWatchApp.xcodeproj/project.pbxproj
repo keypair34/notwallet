@@ -18,6 +18,8 @@
 		8A662AA02E7DD5D800279A65 /* Seed+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A662A9F2E7DD5D300279A65 /* Seed+Codable.swift */; };
 		8A662AA22E7DD60000279A65 /* SeedType+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A662AA12E7DD5FA00279A65 /* SeedType+Codable.swift */; };
 		8A662AA42E7DD87200279A65 /* WalletManagement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A662AA32E7DD86600279A65 /* WalletManagement.swift */; };
+		8A75EDE72E92DC9900B6A377 /* WalletPortfolioResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A75EDE62E92DC9800B6A377 /* WalletPortfolioResponse.swift */; };
+		8A75EDE92E92DE2700B6A377 /* BalanceV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A75EDE82E92DE2400B6A377 /* BalanceV1.swift */; };
 		8A78CDFA2E434ED60007B16F /* NotWalletWatchApp Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 8A78CDF92E434ED60007B16F /* NotWalletWatchApp Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		8A78CDFF2E434ED60007B16F /* NotWalletWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A78CDFE2E434ED60007B16F /* NotWalletWatchApp.swift */; };
 		8A78CE032E434EDA0007B16F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8A78CE022E434EDA0007B16F /* Assets.xcassets */; };
@@ -94,6 +96,8 @@
 		8A662A9F2E7DD5D300279A65 /* Seed+Codable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Seed+Codable.swift"; sourceTree = "<group>"; };
 		8A662AA12E7DD5FA00279A65 /* SeedType+Codable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SeedType+Codable.swift"; sourceTree = "<group>"; };
 		8A662AA32E7DD86600279A65 /* WalletManagement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletManagement.swift; sourceTree = "<group>"; };
+		8A75EDE62E92DC9800B6A377 /* WalletPortfolioResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletPortfolioResponse.swift; sourceTree = "<group>"; };
+		8A75EDE82E92DE2400B6A377 /* BalanceV1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceV1.swift; sourceTree = "<group>"; };
 		8A78CDF32E434ED60007B16F /* NotWalletWatchApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NotWalletWatchApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A78CDF92E434ED60007B16F /* NotWalletWatchApp Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "NotWalletWatchApp Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A78CDFE2E434ED60007B16F /* NotWalletWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotWalletWatchApp.swift; sourceTree = "<group>"; };
@@ -180,6 +184,8 @@
 				8ACEA55D2E7EE3D0009A572D /* Wallet+Extensions.swift */,
 				8A662A9F2E7DD5D300279A65 /* Seed+Codable.swift */,
 				8A662AA12E7DD5FA00279A65 /* SeedType+Codable.swift */,
+				8A75EDE62E92DC9800B6A377 /* WalletPortfolioResponse.swift */,
+				8A75EDE82E92DE2400B6A377 /* BalanceV1.swift */,
 			);
 			path = DataModel;
 			sourceTree = "<group>";
@@ -456,12 +462,14 @@
 				8AC1B8852E436B380077652E /* MarqueeText.swift in Sources */,
 				8A9369DE2E7895BA00B5A59F /* WalletInfoView.swift in Sources */,
 				8AC1B88E2E436DF10077652E /* ContentView.swift in Sources */,
+				8A75EDE92E92DE2700B6A377 /* BalanceV1.swift in Sources */,
 				8A662A9B2E7DD3D600279A65 /* EditWalletView.swift in Sources */,
 				8A662AA42E7DD87200279A65 /* WalletManagement.swift in Sources */,
 				8AC1B88C2E436D720077652E /* BachInfoView.swift in Sources */,
 				8AB994F52E79999900167DDD /* WalletHelper.swift in Sources */,
 				8ACEA55E2E7EE3D7009A572D /* Wallet+Extensions.swift in Sources */,
 				8AC1B8862E436B380077652E /* PriceGraphView.swift in Sources */,
+				8A75EDE72E92DC9900B6A377 /* WalletPortfolioResponse.swift in Sources */,
 				8A9369DA2E78465700B5A59F /* ImportWalletView.swift in Sources */,
 				8A662A9E2E7DD5B100279A65 /* Wallet+Codable.swift in Sources */,
 				8AC1B88B2E436D720077652E /* TransactionListView.swift in Sources */,
@@ -640,7 +648,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_ASSET_PATHS = "\"NotWalletWatchApp Watch App/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -652,7 +660,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 1.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = xyz.notwallet.NotWalletWatchApp.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
@@ -670,7 +678,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_ASSET_PATHS = "\"NotWalletWatchApp Watch App/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -682,7 +690,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 1.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = xyz.notwallet.NotWalletWatchApp.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
@@ -699,9 +707,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 9;
 				INFOPLIST_KEY_CFBundleDisplayName = NotWalletWatchApp;
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 1.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = xyz.notwallet.NotWalletWatchApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -713,9 +721,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 9;
 				INFOPLIST_KEY_CFBundleDisplayName = NotWalletWatchApp;
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 1.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = xyz.notwallet.NotWalletWatchApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
