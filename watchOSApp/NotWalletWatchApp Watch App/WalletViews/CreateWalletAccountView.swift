@@ -67,6 +67,7 @@ struct CreateWalletAccountView: View {
                     .buttonStyle(.bordered)
                     .frame(maxWidth: .infinity)
                 }
+                .padding()
                 .toggleStyle(.automatic)
             }
             .toolbar(content: {
