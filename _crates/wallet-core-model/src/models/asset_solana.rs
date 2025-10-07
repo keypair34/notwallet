@@ -12,6 +12,15 @@ pub enum SolanaAsset {
     Sol { meta: Metadata },
     BachToken { meta: Metadata },
     ZBtc { meta: Metadata },
+    Jupiter { meta: Metadata },
+    // US Dollar Stablecoins
+    Usdc { meta: Metadata },
+    Usdt { meta: Metadata },
+    Usdg { meta: Metadata },
+    Usds { meta: Metadata },
+    Usd1 { meta: Metadata },
+    // Euro stablecoins
+    Eurc { meta: Metadata },
     // Local token
     BachToken0 { meta: Metadata },
     BachToken1 { meta: Metadata },
@@ -23,12 +32,67 @@ impl SolanaAsset {
             Self::Sol { meta } => meta.to_owned(),
             Self::BachToken { meta } => meta.to_owned(),
             Self::ZBtc { meta } => meta.to_owned(),
+            Self::Jupiter { meta } => meta.to_owned(),
+            // Stablecoins
+            Self::Usdc { meta } => meta.to_owned(),
+            Self::Usdt { meta } => meta.to_owned(),
+            Self::Usdg { meta } => meta.to_owned(),
+            Self::Usds { meta } => meta.to_owned(),
+            Self::Usd1 { meta } => meta.to_owned(),
+            Self::Eurc { meta } => meta.to_owned(),
+            // Local token
             Self::BachToken0 { meta } => meta.to_owned(),
             Self::BachToken1 { meta } => meta.to_owned(),
         }
     }
 }
-
+/*
+#[tsync]
+#[allow(dead_code)]
+pub const USDC: &str = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
+#[tsync]
+#[allow(dead_code)]
+pub const USDT: &str = "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB";
+#[tsync]
+#[allow(dead_code)]
+pub const USDG: &str = "2u1tszSeqZ3qBWF3uNGPFc8TzMk2tdiwknnRMWGWjGWH";
+#[tsync]
+#[allow(dead_code)]
+pub const EURC: &str = "HzwqbKZw8HxMN6bF2yFZNrht3c2iXXzpKcFu7uBEDKtr";
+#[tsync]
+#[allow(dead_code)]
+pub const JUPITER: &str = "JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN";
+#[tsync]
+#[allow(dead_code)]
+pub const MEW: &str = "MEW1gQWJ3nEXg2qgERiKu7FAFj79PHvQVREQUzScPP5";
+#[tsync]
+#[allow(dead_code)]
+pub const PAYPAY_USD: &str = "2b1kV6DkPAnxd5ixfnxCpjxmKwqjjaYmCZfHsFu24GXo";
+#[tsync]
+#[allow(dead_code)]
+pub const BONK: &str = "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263";
+#[tsync]
+#[allow(dead_code)]
+pub const USDS: &str = "USDSwr9ApdHk5bvJKMjzff41FfuX8bSxdKcR81vTwcA";
+#[tsync]
+#[allow(dead_code)]
+pub const OFFICIAL_TRUMP: &str = "6p6xgHyF7AeE6TZkSmFsko444wqoP15icUSqi2jfGiPN";
+#[tsync]
+#[allow(dead_code)]
+pub const COINBASE_WRAPPED_BTC: &str = "cbbtcf3aa214zXHbiAZQwf4122FBYbraNdFqgw4iMij";
+#[tsync]
+#[allow(dead_code)]
+pub const MELANIA_MEME: &str = "FUAfBo2jgks6gB4Z4LfZkqSZgzNucisEHqnNebaRxM1P";
+#[tsync]
+#[allow(dead_code)]
+pub const JITO_STAKED_SOL: &str = "J1toso1uCk3RLmjorhTtrVwY9HJ7X8V9yYac6Y7kGCPn";
+#[tsync]
+#[allow(dead_code)]
+pub const ZBTC: &str = "zBTCug3er3tLyffELcvDNrKkCymbPWysGcWihESYfLg";
+#[tsync]
+#[allow(dead_code)]
+pub const USD1: &str = "USD1ttGY1N17NEEHLmELoaybftRBUSErhqYiQzvEmuB";
+*/
 impl SolanaAsset {
     pub fn native() -> Self {
         Self::Sol {
