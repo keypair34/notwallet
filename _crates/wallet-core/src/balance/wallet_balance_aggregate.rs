@@ -1,7 +1,5 @@
 use {
-    smbcloud_wallet_constants::constants::{
-        LAMPORTS_PER_SOL, SOLANA, SOL_DECIMALS, SPL_TOKEN_PROGRAM_ID,
-    },
+    smbcloud_wallet_constants::constants::{SOLANA, SOL_DECIMALS, SPL_TOKEN_PROGRAM_ID},
     smbcloud_wallet_core_model::models::balance::Balance,
     smbcloud_wallet_core_rpc::balance::{
         sol_balance::sol_balance as core_sol_balance,
@@ -18,7 +16,7 @@ pub async fn wallet_balance_aggregate(
 
     // Get SOL balance
     let sol_amount = match core_sol_balance(rpc_url.clone(), pubkey.clone()) {
-        Ok(balance) => balance / LAMPORTS_PER_SOL,
+        Ok(balance) => balance.1,
         Err(_) => 0.0,
     };
 

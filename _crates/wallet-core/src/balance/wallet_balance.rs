@@ -1,5 +1,5 @@
 use {
-    smbcloud_wallet_constants::constants::{LAMPORTS_PER_SOL, SPL_TOKEN_PROGRAM_ID},
+    smbcloud_wallet_constants::constants::SPL_TOKEN_PROGRAM_ID,
     smbcloud_wallet_core_http::price_data::{
         get_asset_price::get_asset_price, get_sol_price::get_sol_price,
     },
@@ -15,7 +15,7 @@ use {
 pub async fn wallet_balance(rpc_url: String, pubkey: String) -> Result<String, ErrorResponse> {
     // Get SOL balance
     let sol_amount = match core_sol_balance(rpc_url.clone(), pubkey.clone()) {
-        Ok(balance) => balance / LAMPORTS_PER_SOL,
+        Ok(balance) => balance.1,
         Err(_) => 0.0,
     };
 

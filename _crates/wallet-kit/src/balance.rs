@@ -4,8 +4,7 @@ use {
         models::{asset::AssetBalance, currency::FiatCurrency},
     },
     log::error,
-    std::collections::HashMap,
-    smbcloud_wallet_constants::constants::{BACH_TOKEN, LAMPORTS_PER_SOL, SPL_TOKEN_PROGRAM_ID},
+    smbcloud_wallet_constants::constants::{BACH_TOKEN, SPL_TOKEN_PROGRAM_ID},
     smbcloud_wallet_core_http::price_data::{
         get_asset_price::get_asset_price, get_sol_price::get_sol_price,
     },
@@ -14,11 +13,12 @@ use {
         spl_token_accounts_with_balance::spl_token_accounts_with_balance,
     },
     smbcloud_wallet_network::model::ErrorResponse,
+    std::collections::HashMap,
 };
 
 pub fn sol_balance(rpc_url: String, pubkey: String) -> String {
     let sol_amount = match core_sol_balance(rpc_url, pubkey.to_string()) {
-        Ok(balance) => balance / LAMPORTS_PER_SOL,
+        Ok(balance) => balance.1,
         Err(_) => 0.0,
     };
     println!("{:#?} SOL", sol_amount);
@@ -33,7 +33,7 @@ pub async fn wallet_balance(
 ) -> Result<String, ErrorResponse> {
     // Get SOL balance
     let sol_amount = match core_sol_balance(rpc_url.clone(), pubkey.clone()) {
-        Ok(balance) => balance / LAMPORTS_PER_SOL,
+        Ok(balance) => balance.1,
         Err(_) => 0.0,
     };
 
