@@ -8,6 +8,9 @@
 import WalletKitV3
 import UIKit
 
+let BIRDEYE_BASE_URL = "YOUR_BASE_URL"
+let BIRDEYE_API_KEY = "YOUR_API_KEY"
+
 func saveCreateWalletResponse(userDefault: UserDefaults, wallet: CreateWalletResponse) async throws {
     
     // Append wallet
@@ -65,7 +68,7 @@ func saveCreateWalletResponse(userDefault: UserDefaults, wallet: CreateWalletRes
 
 func getAssetPrice(asset: String) async throws -> Double {
     /// Configure the URL for our request.
-    let url = URL(string: "BIRDEYE_BASE_URL/defi/price?address=\(asset)")!
+    let url = URL(string: "\(BIRDEYE_BASE_URL)/v1/defi/price?address=\(asset)")!
     
     /// Create a URLRequest for the POST request.
     var request = URLRequest(url: url)
@@ -77,7 +80,7 @@ func getAssetPrice(asset: String) async throws -> Double {
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
     
     /// Configure BirdEye header
-    request.setValue("BIRDEYE_API_KEY", forHTTPHeaderField: "X-API-KEY")
+    request.setValue(BIRDEYE_API_KEY, forHTTPHeaderField: "X-API-KEY")
     
     /// Configure network
     request.setValue("Solana", forHTTPHeaderField: "x-chain")
@@ -93,7 +96,7 @@ func getAssetPrice(asset: String) async throws -> Double {
 
 func getWalletPortfolio(wallet: String) async throws -> [BalanceV1] {
     /// Configure the URL for our request.
-    let url = URL(string: "BIRDEYE_BASE_URL/v1/wallets/token_list?wallet=\(wallet)&environment=Mainnet")!
+    let url = URL(string: "\(BIRDEYE_BASE_URL)/v1/wallets/token_list?wallet=\(wallet)&environment=Mainnet")!
     
     /// Create a URLRequest for the POST request.
     var request = URLRequest(url: url)
@@ -105,7 +108,7 @@ func getWalletPortfolio(wallet: String) async throws -> [BalanceV1] {
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
     
     /// Configure BirdEye API Key
-    request.setValue("BIRDEYE_API_KEY", forHTTPHeaderField: "X-API-KEY")
+    request.setValue(BIRDEYE_API_KEY, forHTTPHeaderField: "X-API-KEY")
     /// Configure network
     request.setValue("Solana", forHTTPHeaderField: "x-chain")
     
@@ -120,7 +123,7 @@ func getWalletPortfolio(wallet: String) async throws -> [BalanceV1] {
 
 func getWalletBalance(wallet: String) async throws -> String {
     /// Configure the URL for our request.
-    let url = URL(string: "BIRDEYE_BASE_URL/v1/wallets/wallet_balance?wallet=\(wallet)&environment=Mainnet")!
+    let url = URL(string: "\(BIRDEYE_BASE_URL)/v1/wallets/wallet_balance?wallet=\(wallet)&environment=Mainnet")!
     
     /// Create a URLRequest for the POST request.
     var request = URLRequest(url: url)
@@ -132,7 +135,7 @@ func getWalletBalance(wallet: String) async throws -> String {
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
     
     /// Configure BirdEye API Key
-    request.setValue("BIRDEYE_API_KEY", forHTTPHeaderField: "X-API-KEY")
+    request.setValue(BIRDEYE_API_KEY, forHTTPHeaderField: "X-API-KEY")
     /// Configure network
     request.setValue("Solana", forHTTPHeaderField: "x-chain")
     
