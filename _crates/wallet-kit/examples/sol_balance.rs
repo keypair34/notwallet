@@ -1,4 +1,4 @@
-use wallet_kit::balance::sol_balance;
+use smbcloud_wallet_kit::balance::sol_balance;
 
 fn main() {
     let rpc_url = "http://localhost:8899/";

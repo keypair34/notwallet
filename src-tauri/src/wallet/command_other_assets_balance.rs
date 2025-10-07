@@ -1,9 +1,9 @@
 use {
     crate::constants::rpc::rpc_url,
     log::info,
+    smbcloud_wallet_kit::{balance::other_assets_balance, models::asset::AssetBalance},
+    smbcloud_wallet_network::model::ErrorResponse,
     tauri::command,
-    wallet_kit::{balance::other_assets_balance, models::asset::AssetBalance},
-    wallet_network::model::ErrorResponse,
 };
 
 #[command]

@@ -18,7 +18,7 @@ pub fn spl_balance(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use wallet_constants::constants::{BACH_TOKEN, SPL_TOKEN_PROGRAM_ID};
+    use smbcloud_wallet_constants::constants::{BACH_TOKEN, SPL_TOKEN_PROGRAM_ID};
 
     #[test]
     fn test_spl_balance_error_handling() {

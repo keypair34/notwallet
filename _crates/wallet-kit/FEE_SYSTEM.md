@@ -161,7 +161,7 @@ pub async fn create_token_transfer_ix(
 ### Basic Fee Calculation
 
 ```rust
-use wallet_kit::fee::{FeeBreakdown, TreasuryFeeManager};
+use smbcloud_wallet_kit::fee::{FeeBreakdown, TreasuryFeeManager};
 
 // Calculate fees for 100 SOL
 let breakdown = FeeBreakdown::new(100.0, "SOL".to_string())?;
@@ -173,7 +173,7 @@ println!("Summary: {}", breakdown.format_summary());
 ### SOL Transaction with Fee
 
 ```rust
-use wallet_kit::transactions::create_transfer_ix;
+use smbcloud_wallet_kit::transactions::create_transfer_ix;
 
 // Send 10 SOL (0.025 SOL goes to treasury, 9.975 SOL to recipient)
 let signature = create_transfer_ix(
@@ -188,7 +188,7 @@ let signature = create_transfer_ix(
 ### Token Transaction with Fee
 
 ```rust
-use wallet_kit::transactions::create_token_transfer_ix;
+use smbcloud_wallet_kit::transactions::create_token_transfer_ix;
 
 // Send 100 BACH (0.25 BACH goes to treasury, 99.75 BACH to recipient)
 let signature = create_token_transfer_ix(
@@ -205,7 +205,7 @@ let signature = create_token_transfer_ix(
 ### Cost Estimation
 
 ```rust
-use wallet_kit::transactions::{estimate_sol_transaction_cost, estimate_token_transaction_cost};
+use smbcloud_wallet_kit::transactions::{estimate_sol_transaction_cost, estimate_token_transaction_cost};
 
 // Estimate SOL transaction cost
 let estimate = estimate_sol_transaction_cost(
@@ -312,7 +312,7 @@ All fee collections are logged with the following information:
 
 Example log entry:
 ```
-INFO wallet_kit::fee: Fee collected - Signature: 5J7... | Type: SOL | Original: 100 SOL | Fee: 0.25 SOL | Net: 99.75 SOL | Treasury: 3YAyrP4mjiLRuHZQjfskmmVBbF7urtfDLfnLtW2jzgx3
+INFO smbcloud_wallet_kit::fee: Fee collected - Signature: 5J7... | Type: SOL | Original: 100 SOL | Fee: 0.25 SOL | Net: 99.75 SOL | Treasury: 3YAyrP4mjiLRuHZQjfskmmVBbF7urtfDLfnLtW2jzgx3
 ```
 
 ## Testing
@@ -330,8 +330,8 @@ cargo run --example fee_demo
 ## Integration Example
 
 ```rust
-use wallet_kit::fee::{FeeBreakdown, TreasuryFeeManager};
-use wallet_kit::transactions::create_transfer_ix;
+use smbcloud_wallet_kit::fee::{FeeBreakdown, TreasuryFeeManager};
+use smbcloud_wallet_kit::transactions::create_transfer_ix;
 
 async fn send_with_fee_display(
     sender_keypair: Keypair,
@@ -341,13 +341,13 @@ async fn send_with_fee_display(
 ) -> Result<String, Box<dyn std::error::Error>> {
     // Calculate and display fee breakdown
     let fee_breakdown = TreasuryFeeManager::calculate_fees(amount, "SOL".to_string())?;
-    
+
     println!("Transaction Summary:");
     println!("  Original Amount: {} SOL", fee_breakdown.original_amount);
     println!("  Fee to Treasury: {} SOL", fee_breakdown.fee_amount);
     println!("  Net to Recipient: {} SOL", fee_breakdown.net_amount);
     println!("  Treasury Address: {}", THE_STABLE_FOUNDATION_TREASURY);
-    
+
     // Execute transaction (fee is automatically included)
     let signature = create_transfer_ix(
         "https://api.mainnet-beta.solana.com".to_string(),
@@ -356,7 +356,7 @@ async fn send_with_fee_display(
         to,
         amount,
     ).await?;
-    
+
     println!("Transaction completed: {}", signature);
     Ok(signature)
 }
@@ -430,7 +430,7 @@ This will show:
 ### Testing Fee Calculations
 
 ```rust
-use wallet_kit::fee::FeeBreakdown;
+use smbcloud_wallet_kit::fee::FeeBreakdown;
 
 // Test fee calculation
 let breakdown = FeeBreakdown::new(100.0, "SOL".to_string())?;

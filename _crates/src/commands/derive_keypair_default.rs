@@ -1,8 +1,8 @@
 use {
     crate::models::keypair::{KeyPair, KeyPairError},
     bs58::encode,
+    smbcloud_wallet_core::derive_keypair::derive_keypair,
     solana_sdk::signer::Signer,
-    wallet_core::derive_keypair::derive_keypair,
 };
 
 #[uniffi::export]

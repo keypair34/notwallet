@@ -1,5 +1,5 @@
 [package]
-name = "wallet-network"
+name = "smbcloud-wallet-network"
 version = "0.1.0"
 edition = "2021"
 description = "Network"
@@ -7,7 +7,7 @@ license = "MIT"
 
 [lib]
 crate-type = ["lib"]
-name = "wallet_network"
+name = "smbcloud_wallet_network"
 
 [dependencies]
 bs58 = "0.5.0"

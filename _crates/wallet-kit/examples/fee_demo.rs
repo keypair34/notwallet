@@ -3,7 +3,7 @@
 //! This example demonstrates how the 0.25% fee system works for both SOL and token transfers.
 //! The fee is automatically deducted from each transaction and sent to The Stable Foundation Treasury.
 
-use wallet_kit::{
+use smbcloud_wallet_kit::{
     fee::{FeeBreakdown, FeeConfig},
     transactions::{estimate_sol_transaction_cost, estimate_token_transaction_cost},
 };
@@ -315,7 +315,7 @@ fn demonstrate_instruction_creation() {
     println!("  To: {}", to_wallet);
     println!(
         "  Treasury: {}",
-        wallet_constants::constants::THE_STABLE_FOUNDATION_TREASURY_ADDRESS
+        smbcloud_wallet_constants::constants::THE_STABLE_FOUNDATION_TREASURY_ADDRESS
     );
     println!();
 

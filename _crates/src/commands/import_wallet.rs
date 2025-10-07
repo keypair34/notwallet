@@ -6,8 +6,8 @@ use {
         wallet::Wallet,
     },
     chrono::Utc,
+    smbcloud_wallet_core::import_wallet::import_solana_wallet as core_import_wallet,
     uuid::Uuid,
-    wallet_core::import_wallet::import_solana_wallet as core_import_wallet,
 };
 
 #[uniffi::export]

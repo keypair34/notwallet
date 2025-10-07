@@ -4063,6 +4063,12 @@ dependencies = [
  "reqwest",
  "serde",
  "serde_json",
+ "smbcloud-wallet-constants",
+ "smbcloud-wallet-core",
+ "smbcloud-wallet-core-rpc",
+ "smbcloud-wallet-kit",
+ "smbcloud-wallet-kit-v3",
+ "smbcloud-wallet-network",
  "solana-sdk 2.3.1",
  "solana-signer 3.0.0",
  "tauri",
@@ -4078,12 +4084,6 @@ dependencies = [
  "thiserror 1.0.69",
  "tsync",
  "uuid",
- "wallet-constants",
- "wallet-core",
- "wallet-core-rpc",
- "wallet-kit",
- "wallet-kit-v3",
- "wallet-network",
 ]
 
 [[package]]
@@ -6379,6 +6379,157 @@ name = "smawk"
 version = "0.3.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b7c388c1b5e93756d0c740965c41e8822f866621d41acbdf6336a6a168f8840c"
+
+[[package]]
+name = "smbcloud-wallet-constants"
+version = "0.1.0"
+dependencies = [
+ "tsync",
+]
+
+[[package]]
+name = "smbcloud-wallet-core"
+version = "1.0.0"
+dependencies = [
+ "bip39",
+ "bs58",
+ "log",
+ "reqwest",
+ "serde",
+ "serde_json",
+ "smbcloud-wallet-constants",
+ "smbcloud-wallet-core-http",
+ "smbcloud-wallet-core-model",
+ "smbcloud-wallet-core-rpc",
+ "smbcloud-wallet-network",
+ "solana-account-decoder 3.1.0",
+ "solana-client 3.1.0",
+ "solana-derivation-path 3.0.0",
+ "solana-pubkey 3.0.0",
+ "solana-rpc-client 3.1.0",
+ "solana-sdk 3.0.0",
+ "tokio",
+]
+
+[[package]]
+name = "smbcloud-wallet-core-http"
+version = "1.0.0"
+dependencies = [
+ "bip39",
+ "bs58",
+ "log",
+ "reqwest",
+ "serde",
+ "serde_json",
+ "smbcloud-wallet-constants",
+ "smbcloud-wallet-core-model",
+ "smbcloud-wallet-network",
+ "solana-account-decoder 3.1.0",
+ "solana-client 3.1.0",
+ "solana-derivation-path 3.0.0",
+ "solana-pubkey 3.0.0",
+ "solana-rpc-client 3.1.0",
+ "solana-sdk 3.0.0",
+ "tokio",
+]
+
+[[package]]
+name = "smbcloud-wallet-core-model"
+version = "1.0.0"
+dependencies = [
+ "serde",
+ "serde_json",
+ "uniffi",
+]
+
+[[package]]
+name = "smbcloud-wallet-core-rpc"
+version = "1.0.0"
+dependencies = [
+ "bip39",
+ "bs58",
+ "log",
+ "reqwest",
+ "serde",
+ "serde_json",
+ "smbcloud-wallet-constants",
+ "smbcloud-wallet-core-http",
+ "smbcloud-wallet-core-model",
+ "smbcloud-wallet-network",
+ "solana-account-decoder 3.1.0",
+ "solana-client 3.1.0",
+ "solana-derivation-path 3.0.0",
+ "solana-pubkey 3.0.0",
+ "solana-rpc-client 3.1.0",
+ "solana-sdk 3.0.0",
+ "tokio",
+]
+
+[[package]]
+name = "smbcloud-wallet-kit"
+version = "0.1.0"
+dependencies = [
+ "base64 0.22.1",
+ "bincode",
+ "bip39",
+ "bs58",
+ "env_logger 0.10.2",
+ "log",
+ "reqwest",
+ "serde",
+ "serde_json",
+ "smbcloud-wallet-constants",
+ "smbcloud-wallet-core",
+ "smbcloud-wallet-core-http",
+ "smbcloud-wallet-core-rpc",
+ "smbcloud-wallet-network",
+ "solana-account-decoder 2.3.12",
+ "solana-address",
+ "solana-client 2.3.12",
+ "solana-instruction 3.0.0",
+ "solana-program 2.3.0",
+ "solana-sdk 2.3.1",
+ "solana-system-interface 2.0.0",
+ "spl-associated-token-account",
+ "spl-token 7.0.0",
+ "thiserror 1.0.69",
+ "tokio",
+ "tsync",
+]
+
+[[package]]
+name = "smbcloud-wallet-kit-v3"
+version = "1.0.0"
+dependencies = [
+ "bs58",
+ "chrono",
+ "smbcloud-wallet-constants",
+ "smbcloud-wallet-core",
+ "smbcloud-wallet-core-http",
+ "smbcloud-wallet-core-model",
+ "smbcloud-wallet-core-rpc",
+ "solana-sdk 3.0.0",
+ "uniffi",
+ "uuid",
+]
+
+[[package]]
+name = "smbcloud-wallet-network"
+version = "0.1.0"
+dependencies = [
+ "bs58",
+ "env_logger 0.10.2",
+ "log",
+ "reqwest",
+ "serde",
+ "serde_json",
+ "serde_repr",
+ "strum",
+ "strum_macros",
+ "thiserror 1.0.69",
+ "tokio",
+ "tsync",
+]
 
 [[package]]
 name = "socket2"
@@ -12351,157 +12502,6 @@ checksum = "29790946404f91d9c5d06f9874efddea1dc06c5efe94541a7d6863108e3a5e4b"
 dependencies = [
  "same-file",
  "winapi-util",
-]
-
-[[package]]
-name = "wallet-constants"
-version = "0.1.0"
-dependencies = [
- "tsync",
-]
-
-[[package]]
-name = "wallet-core"
-version = "1.0.0"
-dependencies = [
- "bip39",
- "bs58",
- "log",
- "reqwest",
- "serde",
- "serde_json",
- "solana-account-decoder 3.1.0",
- "solana-client 3.1.0",
- "solana-derivation-path 3.0.0",
- "solana-pubkey 3.0.0",
- "solana-rpc-client 3.1.0",
- "solana-sdk 3.0.0",
- "tokio",
- "wallet-constants",
- "wallet-core-http",
- "wallet-core-model",
- "wallet-core-rpc",
- "wallet-network",
-]
-
-[[package]]
-name = "wallet-core-http"
-version = "1.0.0"
-dependencies = [
- "bip39",
- "bs58",
- "log",
- "reqwest",
- "serde",
- "serde_json",
- "solana-account-decoder 3.1.0",
- "solana-client 3.1.0",
- "solana-derivation-path 3.0.0",
- "solana-pubkey 3.0.0",
- "solana-rpc-client 3.1.0",
- "solana-sdk 3.0.0",
- "tokio",
- "wallet-constants",
- "wallet-core-model",
- "wallet-network",
-]
-
-[[package]]
-name = "wallet-core-model"
-version = "1.0.0"
-dependencies = [
- "serde",
- "serde_json",
- "uniffi",
-]
-
-[[package]]
-name = "wallet-core-rpc"
-version = "1.0.0"
-dependencies = [
- "bip39",
- "bs58",
- "log",
- "reqwest",
- "serde",
- "serde_json",
- "solana-account-decoder 3.1.0",
- "solana-client 3.1.0",
- "solana-derivation-path 3.0.0",
- "solana-pubkey 3.0.0",
- "solana-rpc-client 3.1.0",
- "solana-sdk 3.0.0",
- "tokio",
- "wallet-constants",
- "wallet-core-http",
- "wallet-core-model",
- "wallet-network",
-]
-
-[[package]]
-name = "wallet-kit"
-version = "0.1.0"
-dependencies = [
- "base64 0.22.1",
- "bincode",
- "bip39",
- "bs58",
- "env_logger 0.10.2",
- "log",
- "reqwest",
- "serde",
- "serde_json",
- "solana-account-decoder 2.3.12",
- "solana-address",
- "solana-client 2.3.12",
- "solana-instruction 3.0.0",
- "solana-program 2.3.0",
- "solana-sdk 2.3.1",
- "solana-system-interface 2.0.0",
- "spl-associated-token-account",
- "spl-token 7.0.0",
- "thiserror 1.0.69",
- "tokio",
- "tsync",
- "wallet-constants",
- "wallet-core",
- "wallet-core-http",
- "wallet-core-rpc",
- "wallet-network",
-]
-
-[[package]]
-name = "wallet-kit-v3"
-version = "1.0.0"
-dependencies = [
- "bs58",
- "chrono",
- "solana-sdk 3.0.0",
- "uniffi",
- "uuid",
- "wallet-constants",
- "wallet-core",
- "wallet-core-http",
- "wallet-core-model",
- "wallet-core-rpc",
-]
-
-[[package]]
-name = "wallet-network"
-version = "0.1.0"
-dependencies = [
- "bs58",
- "env_logger 0.10.2",
- "log",
- "reqwest",
- "serde",
- "serde_json",
- "serde_repr",
- "strum",
- "strum_macros",
- "thiserror 1.0.69",
- "tokio",
- "tsync",
 ]
 
 [[package]]

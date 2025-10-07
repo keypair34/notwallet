@@ -1,6 +1,7 @@
 use {
-    crate::constants::rpc::rpc_url, log::info, tauri::command, wallet_kit::balance::wallet_balance,
-    wallet_kit::models::currency::FiatCurrency, wallet_network::model::ErrorResponse,
+    crate::constants::rpc::rpc_url, log::info, smbcloud_wallet_kit::balance::wallet_balance,
+    smbcloud_wallet_kit::models::currency::FiatCurrency,
+    smbcloud_wallet_network::model::ErrorResponse, tauri::command,
 };
 
 #[command]

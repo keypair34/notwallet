@@ -1,6 +1,6 @@
 use std::fmt::Display;
 
-use wallet_constants::rpc::{
+use smbcloud_wallet_constants::rpc::{
     SOLANA_DEVNET_RPC_BASE_URL, SOLANA_MAINNET_RPC_BASE_URL, SOLANA_RPC_ID, SOLANA_RPC_NAMESPACE,
     SOLANA_TESTNET_RPC_BASE_URL,
 };

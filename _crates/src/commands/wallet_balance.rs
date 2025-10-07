@@ -3,7 +3,7 @@ use {
         keypair::KeyPairError,
         network_type::{rpc_url, NetworkType},
     },
-    wallet_core::balance::wallet_balance::wallet_balance as core_wallet_balance,
+    smbcloud_wallet_core::balance::wallet_balance::wallet_balance as core_wallet_balance,
 };
 
 #[uniffi::export(async_runtime = "tokio")]

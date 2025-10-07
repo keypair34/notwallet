@@ -9,8 +9,8 @@ use {
         },
     },
     chrono::Utc,
+    smbcloud_wallet_core::create_seed_phrase::create_seed_phrase,
     uuid::Uuid,
-    wallet_core::create_seed_phrase::create_seed_phrase,
 };
 
 /// Create a new 12-word English seed phrase and derive the default keypair.

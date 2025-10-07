@@ -12,7 +12,7 @@ use {
     },
     std::str::FromStr,
     thiserror::Error,
-    wallet_constants::constants::{SEMITONE_PER_BACH, THE_STABLE_FOUNDATION_TREASURY_ADDRESS},
+    smbcloud_wallet_constants::constants::{SEMITONE_PER_BACH, THE_STABLE_FOUNDATION_TREASURY_ADDRESS},
 };
 
 #[derive(Error, Debug)]

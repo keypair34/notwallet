@@ -3,7 +3,7 @@ use {
         keypair::KeyPairError,
         network_type::{rpc_url, NetworkType},
     },
-    wallet_core_rpc::balance::sol_balance::sol_balance as core_sol_balance,
+    smbcloud_wallet_core_rpc::balance::sol_balance::sol_balance as core_sol_balance,
 };
 
 #[uniffi::export]

@@ -1,5 +1,5 @@
 [package]
-name = "wallet-core-model"
+name = "smbcloud-wallet-core-model"
 version = "1.0.0"
 edition = "2021"
 description = "Wallet Core Model"
@@ -7,7 +7,7 @@ license = "MIT"
 
 [lib]
 crate-type = ["lib", "cdylib", "staticlib"]
-name = "wallet_core_model"
+name = "smbcloud_wallet_core_model"
 
 [dependencies]
 serde = { version = "1.0", features = ["derive"] }

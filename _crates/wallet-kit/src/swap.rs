@@ -7,15 +7,15 @@ use {
     bincode,
     log::debug,
     reqwest::{header::CONTENT_TYPE, Client},
+    smbcloud_wallet_constants::constants::{
+        FEE_ACCOUNT, JUPITER_BASE_URL, JUPITER_SWAP_PATH, JUPITER_SWAP_QUOTE_PATH, PLATFORM_FEE_BPS,
+    },
+    smbcloud_wallet_network::{model::ErrorResponse, request},
     solana_client::rpc_client::RpcClient,
     solana_sdk::{
         signature::{Keypair, Signature},
         transaction::VersionedTransaction,
     },
-    wallet_constants::constants::{
-        FEE_ACCOUNT, JUPITER_BASE_URL, JUPITER_SWAP_PATH, JUPITER_SWAP_QUOTE_PATH, PLATFORM_FEE_BPS,
-    },
-    wallet_network::{model::ErrorResponse, request},
 };
 
 /// Get a swap quote from Jupiter for exchanging tokens.
@@ -42,8 +42,8 @@ use {
 /// # Examples
 ///
 /// ```rust
-/// use wallet_kit::swap::get_jupiter_swap_quote;
-/// use wallet_kit::assets::{SOLANA, BACH_TOKEN};
+/// use smbcloud_wallet_kit::swap::get_jupiter_swap_quote;
+/// use smbcloud_wallet_kit::assets::{SOLANA, BACH_TOKEN};
 ///
 /// // Get quote for swapping 1 SOL to BACH with 1% slippage
 /// let quote = get_jupiter_swap_quote(
@@ -103,8 +103,8 @@ pub async fn get_jupiter_swap_quote(
 /// # Examples
 ///
 /// ```rust
-/// use wallet_kit::swap::build_swap_transaction;
-/// use wallet_kit::models::swap::SwapTransactionPayload;
+/// use smbcloud_wallet_kit::swap::build_swap_transaction;
+/// use smbcloud_wallet_kit::models::swap::SwapTransactionPayload;
 ///
 /// let payload = SwapTransactionPayload {
 ///     // ... payload fields from quote and user preferences
@@ -152,7 +152,7 @@ pub async fn build_swap_transaction(
 /// # Examples
 ///
 /// ```rust
-/// use wallet_kit::swap::send_jupiter_swap_transaction;
+/// use smbcloud_wallet_kit::swap::send_jupiter_swap_transaction;
 /// use solana_sdk::signature::Keypair;
 ///
 /// let signature = send_jupiter_swap_transaction(
@@ -175,14 +175,14 @@ pub async fn send_jupiter_swap_transaction(
     let transaction_bytes = general_purpose::STANDARD
         .decode(&swap_transaction)
         .map_err(|e| ErrorResponse::Error {
-            code: wallet_network::model::ErrorCode::ParseError,
+            code: smbcloud_wallet_network::model::ErrorCode::ParseError,
             message: format!("Failed to decode base64 transaction: {}", e),
         })?;
 
     // Deserialize the transaction
     let versioned_transaction: VersionedTransaction = bincode::deserialize(&transaction_bytes)
         .map_err(|e| ErrorResponse::Error {
-            code: wallet_network::model::ErrorCode::ParseError,
+            code: smbcloud_wallet_network::model::ErrorCode::ParseError,
             message: format!("Failed to deserialize transaction: {}", e),
         })?;
 
@@ -195,7 +195,7 @@ pub async fn send_jupiter_swap_transaction(
     let signed_versioned_transaction =
         VersionedTransaction::try_new(versioned_transaction.message, &[&keypair]).map_err(|e| {
             ErrorResponse::Error {
-                code: wallet_network::model::ErrorCode::ParseError,
+                code: smbcloud_wallet_network::model::ErrorCode::ParseError,
                 message: format!("Failed to sign transaction: {}", e),
             }
         })?;
@@ -205,7 +205,7 @@ pub async fn send_jupiter_swap_transaction(
     let signature = rpc_client
         .send_and_confirm_transaction(&signed_versioned_transaction)
         .map_err(|e| ErrorResponse::Error {
-            code: wallet_network::model::ErrorCode::NetworkError,
+            code: smbcloud_wallet_network::model::ErrorCode::NetworkError,
             message: format!("Failed to send transaction: {}", e),
         })?;
 

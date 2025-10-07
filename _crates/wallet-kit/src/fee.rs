@@ -1,6 +1,9 @@
 use {
     log::info,
     serde::{Deserialize, Serialize},
+    smbcloud_wallet_constants::constants::{
+        LAMPORTS_PER_SOL, THE_STABLE_FOUNDATION_TREASURY_ADDRESS,
+    },
     solana_address::Address,
     solana_instruction::Instruction,
     solana_sdk::{pubkey::Pubkey, system_instruction},
@@ -8,7 +11,6 @@ use {
     spl_token::instruction as token_instruction,
     std::str::FromStr,
     thiserror::Error,
-    wallet_constants::constants::{LAMPORTS_PER_SOL, THE_STABLE_FOUNDATION_TREASURY_ADDRESS},
 };
 
 #[derive(Error, Debug)]
@@ -320,7 +322,7 @@ impl FeeConfig {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use wallet_constants::constants::SEMITONE_PER_BACH;
+    use smbcloud_wallet_constants::constants::SEMITONE_PER_BACH;
 
     #[test]
     fn test_fee_breakdown_creation() {
