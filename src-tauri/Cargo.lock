@@ -6467,21 +6467,16 @@ dependencies = [
 name = "smbcloud-wallet-core-rpc"
 version = "1.0.0"
 dependencies = [
- "bip39",
- "bs58",
  "log",
- "reqwest",
  "serde",
  "serde_json",
  "smbcloud-wallet-constants",
  "smbcloud-wallet-core-network",
  "solana-account-decoder 3.1.0",
  "solana-client 3.1.0",
- "solana-derivation-path 3.0.0",
  "solana-pubkey 3.0.0",
  "solana-rpc-client 3.1.0",
  "solana-sdk 3.0.0",
- "tokio",
 ]
 
 [[package]]
