@@ -49,7 +49,7 @@ pub struct BirdeyePriceData {
     pub update_human_time: String,
 
     #[serde(rename = "priceChange24h")]
-    pub price_change_24h: f64,
+    pub price_change_24h: Option<f64>,
 
     #[serde(rename = "priceInNative")]
     pub price_in_native: f64,
@@ -58,12 +58,12 @@ pub struct BirdeyePriceData {
 impl BirdeyePriceData {
     /// Get the price change percentage as a formatted string
     pub fn price_change_percentage(&self) -> String {
-        format!("{:.2}%", self.price_change_24h)
+        format!("{:.2}%", self.price_change_24h.unwrap_or_default())
     }
 
     /// Check if the price has increased in the last 24 hours
     pub fn is_price_up(&self) -> bool {
-        self.price_change_24h > 0.0
+        self.price_change_24h.unwrap_or_default() > 0.0
     }
 
     /// Get formatted USD price with appropriate decimal places
@@ -250,7 +250,7 @@ mod tests {
         assert_eq!(response.data.value, 0.16841499484059755);
         assert_eq!(response.data.update_unix_time, 1756693582);
         assert_eq!(response.data.update_human_time, "2025-09-01T02:26:22");
-        assert_eq!(response.data.price_change_24h, -17.011320660513977);
+        assert_eq!(response.data.price_change_24h, Some(-17.011320660513977));
         assert_eq!(response.data.price_in_native, 0.0008419589807401728);
     }
 
@@ -261,7 +261,7 @@ mod tests {
             value: 0.16841499484059755,
             update_unix_time: 1756693582,
             update_human_time: "2025-09-01T02:26:22".to_string(),
-            price_change_24h: -17.011320660513977,
+            price_change_24h: Some(-17.011320660513977),
             price_in_native: 0.0008419589807401728,
         };
 
@@ -282,7 +282,7 @@ mod tests {
                 value: 0.16841499484059755,
                 update_unix_time: 1756693582,
                 update_human_time: "2025-09-01T02:26:22".to_string(),
-                price_change_24h: -17.011320660513977,
+                price_change_24h: Some(-17.011320660513977),
                 price_in_native: 0.0008419589807401728,
             },
             success: true,
