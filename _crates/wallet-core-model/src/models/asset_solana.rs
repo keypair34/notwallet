@@ -1,7 +1,10 @@
 use {
     crate::models::{asset_metadata::Metadata, environment::Environment},
+    smbcloud_wallet_constants::constants::SPL_TOKEN_PROGRAM_ID,
     smbcloud_wallet_core_network::model::ErrorResponse,
-    smbcloud_wallet_core_rpc::balance::{sol_balance::sol_balance, spl_balance::spl_balance},
+    smbcloud_wallet_core_rpc::balance::{
+        aggregate_spl_token_balance::aggregate_spl_token_balance, sol_balance::sol_balance,
+    },
 };
 
 #[derive(Debug)]
@@ -77,22 +80,25 @@ impl SolanaAsset {
         address: String,
     ) -> Result<(u64, f64), ErrorResponse> {
         match self {
-            SolanaAsset::Sol { meta } => {
-                panic!()
-                //sol_balance(environment.rpc_url(), address)
-            }
-            SolanaAsset::BachToken { meta } => {
-                panic!()
-                //spl_balance(meta, environment.rpc_url(), address)
-            }
-            SolanaAsset::BachToken0 { meta } => {
-                panic!()
-                //spl_balance(meta, environment.rpc_url(), address)
-            }
-            SolanaAsset::BachToken1 { meta } => {
-                panic!()
-                //spl_balance(meta, environment.rpc_url(), address)
-            }
+            SolanaAsset::Sol { meta: _ } => sol_balance(environment.rpc_url(), address),
+            SolanaAsset::BachToken { meta } => aggregate_spl_token_balance(
+                environment.rpc_url(),
+                address,
+                SPL_TOKEN_PROGRAM_ID.to_string(),
+                meta.address,
+            ),
+            SolanaAsset::BachToken0 { meta } => aggregate_spl_token_balance(
+                environment.rpc_url(),
+                address,
+                SPL_TOKEN_PROGRAM_ID.to_string(),
+                meta.address,
+            ),
+            SolanaAsset::BachToken1 { meta } => aggregate_spl_token_balance(
+                environment.rpc_url(),
+                address,
+                SPL_TOKEN_PROGRAM_ID.to_string(),
+                meta.address,
+            ),
         }
     }
 }
