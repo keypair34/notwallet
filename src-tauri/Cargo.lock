@@ -6439,6 +6439,7 @@ version = "1.0.0"
 dependencies = [
  "serde",
  "serde_json",
+ "smbcloud-wallet-constants",
  "uniffi",
 ]
 

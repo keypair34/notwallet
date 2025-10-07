@@ -1,5 +1,4 @@
 use {
-    log::debug,
     reqwest::Client,
     smbcloud_wallet_constants::constants::{
         BIRDEYE_API_KEY, BIRDEYE_BASE_URL, BIRDEYE_PRICE_PATH, USER_AGENT,
@@ -9,7 +8,7 @@ use {
 };
 
 pub async fn get_asset_price(asset: &str) -> Result<BirdeyePriceResponse, ErrorResponse> {
-    debug!("Get asset price");
+    println!("🦀🦀  Get asset price");
 
     let url = format!(
         "{}{}?address={}",
