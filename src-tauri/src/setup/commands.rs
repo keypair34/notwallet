@@ -21,3 +21,8 @@ pub async fn get_installation_id(app: AppHandle) -> Result<String, String> {
         }
     }
 }
+
+#[tauri::command]
+pub fn is_debug() -> bool {
+    cfg!(debug_assertions)
+}

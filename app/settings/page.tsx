@@ -15,16 +15,24 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 import PrivacyTipOutlinedIcon from "@mui/icons-material/PrivacyTipOutlined";
 import CodeOutlinedIcon from "@mui/icons-material/CodeOutlined";
-import TuneOutlinedIcon from "@mui/icons-material/TuneOutlined";
 import PhoneAndroidOutlinedIcon from "@mui/icons-material/PhoneAndroidOutlined";
-import LanguageIcon from "@mui/icons-material/Language";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import SettingsIcon from "@mui/icons-material/Settings";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import { useRouter } from "next/navigation";
 import { selectionFeedback } from "@tauri-apps/plugin-haptics";
 import PageTitleBar from "@/lib/components/page-title-bar";
 import Confetti from "react-confetti";
 import { useI18n } from "@/lib/i18n/provider";
+import { invoke } from "@tauri-apps/api/core";
+
+type SettingItem = {
+  id: string;
+  label: string;
+  icon: React.ReactElement;
+  action: () => void;
+  hasChevron: boolean;
+};
 
 export default function SettingsPage() {
   const router = useRouter();
@@ -36,6 +44,7 @@ export default function SettingsPage() {
     width: 0,
     height: 0,
   });
+  const [isDebug, setIsDebug] = React.useState(false);
 
   React.useEffect(() => {
     const updateDimensions = () => {
@@ -59,6 +68,7 @@ export default function SettingsPage() {
       | "privacyPolicy"
       | "termsOfService"
       | "appInfo"
+      | "debugSetting"
       | "appPreferences"
       | "languagePreferences",
   ) => {
@@ -87,6 +97,8 @@ export default function SettingsPage() {
       router.push("/settings/app-preferences");
     } else if (type === "languagePreferences") {
       router.push("/settings/app-preferences");
+    } else if (type === "debugSetting") {
+      router.push("/settings/debug");
     }
   };
 
@@ -95,22 +107,36 @@ export default function SettingsPage() {
     setFooterClickCount(0); // Reset counter after showing modal
   };
 
-  const settingsItems = [
-    {
-      id: "about",
-      label: t("common.about"),
-      icon: <InfoOutlinedIcon />,
-      action: () => handleClick("about"),
-      hasChevron: true,
-    },
-    {
-      id: "appInfo",
-      label: t("common.appInfo"),
-      icon: <PhoneAndroidOutlinedIcon />,
-      action: () => handleClick("appInfo"),
-      hasChevron: true,
-    },
-  ];
+  const settingsItems = (isDebug: boolean) => {
+    let settings: SettingItem[] = [
+      {
+        id: "about",
+        label: t("common.about"),
+        icon: <InfoOutlinedIcon />,
+        action: () => handleClick("about"),
+        hasChevron: true,
+      },
+      {
+        id: "appInfo",
+        label: t("common.appInfo"),
+        icon: <PhoneAndroidOutlinedIcon />,
+        action: () => handleClick("appInfo"),
+        hasChevron: true,
+      },
+    ];
+
+    if (isDebug) {
+      settings.push({
+        id: "debugSetting",
+        label: "Debug Settings",
+        icon: <SettingsIcon />,
+        action: () => handleClick("debugSetting"),
+        hasChevron: true,
+      });
+    }
+
+    return settings;
+  };
 
   const legalItems = [
     {
@@ -135,6 +161,15 @@ export default function SettingsPage() {
       hasChevron: true,
     },
   ];
+
+  const init = async () => {
+    const isDebug = await invoke<boolean>("is_debug");
+    setIsDebug(isDebug);
+  };
+
+  React.useEffect(() => {
+    init();
+  }, []);
 
   const renderListItem = (item: any, isLast: boolean = false) => (
     <React.Fragment key={item.id}>
@@ -242,7 +277,7 @@ export default function SettingsPage() {
             </Typography>
           </Box>
           <List sx={{ p: 0, pb: 1 }}>
-            {settingsItems.map((item, index) =>
+            {settingsItems(isDebug).map((item, index) =>
               renderListItem(item, index === settingsItems.length - 1),
             )}
           </List>
