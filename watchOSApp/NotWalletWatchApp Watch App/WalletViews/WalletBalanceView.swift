@@ -41,18 +41,36 @@ struct WalletBalanceView: View {
                             .font(.system(size: 24, weight: .bold, design: .rounded))
                             .foregroundColor(.purple)
 
-                        ForEach(balances, id: \.mint) { balance in
-                            VStack(alignment: .leading) {
-                                Text("\(balance.balance) \(balance.symbol)")
-                                    .alignmentGuide(.trailing) { _ in
-                                        -10
+                        ForEach(balances, id: \.meta.address) { balance in
+                            Button(action: { }) {
+                                HStack(alignment: .top) {
+                                    AsyncImage(url: URL(string: balance.meta.logo_uri)) { image in
+                                        image.resizable()
+                                        } placeholder: {
+                                            Color.red
+                                        }
+                                        .frame(width: 24, height: 24)
+                                        .clipShape(.rect(cornerRadius: 12))
+                                    
+                                    VStack(alignment: .leading) {
+                                        Text("\(balance.display())")
+                                            .alignmentGuide(.trailing) { _ in
+                                                -10
+                                            }
+                                            .padding(.horizontal)
+                                        Text(balance.meta.address)
+                                            .font(.system(size: 12, weight: .light, design: .rounded))
+                                            .foregroundColor(.yellow)
+                                            .padding(.horizontal)
                                     }
-                                Text(balance.mint)
-                                    .font(.system(size: 12, weight: .light, design: .rounded))
-                                    .foregroundColor(.yellow)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 8)
+                                            .fill(Color(.purple))
+                                    )
+                                    .padding(.horizontal)
+                                }
                             }
-                            .padding()
-                            .border(Color.purple)
+                            .buttonStyle(.plain)
                         }
                         .frame(minHeight: minRowHeight)
                         
@@ -96,7 +114,7 @@ struct WalletBalanceView: View {
 
     // MARK: - Environment
 
-    @Environment(\.defaultMinListRowHeight) private var minRowHeight
+    @SwiftUI.Environment(\.defaultMinListRowHeight) private var minRowHeight
 }
 
 extension WalletBalanceView {
@@ -110,7 +128,7 @@ extension WalletBalanceView {
             case idle
             case loading
             case failed(Error)
-            case loaded([Balance])
+            case loaded([BalanceV1])
         }
 
         @Published private(set) var state = ViewState.idle
@@ -119,10 +137,7 @@ extension WalletBalanceView {
         func initialize() async throws {
             print("Get aggregate wallet balance")
             state = .loading
-            let balances = try await walletBalanceAggregate(
-                network: .solanaDevnet,
-                pubkey: activeKeyPair.pubkey
-            )
+            let balances = try await getWalletPortfolio(wallet: activeKeyPair.pubkey)
             state = .loaded(balances)
         }
 
@@ -135,18 +150,7 @@ extension WalletBalanceView {
 #Preview {
     WalletBalanceView(
         viewModel: .init(
-            state: .loaded([
-                Balance(
-                    mint: "So11111111111111111111111111111111111111112",
-                    symbol: "SOL",
-                    balance: "4.5"
-                ),
-                Balance(
-                    mint: "CTQBjyrX8pYyqbNa8vAhQfnRXfu9cUxnvrxj5PvbzTmf",
-                    symbol: "BACH",
-                    balance: "7.6"
-                ),
-            ]),
+            state: .loaded([]),
             activeKeyPair: .init(
                 id: "",
                 username: nil,

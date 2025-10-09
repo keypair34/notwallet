@@ -31,22 +31,39 @@ struct WalletView: View {
                             await viewModel.walletBalance()
                         }
                     })
-                case .loaded(let balance):
+                case .loaded(let balance, let assetPrice):
                     Button(action: {
                         viewModel.showWalletBalance = true
                     }) {
-                        HStack(alignment: .center) {
-                            Text(balance)
-                                .font(.system(size: 32, weight: .bold, design: .rounded))
+                        VStack(spacing: 4) {
+                            HStack(alignment: .center) {
+                                Text(balance)
+                                    .font(.system(size: 32, weight: .bold, design: .rounded))
+                                    .foregroundColor(.purple)
+                                    .transition(.opacity)
+                            }
+                            .padding(.horizontal)
+                            
+                            Text("USD \(String(format: "%.2f", ceil(assetPrice*100)/100)) / SOL")
+                                .font(.system(size: 14, weight: .bold, design: .rounded))
                                 .foregroundColor(.purple)
-                            Image(systemName: "arrow.right")
+                                .padding(.horizontal)
                         }
+                        .background(
+                            RoundedRectangle(cornerRadius: 8)
+                                .fill(Color(.white))
+                        )
                     }
                     .buttonStyle(.plain)
-                case .failed(_):
-                    Text("N/A")
-                        .font(.system(size: 32, weight: .bold, design: .rounded))
-                        .foregroundColor(.purple)
+                case .failed(let error):
+                    VStack {
+                        Text("N/A")
+                            .font(.system(size: 32, weight: .bold, design: .rounded))
+                            .foregroundColor(.purple)
+                        Text(error.localizedDescription)
+                            .font(.system(size: 16, weight: .regular, design: .rounded))
+                            .foregroundColor(.red)
+                    }
                 }
 
                 Divider()
@@ -170,7 +187,7 @@ extension WalletView {
             case idle
             case loading
             case failed(Error)
-            case loaded(String)
+            case loaded(String, Double)
         }
 
         enum OnboardingState {
@@ -194,16 +211,15 @@ extension WalletView {
             do {
                 state = .loading
                 print("🐦🐦  Will load balance.")
-                // TODO: - CHANGE ME ON RELEASE
-                let balance = try await WalletKitV3.walletBalance(
-                    network: .solanaDevnet,
-                    pubkey: activeKeyPair.pubkey
-                )
-                state = .loaded(balance)
+                let balance = try await getWalletBalance(wallet: activeKeyPair.pubkey)
+                let assetPrice = try await getAssetPrice(asset: "So11111111111111111111111111111111111111112")
+                
+                state = .loaded(balance, assetPrice)
             } catch {
                 state = .failed(error)
             }
         }
+        
         func onActiveKeyPairChanged(wallet: Wallet) {
             activeKeyPair = wallet
         }

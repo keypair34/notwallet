@@ -67,6 +67,7 @@ struct CreateWalletAccountView: View {
                     .buttonStyle(.bordered)
                     .frame(maxWidth: .infinity)
                 }
+                .padding()
                 .toggleStyle(.automatic)
             }
             .toolbar(content: {
@@ -80,7 +81,7 @@ struct CreateWalletAccountView: View {
 
     // MARK: - Private
     
-    @Environment(\.dismiss) private var dismiss
+    @SwiftUI.Environment(\.dismiss) private var dismiss
     @ObservedObject private var viewModel: ViewModel
 }
 

@@ -8,6 +8,12 @@
 import WalletKitV3
 import UIKit
 
+let BIRDEYE_BASE_URL = "YOUR_BASE_URL"
+let BIRDEYE_API_KEY = "YOUR_API_KEY"
+let ENVIRONMENT = "Mainnet"
+//let ENVIRONMENT = "Testnet"
+//let ENVIRONMENT = "Local"
+
 func saveCreateWalletResponse(userDefault: UserDefaults, wallet: CreateWalletResponse) async throws {
     
     // Append wallet
@@ -61,4 +67,86 @@ func saveCreateWalletResponse(userDefault: UserDefaults, wallet: CreateWalletRes
 
     try await Task.sleep(nanoseconds: 2_000_000_000)
     
+}
+
+func getAssetPrice(asset: String) async throws -> Double {
+    /// Configure the URL for our request.
+    let url = URL(string: "\(BIRDEYE_BASE_URL)/v1/defi/price?address=\(asset)&environment=\(ENVIRONMENT)")!
+    
+    /// Create a URLRequest for the POST request.
+    var request = URLRequest(url: url)
+    
+    /// Configure the HTTP method.
+    request.httpMethod = "GET"
+
+    /// Configure the proper content-type value to JSON.
+    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+    
+    /// Configure BirdEye header
+    request.setValue(BIRDEYE_API_KEY, forHTTPHeaderField: "X-API-KEY")
+    
+    /// Configure network
+    request.setValue("Solana", forHTTPHeaderField: "x-chain")
+    
+    /// Use URLSession to fetch the data asynchronously.
+    let (data, _) = try await URLSession.shared.data(for: request)
+    
+    /// Decode the JSON response into the PostResponse struct.
+    let decodedResponse = try JSONDecoder().decode(AssetPriceResponse.self, from: data)
+    
+    return decodedResponse.price
+}
+
+func getWalletPortfolio(wallet: String) async throws -> [BalanceV1] {
+    /// Configure the URL for our request.
+    let url = URL(string: "\(BIRDEYE_BASE_URL)/v1/wallets/token_list?wallet=\(wallet)&environment=\(ENVIRONMENT)")!
+    
+    /// Create a URLRequest for the POST request.
+    var request = URLRequest(url: url)
+    
+    /// Configure the HTTP method.
+    request.httpMethod = "GET"
+
+    /// Configure the proper content-type value to JSON.
+    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+    
+    /// Configure BirdEye API Key
+    request.setValue(BIRDEYE_API_KEY, forHTTPHeaderField: "X-API-KEY")
+    /// Configure network
+    request.setValue("Solana", forHTTPHeaderField: "x-chain")
+    
+    /// Use URLSession to fetch the data asynchronously.
+    let (data, _) = try await URLSession.shared.data(for: request)
+    
+    /// Decode the JSON response
+    let decodedResponse = try JSONDecoder().decode(WalletPortfolioResponse.self, from: data)
+    
+    return decodedResponse.data
+}
+
+func getWalletBalance(wallet: String) async throws -> String {
+    /// Configure the URL for our request.
+    let url = URL(string: "\(BIRDEYE_BASE_URL)/v1/wallets/wallet_balance?wallet=\(wallet)&environment=\(ENVIRONMENT)")!
+    
+    /// Create a URLRequest for the POST request.
+    var request = URLRequest(url: url)
+    
+    /// Configure the HTTP method.
+    request.httpMethod = "GET"
+
+    /// Configure the proper content-type value to JSON.
+    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+    
+    /// Configure BirdEye API Key
+    request.setValue(BIRDEYE_API_KEY, forHTTPHeaderField: "X-API-KEY")
+    /// Configure network
+    request.setValue("Solana", forHTTPHeaderField: "x-chain")
+    
+    /// Use URLSession to fetch the data asynchronously.
+    let (data, _) = try await URLSession.shared.data(for: request)
+    
+    /// Decode the JSON response
+    let decodedResponse = try JSONDecoder().decode(WalletBalanceResponse.self, from: data)
+    
+    return decodedResponse.value
 }
