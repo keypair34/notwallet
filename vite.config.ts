@@ -1,5 +1,6 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import path from "path";
 
 const host = process.env.TAURI_DEV_HOST;
 
@@ -26,6 +27,12 @@ export default defineConfig(async () => ({
     watch: {
       // 3. tell Vite to ignore watching `src-tauri`
       ignored: ["**/src-tauri/**"],
+    },
+  },
+  resolve: {
+    alias: {
+      "@app": path.resolve(__dirname, "./app"),
+      "@lib": path.resolve(__dirname, "./lib"),
     },
   },
 }));
