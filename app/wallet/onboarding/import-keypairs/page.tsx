@@ -17,7 +17,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import PageChildrenTitleBar from "@lib/components/page-children-title-bar";
 import { useNavigate } from "react-router-dom";
 
-export default function ImportKeypairsPage() {
+export default function WalletOnboardingImportKeypairsPage() {
   const [keypairs, setKeypairs] = React.useState<SolanaWallet[]>([]);
   const [loading, setLoading] = React.useState(true);
   const router = useNavigate();

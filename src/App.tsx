@@ -12,6 +12,16 @@ import SettingsPage from "@app/settings/page";
 import AboutPage from "@app/settings/about/page";
 import AppInfoPage from "@app/settings/app-info/page";
 import { I18nProvider } from "@lib/i18n/provider";
+import WalletBuyPage from "@app/wallet/buy/page";
+import WalletBuyStripePage from "@app/wallet/buy/stripe/page";
+import WalletCreateNewWalletPage from "@app/wallet/create-new-wallet/page";
+import WalletCreateNewWalletDonePage from "@app/wallet/create-new-wallet/done/page";
+import WalletImportPage from "@app/wallet/import/page";
+import WalletOnboardingCreateWalletPage from "@app/wallet/onboarding/create-wallet/page";
+import WalletOnboardingImportPage from "@app/wallet/onboarding/import/page";
+import WalletOnboardingImportKeypairsPage from "@app/wallet/onboarding/import-keypairs/page";
+import WalletOnboardingCreateWalletDisclaimerPage from "@app/wallet/onboarding/create-wallet-disclaimer/page";
+import WalletOnboardingImportWalletPage from "@app/wallet/onboarding/import-wallet/page";
 
 export default function App() {
   const location = useLocation();
@@ -56,6 +66,46 @@ export default function App() {
                 }
               />
               <Route
+                path="/wallet/buy"
+                element={
+                  <AnimatedPage>
+                    <WalletBuyPage />
+                  </AnimatedPage>
+                }
+              />
+              <Route
+                path="/wallet/buy/stripe"
+                element={
+                  <AnimatedPage>
+                    <WalletBuyStripePage />
+                  </AnimatedPage>
+                }
+              />
+              <Route
+                path="/wallet/create-new-wallet"
+                element={
+                  <AnimatedPage>
+                    <WalletCreateNewWalletPage />
+                  </AnimatedPage>
+                }
+              />
+              <Route
+                path="/wallet/create-new-wallet/done"
+                element={
+                  <AnimatedPage>
+                    <WalletCreateNewWalletDonePage />
+                  </AnimatedPage>
+                }
+              />
+              <Route
+                path="/wallet/import"
+                element={
+                  <AnimatedPage>
+                    <WalletImportPage />
+                  </AnimatedPage>
+                }
+              />
+              <Route
                 path="/wallet/onboarding"
                 element={
                   <AnimatedPage>
@@ -72,10 +122,10 @@ export default function App() {
                 }
               />
               <Route
-                path="/wallet/onboarding/import-wallet"
+                path="/wallet/onboarding/create-wallet"
                 element={
                   <AnimatedPage>
-                    <CreatePasswordPage />
+                    <WalletOnboardingCreateWalletPage />
                   </AnimatedPage>
                 }
               />
@@ -83,7 +133,31 @@ export default function App() {
                 path="/wallet/onboarding/create-wallet-disclaimer"
                 element={
                   <AnimatedPage>
-                    <CreatePasswordPage />
+                    <WalletOnboardingCreateWalletDisclaimerPage />
+                  </AnimatedPage>
+                }
+              />
+              <Route
+                path="/wallet/onboarding/import"
+                element={
+                  <AnimatedPage>
+                    <WalletOnboardingImportPage />
+                  </AnimatedPage>
+                }
+              />
+              <Route
+                path="/wallet/onboarding/import-keypairs"
+                element={
+                  <AnimatedPage>
+                    <WalletOnboardingImportKeypairsPage />
+                  </AnimatedPage>
+                }
+              />
+              <Route
+                path="/wallet/onboarding/import-wallet"
+                element={
+                  <AnimatedPage>
+                    <WalletOnboardingImportWalletPage />
                   </AnimatedPage>
                 }
               />

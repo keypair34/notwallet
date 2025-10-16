@@ -275,7 +275,7 @@ function DetailContent() {
   );
 }
 
-export default function Page() {
+export default function WalletOnboardingCreateWalletPage() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <DetailContent />

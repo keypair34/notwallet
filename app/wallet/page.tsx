@@ -39,22 +39,20 @@ export default function WalletHome() {
   const [state, setState] = React.useState(State.Loading);
   const [showSwitchModal, setShowSwitchModal] = React.useState(false);
   const [allKeypairs, setAllKeypairs] = React.useState<SolanaWallet[]>([]);
-  const [shouldOnboardUser, setShouldOnboardUser] = React.useState(false);
-  const [hasPassword, setHasPassword] = React.useState(true);
 
   const init = async () => {
     try {
       // Decide if we should redirect to onboarding
       const keypairs = await store().get<SolanaWallet[]>(STORE_KEYPAIRS);
       if (!keypairs || keypairs.length === 0) {
-        setShouldOnboardUser(true);
+        router("/wallet/onboarding");
         return;
       }
 
       // Check if we should redirect to create password onboarding
       const passwordCheck = await store().get<string>(STORE_PASSWORD);
       if (!passwordCheck) {
-        setHasPassword(false);
+        router("/wallet/onboarding/create-password");
         return;
       }
 
@@ -104,16 +102,6 @@ export default function WalletHome() {
     }
     fetchKeypairs();
   }, []);
-
-  if (shouldOnboardUser) {
-    router("/wallet/onboarding");
-    return <></>;
-  }
-
-  if (!hasPassword) {
-    router("/wallet/onboarding/create-password");
-    return <></>;
-  }
 
   return (
     <Box

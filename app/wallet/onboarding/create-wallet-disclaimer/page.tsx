@@ -8,7 +8,7 @@ import { selectionFeedback } from "@tauri-apps/plugin-haptics";
 import PageChildrenTitleBar from "@lib/components/page-children-title-bar";
 import { useNavigate } from "react-router-dom";
 
-export default function CreateWalletDisclaimerPage() {
+export default function WalletOnboardingCreateWalletDisclaimerPage() {
   const router = useNavigate();
 
   return (

@@ -32,7 +32,7 @@ async function fetchSeedsFromStore() {
   return await store().get<Seed[]>(STORE_SEEDS);
 }
 
-export default function CreateNewWalletPage() {
+export default function WalletCreateNewWalletPage() {
   const router = useNavigate();
 
   // Add a special id for "create new"

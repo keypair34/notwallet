@@ -13,7 +13,7 @@ import { IMPORT_SOLANA_WALLET } from "@lib/commands";
 import PageChildrenTitleBar from "@lib/components/page-children-title-bar";
 import { useNavigate } from "react-router-dom";
 
-export default function ImportWalletPage() {
+export default function WalletOnboardingImportWalletPage() {
   const [seed, setSeed] = React.useState("");
   const [error, setError] = React.useState("");
   const [pubkey, setPubkey] = React.useState<string | null>(null);

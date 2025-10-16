@@ -122,7 +122,7 @@ function DoneContent() {
   );
 }
 
-export default function DonePage() {
+export default function WalletCreateNewWalletDonePage() {
   return (
     <React.Suspense fallback={<div>Loading...</div>}>
       <DoneContent />

@@ -5,7 +5,7 @@ import Box from "@mui/material/Box";
 import PageChildrenTitleBar from "@lib/components/page-children-title-bar";
 import Content from "./_components/content";
 
-export default function Page() {
+export default function WalletBuyPage() {
   return (
     <React.Suspense>
       <Box
