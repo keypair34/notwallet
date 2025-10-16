@@ -2,10 +2,12 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import * as Tooltip from "@radix-ui/react-tooltip";
 import Navbar from "./components/Navbar";
 import AnimatedPage from "./components/AnimatedPage";
-import Lessons from "./pages/Lessons";
 import HomePage from "@app/home/page";
 import DAOPage from "@app/home/dao/page";
 import LearnPage from "@app/home/learn/page";
+import WalletHome from "@app/wallet/page";
+import WalletOnboardingPage from "@app/wallet/onboarding/page";
+import CreatePasswordPage from "@app/wallet/onboarding/create-password/page";
 import SettingsPage from "@app/settings/page";
 import AboutPage from "@app/settings/about/page";
 import AppInfoPage from "@app/settings/app-info/page";
@@ -45,10 +47,26 @@ export default function App() {
                 }
               />
               <Route
-                path="/lessons"
+                path="/wallet"
                 element={
                   <AnimatedPage>
-                    <Lessons />
+                    <WalletHome />
+                  </AnimatedPage>
+                }
+              />
+              <Route
+                path="/wallet/onboarding"
+                element={
+                  <AnimatedPage>
+                    <WalletOnboardingPage />
+                  </AnimatedPage>
+                }
+              />
+              <Route
+                path="/wallet/onboarding/create-password"
+                element={
+                  <AnimatedPage>
+                    <CreatePasswordPage />
                   </AnimatedPage>
                 }
               />

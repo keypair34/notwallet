@@ -20,18 +20,18 @@ import {
   SOL_DECIMALS,
   BACH_DECIMALS,
   BACH_TOKEN,
-} from "@/lib/crate/generated";
+} from "@lib/crate/generated";
 import { selectionFeedback } from "@tauri-apps/plugin-haptics";
 import { invoke } from "@tauri-apps/api/core";
-import { GET_SWAP_QUOTE, BUILD_SWAP_TRANSACTION } from "@/lib/commands";
+import { GET_SWAP_QUOTE, BUILD_SWAP_TRANSACTION } from "@lib/commands";
 import CircularProgress from "@mui/material/CircularProgress";
 import Alert from "@mui/material/Alert";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
-import { AssetIcon } from "@/lib/components/token-icons";
+import { AssetIcon } from "@lib/components/token-icons";
 import { info, debug } from "@tauri-apps/plugin-log";
-import { useI18n } from "@/lib/i18n/provider";
+import { useI18n } from "@lib/i18n/provider";
 
 interface SwapModalProps {
   open: boolean;

@@ -2,27 +2,27 @@
 
 import * as React from "react";
 import Box from "@mui/material/Box";
-import LoadingCard from "@/lib/components/loading-card";
-import ErrorCard from "@/lib/components/error-card";
-import { store } from "@/lib/store/store";
+import LoadingCard from "@lib/components/loading-card";
+import ErrorCard from "@lib/components/error-card";
+import { store } from "@lib/store/store";
 import {
   SolanaWallet,
   STORE_ACTIVE_KEYPAIR,
   STORE_KEYPAIRS,
   STORE_PASSWORD,
-} from "@/lib/crate/generated";
+} from "@lib/crate/generated";
 import { debug } from "@tauri-apps/plugin-log";
-import { useRouter } from "next/navigation";
-import { useAppLock } from "@/lib/context/app-lock-context";
+import { useAppLock } from "@lib/context/app-lock-context";
 import WalletCard from "./_components/wallet-card";
 import ActivityCard from "./_components/activity_card";
 import { invoke } from "@tauri-apps/api/core";
 import { selectionFeedback } from "@tauri-apps/plugin-haptics";
 import ActiveKeypairSelectionModal from "./_components/active-keypair-selection";
-import { SET_ACTIVE_KEYPAIR } from "@/lib/commands";
-import PageTitleBar from "@/lib/components/page-title-bar";
-import { redirect } from "next/navigation";
-import { useI18n } from "@/lib/i18n/provider";
+import { SET_ACTIVE_KEYPAIR } from "@lib/commands";
+import PageTitleBar from "@lib/components/page-title-bar";
+import { redirect } from "react-router-dom";
+import { useI18n } from "@lib/i18n/provider";
+import { useNavigate } from "react-router-dom";
 
 enum State {
   Loading,
@@ -32,7 +32,7 @@ enum State {
 
 export default function WalletHome() {
   const { lock } = useAppLock();
-  const router = useRouter();
+  const router = useNavigate();
   const { t } = useI18n();
   const [wallet, setWallet] = React.useState<SolanaWallet | undefined>(
     undefined,
@@ -107,11 +107,13 @@ export default function WalletHome() {
   }, []);
 
   if (shouldOnboardUser) {
-    return redirect("/wallet/onboarding");
+    router("/wallet/onboarding");
+    return <></>;
   }
 
   if (!hasPassword) {
-    return redirect("/wallet/onboarding/create-password");
+    router("/wallet/onboarding/create-password");
+    return <></>;
   }
 
   return (
@@ -137,7 +139,7 @@ export default function WalletHome() {
               onLock={async () => {
                 await selectionFeedback();
                 lock();
-                router.replace("/");
+                router("/");
               }}
               onSwitchKeypair={async () => {
                 await selectionFeedback();

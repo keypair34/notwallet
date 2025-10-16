@@ -15,7 +15,6 @@ export default function CreateOrImportWalletView() {
     <Box
       sx={{
         bgcolor: "linear-gradient(135deg, #FAFBFF 0%, #F8FAFF 100%)",
-        background: "linear-gradient(135deg, #FAFBFF 0%, #F8FAFF 100%)",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -34,15 +33,6 @@ export default function CreateOrImportWalletView() {
           bgcolor: "#FFFFFF",
         }}
       >
-        <Box sx={{ p: 4, bgcolor: "#fff" }}>
-          <CardMedia
-            component="img"
-            height="120"
-            image="/images/app-icon-v4.svg"
-            alt="Stablecoin Wallet"
-            sx={{ objectFit: "contain", bgcolor: "#fff" }}
-          />
-        </Box>
         <CardContent>
           <Typography
             variant="h3"
