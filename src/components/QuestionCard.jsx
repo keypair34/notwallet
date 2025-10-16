@@ -33,7 +33,7 @@ export default function QuestionCard({ lesson, lang, t, onBack }) {
       className={`bg-white/80 rounded-xl shadow-lg p-6 mb-4 flex flex-col gap-3 ${align}`}
     >
       <div className="flex items-center justify-between mb-2">
-        <button className="text-fuchsia-600 hover:underline" onClick={onBack}>
+        <button className="text-primay-light hover:underline" onClick={onBack}>
           {t.back}
         </button>
         <div className="text-slate-400 text-xs">
@@ -41,7 +41,7 @@ export default function QuestionCard({ lesson, lang, t, onBack }) {
           {lesson.questions.length}
         </div>
       </div>
-      <div className="font-bold text-lg text-fuchsia-800 mb-2">
+      <div className="font-bold text-lg text-primay-light mb-2">
         {question.q[lang]}
       </div>
       <div className="flex flex-col gap-2 mt-2">
@@ -76,7 +76,7 @@ export default function QuestionCard({ lesson, lang, t, onBack }) {
         )}
       {step === lesson.questions.length - 1 && showResult && (
         <div className="mt-6 text-center">
-          <span className="inline-block bg-fuchsia-200 text-fuchsia-900 px-4 py-2 rounded-xl animate-bounce shadow">
+          <span className="inline-block bg-fuchsia-200 text-primay-main px-4 py-2 rounded-xl animate-bounce shadow">
             {t.lessonCompleted}
           </span>
         </div>

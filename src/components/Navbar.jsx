@@ -60,11 +60,11 @@ export default function Navbar() {
         dir={isRTL ? "rtl" : "ltr"}
       >
         <div className="max-w-2xl mx-auto flex flex-row justify-between items-center px-4 py-3 w-full">
-          <span className="font-bold text-xl text-fuchsia-600">
+          <span className="font-bold text-xl text-primary-main">
             {t.appName}
           </span>
           <select
-            className="rounded border px-2 py-1 bg-white text-sm text-fuchsia-700 cursor-pointer shadow"
+            className="rounded border px-2 py-1 bg-white text-sm text-primay-light cursor-pointer shadow"
             value={lang}
             onChange={(e) => setLang(e.target.value)}
             aria-label="Change language"
@@ -86,7 +86,7 @@ export default function Navbar() {
                   className={`flex flex-col items-center justify-center gap-1 px-3 py-1 rounded transition-all duration-200
                     ${
                       location.pathname === item.path
-                        ? "bg-fuchsia-100 text-fuchsia-900 shadow font-semibold"
+                        ? "bg-fuchsia-100 text-primay-main shadow font-semibold"
                         : "hover:bg-fuchsia-50 text-slate-800"
                     }`}
                   style={{ minWidth: 60 }}

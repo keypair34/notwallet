@@ -24,7 +24,7 @@ export default function Home() {
           🏵️
         </text>
       </svg>
-      <h1 className="text-3xl md:text-4xl font-bold text-center mb-4 text-fuchsia-700">
+      <h1 className="text-3xl md:text-4xl font-bold text-center mb-4 text-primay-light">
         {t.welcome}
       </h1>
       <p className="text-lg text-center mb-8 text-slate-600">{t.homeDesc}</p>

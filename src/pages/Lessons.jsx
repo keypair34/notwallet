@@ -343,7 +343,7 @@ export default function Lessons() {
 
   return (
     <section dir={dir} className={`pb-12 ` + align}>
-      <h2 className="text-2xl font-bold mb-2 text-fuchsia-700">{t.lessons}</h2>
+      <h2 className="text-2xl font-bold mb-2 text-primay-light">{t.lessons}</h2>
       {!activeLesson ? (
         <div className="grid gap-4">
           {LESSONS.map((lesson) => (

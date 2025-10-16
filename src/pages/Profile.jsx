@@ -13,7 +13,7 @@ export default function Profile() {
         alt="Avatar"
         className="w-24 h-24 mb-4 rounded-full border-4 border-fuchsia-300"
       />
-      <h2 className="text-xl font-bold mb-2 text-fuchsia-700">{t.profile}</h2>
+      <h2 className="text-xl font-bold mb-2 text-primay-light">{t.profile}</h2>
       <div className="bg-white/80 shadow rounded-xl px-8 py-4 mt-2 w-full max-w-xs">
         <div className="mb-2">
           <span className="font-semibold">{t.user}:</span> {t.guest}

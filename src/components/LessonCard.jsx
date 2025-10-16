@@ -12,7 +12,7 @@ export default function LessonCard({ title, description, onStart }) {
       dir={dir}
       className={`bg-white shadow rounded-xl p-6 flex flex-col gap-2 border hover:scale-105 transition-transform duration-200 ${align}`}
     >
-      <h3 className="font-bold text-lg text-fuchsia-700">{title}</h3>
+      <h3 className="font-bold text-lg text-primay-light">{title}</h3>
       <p className="text-slate-600">{description}</p>
       <Tooltip.Root>
         <Tooltip.Trigger asChild>
