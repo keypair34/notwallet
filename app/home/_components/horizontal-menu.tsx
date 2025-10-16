@@ -75,11 +75,6 @@ export default function HorizontalMenu() {
     router("/home/learn");
   };
 
-  const _handleM3m3 = async () => {
-    await selectionFeedback();
-    router("/home/meme");
-  };
-
   const menuItems = [
     {
       icon: <AccountBalanceIcon fontSize="medium" />,

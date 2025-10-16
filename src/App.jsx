@@ -5,6 +5,9 @@ import AnimatedPage from "./components/AnimatedPage";
 import Lessons from "./pages/Lessons";
 import Profile from "./pages/Profile";
 import HomePage from "@app/home/page";
+import SettingsPage from "@app/settings/page";
+import AboutPage from "@app/settings/about/page";
+import AppInfoPage from "@app/settings/app-info/page";
 import { I18nProvider } from "@lib/i18n/provider";
 
 export default function App() {
@@ -36,7 +39,23 @@ export default function App() {
                 path="/profile"
                 element={
                   <AnimatedPage>
-                    <Profile />
+                    <SettingsPage />
+                  </AnimatedPage>
+                }
+              />
+              <Route
+                path="/profile/about"
+                element={
+                  <AnimatedPage>
+                    <AboutPage />
+                  </AnimatedPage>
+                }
+              />
+              <Route
+                path="/profile/app-info"
+                element={
+                  <AnimatedPage>
+                    <AppInfoPage />
                   </AnimatedPage>
                 }
               />

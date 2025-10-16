@@ -14,7 +14,6 @@ export default function HomePage() {
     <Box
       sx={{
         minHeight: "unset",
-        bgcolor: "#f5f6fa",
         pb: 10,
         display: "flex",
         flexDirection: "column",

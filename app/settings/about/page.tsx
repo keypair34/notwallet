@@ -1,6 +1,5 @@
 "use client";
 
-import * as React from "react";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
@@ -9,9 +8,8 @@ import Button from "@mui/material/Button";
 import LanguageIcon from "@mui/icons-material/Language";
 import { selectionFeedback } from "@tauri-apps/plugin-haptics";
 import { openUrl } from "@tauri-apps/plugin-opener";
-import PageChildrenTitleBar from "@/lib/components/page-children-title-bar";
-import Image from "next/image";
-import { useI18n } from "@/lib/i18n/provider";
+import PageChildrenTitleBar from "@lib/components/page-children-title-bar";
+import { useI18n } from "@lib/i18n/provider";
 
 export default function AboutPage() {
   const { t } = useI18n();
@@ -71,14 +69,7 @@ export default function AboutPage() {
                 mb: 3,
                 overflow: "hidden",
               }}
-            >
-              <Image
-                src="/images/app-icon-v4.svg"
-                alt="NotWallet App Icon"
-                width={80}
-                height={80}
-              />
-            </Box>
+            ></Box>
             <Typography
               variant="h5"
               sx={{

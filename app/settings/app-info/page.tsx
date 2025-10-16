@@ -13,8 +13,8 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import FingerprintIcon from "@mui/icons-material/Fingerprint";
 import { getVersion } from "@tauri-apps/api/app";
 import { invoke } from "@tauri-apps/api/core";
-import PageChildrenTitleBar from "@/lib/components/page-children-title-bar";
-import { useI18n } from "@/lib/i18n/provider";
+import PageChildrenTitleBar from "@lib/components/page-children-title-bar";
+import { useI18n } from "@lib/i18n/provider";
 
 export default function AppInfoPage() {
   const { t } = useI18n();
