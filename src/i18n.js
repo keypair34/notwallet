@@ -22,7 +22,7 @@ export const translations = {
     startThisLesson: "شروع درس",
   },
   en: {
-    appName: "NotWallet Crypto",
+    appName: "NotWallet",
     home: "Home",
     lessons: "Lessons",
     wallet: "Wallet",
@@ -45,7 +45,7 @@ export const translations = {
     startThisLesson: "Start Lesson",
   },
   sv: {
-    appName: "NotWallet Crypto",
+    appName: "NotWallet",
     home: "Hem",
     lessons: "Lektioner",
     wallet: "Plånbok",
