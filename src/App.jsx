@@ -5,6 +5,7 @@ import AnimatedPage from "./components/AnimatedPage";
 import Lessons from "./pages/Lessons";
 import Profile from "./pages/Profile";
 import HomePage from "@app/home/page";
+import DAOPage from "@app/home/dao/page";
 import SettingsPage from "@app/settings/page";
 import AboutPage from "@app/settings/about/page";
 import AppInfoPage from "@app/settings/app-info/page";
@@ -24,6 +25,14 @@ export default function App() {
                 element={
                   <AnimatedPage>
                     <HomePage />
+                  </AnimatedPage>
+                }
+              />
+              <Route
+                path="/home/dao"
+                element={
+                  <AnimatedPage>
+                    <DAOPage />
                   </AnimatedPage>
                 }
               />
