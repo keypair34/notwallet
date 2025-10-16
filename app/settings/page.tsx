@@ -15,19 +15,17 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 import PrivacyTipOutlinedIcon from "@mui/icons-material/PrivacyTipOutlined";
 import CodeOutlinedIcon from "@mui/icons-material/CodeOutlined";
-import TuneOutlinedIcon from "@mui/icons-material/TuneOutlined";
 import PhoneAndroidOutlinedIcon from "@mui/icons-material/PhoneAndroidOutlined";
-import LanguageIcon from "@mui/icons-material/Language";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { openUrl } from "@tauri-apps/plugin-opener";
-import { useRouter } from "next/navigation";
 import { selectionFeedback } from "@tauri-apps/plugin-haptics";
-import PageTitleBar from "@/lib/components/page-title-bar";
+import PageTitleBar from "@lib/components/page-title-bar";
 import Confetti from "react-confetti";
-import { useI18n } from "@/lib/i18n/provider";
+import { useI18n } from "@lib/i18n/provider";
+import { useNavigate } from "react-router-dom";
 
 export default function SettingsPage() {
-  const router = useRouter();
+  const router = useNavigate();
   const { t } = useI18n();
   const [footerClickCount, setFooterClickCount] = React.useState(0);
   const [showModal, setShowModal] = React.useState(false);
@@ -64,7 +62,7 @@ export default function SettingsPage() {
   ) => {
     await selectionFeedback();
     if (type === "about") {
-      router.push("/settings/about");
+      router("/profile/about");
     } else if (type === "privacyPolicy") {
       openUrl("https://bach.money/privacy-policy");
     } else if (type === "termsOfService") {
@@ -82,11 +80,11 @@ export default function SettingsPage() {
         }, 5000);
       }
     } else if (type === "appInfo") {
-      router.push("/settings/app-info");
+      router("/profile/app-info");
     } else if (type === "appPreferences") {
-      router.push("/settings/app-preferences");
+      router("/profile/app-preferences");
     } else if (type === "languagePreferences") {
-      router.push("/settings/app-preferences");
+      router("/profile/app-preferences");
     }
   };
 
@@ -205,7 +203,6 @@ export default function SettingsPage() {
       sx={{
         minHeight: "100vh",
         bgcolor: "linear-gradient(135deg, #FAFBFF 0%, #F8FAFF 100%)",
-        background: "linear-gradient(135deg, #FAFBFF 0%, #F8FAFF 100%)",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
