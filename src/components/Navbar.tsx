@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import * as Tooltip from "@radix-ui/react-tooltip";
 import { useLang } from "../LanguageContext";
 import { SupportedLanguages } from "../i18n";
+import { debug } from "@tauri-apps/plugin-log";
 
 interface NavItem {
   path: string;
@@ -66,6 +67,46 @@ export default function Navbar() {
     setLang(event.target.value as SupportedLanguages);
   };
 
+  const isActivePath = (path: string) => {
+    debug(`Current path: ${location.pathname}`);
+    if (path === "/") {
+      return (
+        location.pathname === "/" ||
+        location.pathname === "/home" ||
+        location.pathname === "/home/dao" ||
+        location.pathname === "/home/learn"
+      );
+    }
+    if (path === "/wallet") {
+      return (
+        location.pathname === "/wallet" ||
+        location.pathname === "/wallet/buy" ||
+        location.pathname === "/wallet/buy/stripe" ||
+        location.pathname === "/wallet/create-new-wallet" ||
+        location.pathname === "/wallet/create-new-wallet/done" ||
+        location.pathname === "/wallet/import" ||
+        location.pathname === "/wallet/onboarding" ||
+        location.pathname === "/wallet/onboarding/create-password" ||
+        location.pathname === "/wallet/onboarding/create-wallet" ||
+        location.pathname === "/wallet/onboarding/create-wallet-disclaimer" ||
+        location.pathname === "/wallet/onboarding/import" ||
+        location.pathname === "/wallet/onboarding/import-keypairs" ||
+        location.pathname === "/wallet/onboarding/import-wallet" ||
+        location.pathname === "/wallet/sell" ||
+        location.pathname === "/wallet/settings" ||
+        location.pathname === "/wallet/token"
+      );
+    }
+    if (path === "/profile") {
+      return (
+        location.pathname === "/profile" ||
+        location.pathname === "/profile/about" ||
+        location.pathname === "/profile/app-info"
+      );
+    }
+    return false;
+  };
+
   return (
     <>
       {/* Top bar with app name and language switcher, matching bottom bar width */}
@@ -99,7 +140,7 @@ export default function Navbar() {
                   to={item.path}
                   className={`flex flex-col items-center justify-center gap-1 px-3 py-1 rounded transition-all duration-200
                     ${
-                      location.pathname === item.path
+                      isActivePath(item.path)
                         ? "bg-fuchsia-100 text-primay-main shadow font-semibold"
                         : "hover:bg-fuchsia-50 text-slate-800"
                     }`}
