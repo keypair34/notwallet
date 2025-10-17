@@ -126,6 +126,7 @@ export default function Navbar() {
           >
             <option value="en">English</option>
             <option value="sv">Svenska</option>
+            <option value="id">Bahasa Indonesia</option>
           </select>
         </div>
       </div>

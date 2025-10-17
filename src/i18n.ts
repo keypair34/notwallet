@@ -48,7 +48,7 @@ export interface Translation {
   usernameSavedSuccessfully: string;
 }
 
-export type SupportedLanguages = "en" | "sv";
+export type SupportedLanguages = "en" | "sv" | "id";
 
 export const translations: Record<SupportedLanguages, Translation> = {
   en: {
@@ -157,5 +157,59 @@ export const translations: Record<SupportedLanguages, Translation> = {
     saveUsername: "Spara användarnamn",
     saved: "Sparat!",
     usernameSavedSuccessfully: "Användarnamn sparat framgångsrikt!",
+  },
+  id: {
+    appName: "NotWallet",
+    home: "Beranda",
+    lessons: "Pelajaran",
+    settings: "Pengaturan",
+    wallet: "Dompet",
+    profile: "Profil",
+    welcome: "Selamat datang di NotWallet Crypto!",
+    homeDesc: "Cara yang menyenangkan untuk belajar bahasa Persia.",
+    getStarted: "Mulai Belajar",
+    startLesson: "Mulai",
+    back: "← Kembali",
+    lessonCompleted: "Pelajaran Selesai! 🎉",
+    user: "Nama Pengguna",
+    guest: "Tamu",
+    progress: "Kemajuan",
+    completed: "pelajaran selesai",
+    question: "Pertanyaan",
+    of: "dari",
+    afterChoice: "Hasil akan ditampilkan setelah Anda memilih.",
+    correct: "Benar!",
+    incorrect: "Salah!",
+    startThisLesson: "Mulai Pelajaran",
+    // Home page translations
+    quickActions: "Aksi Cepat",
+    dao: "DAO",
+    learn: "Belajar",
+    activityFeed: "Feed Aktivitas",
+    bachAirdropLive: "🪂 Airdrop BACH Live!",
+    airdropDescription:
+      "Berbagai cara untuk mendapatkan token BACH Anda! Selesaikan tugas, berkontribusi pada database musik, dan berpartisipasi dalam ekosistem.",
+    claimYourAirdrop: "Klaim Airdrop Anda →",
+    claimYourBachAirdrop: "🎉 Klaim Airdrop $BACH Anda!",
+    signUpAndClaim: "Daftar & Klaim",
+    walletAddressUsedAirdrop:
+      "Alamat dompet Anda akan digunakan untuk airdrop.",
+    bachMoney: "bach.money",
+    successClaimedAirdrop: "🎊 Berhasil! Anda telah mengklaim airdrop Anda.",
+    claimAirdrop: "Klaim Airdrop",
+    signMessageProveOwnership:
+      "Tanda tangani pesan ini untuk membuktikan kepemilikan dompet dan klaim airdrop Anda.",
+    signing: "Menandatangani...",
+    signAndClaim: "Tanda Tangan & Klaim",
+    signatureOnlyForVerification:
+      "Tanda tangan Anda hanya digunakan untuk memverifikasi alamat dompet Anda.",
+    tryAgain: "Coba Lagi",
+    setYourUsername: "👤 Atur Nama Pengguna Anda",
+    chooseUsernamePersonalize:
+      "Pilih nama pengguna untuk mempersonalisasi dompet Anda.",
+    enterYourUsername: "Masukkan nama pengguna Anda",
+    saveUsername: "Simpan Nama Pengguna",
+    saved: "Tersimpan!",
+    usernameSavedSuccessfully: "Nama pengguna berhasil disimpan!",
   },
 };
