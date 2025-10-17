@@ -3600,6 +3600,7 @@ dependencies = [
  "smbcloud-wallet-core",
  "smbcloud-wallet-core-http",
  "smbcloud-wallet-core-model",
+ "smbcloud-wallet-core-network",
  "smbcloud-wallet-core-rpc",
  "solana-sdk",
  "uniffi",

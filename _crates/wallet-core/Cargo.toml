@@ -21,10 +21,10 @@ smbcloud-wallet-core-http = { workspace = true }
 smbcloud-wallet-core-model = { workspace = true }
 smbcloud-wallet-core-network = { workspace = true }
 smbcloud-wallet-core-rpc = { workspace = true }
-solana-account-decoder = { git = "https://github.com/setoelkahfi/agave", branch = "master" }
-solana-client = { git = "https://github.com/setoelkahfi/agave", branch = "master" }
+solana-account-decoder = { workspace = true }
+solana-client = { workspace = true }
 solana-derivation-path = "3"
 solana-pubkey = "3"
-solana-rpc-client = { git = "https://github.com/setoelkahfi/agave", branch = "master" }
+solana-rpc-client = { workspace = true }
 solana-sdk = "3"
 tokio = { version = "1.35.1", features = ["full"] }

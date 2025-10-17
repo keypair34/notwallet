@@ -22,6 +22,10 @@ smbcloud-wallet-core-model = { version = "1", path = "./wallet-core-model" }
 smbcloud-wallet-core-network = { version = "1", path = "./wallet-core-network" }
 smbcloud-wallet-core-rpc = { version = "1", path = "./wallet-core-rpc" }
 uniffi = { version = "0.29", features = ["cli", "tokio"] }
+solana-account-decoder = { version = "3", git = "https://github.com/setoelkahfi/agave", branch = "master" }
+solana-client = { version = "3", git = "https://github.com/setoelkahfi/agave", branch = "master" }
+solana-pubkey = "3"
+solana-rpc-client = { version = "3", git = "https://github.com/setoelkahfi/agave", branch = "master" }
 
 [lib]
 crate-type = ["lib", "cdylib", "staticlib"]
