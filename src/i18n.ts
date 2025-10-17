@@ -92,6 +92,15 @@ export interface Translation {
   faqHowToParticipateGovernanceAnswer: string;
   faqWhatIsDefi: string;
   faqWhatIsDefiAnswer: string;
+  // Lib components translations
+  importSeedPhrase: string;
+  createNewWallet: string;
+  errorOccurred: string;
+  walletLocked: string;
+  enterPassword: string;
+  incorrectPassword: string;
+  unlockWallet: string;
+  notwalletCrypto: string;
 }
 
 export type SupportedLanguages = "en" | "sv" | "id";
@@ -207,6 +216,15 @@ export const translations: Record<SupportedLanguages, Translation> = {
     faqWhatIsDefi: "What is DeFi?",
     faqWhatIsDefiAnswer:
       "DeFi (Decentralized Finance) refers to financial services built on blockchain technology that operate without traditional intermediaries like banks. This includes lending, borrowing, trading, and earning yield on digital assets.",
+    // Lib components translations
+    importSeedPhrase: "Import Seed Phrase",
+    createNewWallet: "Create New Wallet",
+    errorOccurred: "Error Occurred",
+    walletLocked: "Wallet Locked",
+    enterPassword: "Enter Password",
+    incorrectPassword: "Incorrect password. Please try again.",
+    unlockWallet: "Unlock Wallet",
+    notwalletCrypto: "NotWallet Crypto",
   },
   sv: {
     appName: "NotWallet",
@@ -319,6 +337,15 @@ export const translations: Record<SupportedLanguages, Translation> = {
     faqWhatIsDefi: "Vad är DeFi?",
     faqWhatIsDefiAnswer:
       "DeFi (Decentraliserad Finans) hänvisar till finansiella tjänster byggda på blockchain-teknik som fungerar utan traditionella mellanhänder som banker. Detta inkluderar utlåning, upplåning, handel och avkastning på digitala tillgångar.",
+    // Lib components translations
+    importSeedPhrase: "Importera fröfras",
+    createNewWallet: "Skapa ny plånbok",
+    errorOccurred: "Fel uppstod",
+    walletLocked: "Plånbok låst",
+    enterPassword: "Ange lösenord",
+    incorrectPassword: "Felaktigt lösenord. Försök igen.",
+    unlockWallet: "Lås upp plånbok",
+    notwalletCrypto: "NotWallet Crypto",
   },
   id: {
     appName: "NotWallet",
@@ -432,5 +459,14 @@ export const translations: Record<SupportedLanguages, Translation> = {
     faqWhatIsDefi: "Apa itu DeFi?",
     faqWhatIsDefiAnswer:
       "DeFi (Keuangan Terdesentralisasi) mengacu pada layanan keuangan yang dibangun di atas teknologi blockchain yang beroperasi tanpa perantara tradisional seperti bank. Ini termasuk pinjam-meminjam, perdagangan, dan memperoleh yield pada aset digital.",
+    // Lib components translations
+    importSeedPhrase: "Impor Frasa Seed",
+    createNewWallet: "Buat Dompet Baru",
+    errorOccurred: "Terjadi Kesalahan",
+    walletLocked: "Dompet Terkunci",
+    enterPassword: "Masukkan Kata Sandi",
+    incorrectPassword: "Kata sandi salah. Silakan coba lagi.",
+    unlockWallet: "Buka Kunci Dompet",
+    notwalletCrypto: "NotWallet Crypto",
   },
 };
