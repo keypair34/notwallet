@@ -59,7 +59,7 @@ const navItems: NavItem[] = [
 export default function Navbar() {
   const location = useLocation();
   const { t, lang, setLang } = useLang();
-  const isRTL = lang === "fa";
+  const isRTL = false;
 
   const handleLanguageChange = (
     event: React.ChangeEvent<HTMLSelectElement>,

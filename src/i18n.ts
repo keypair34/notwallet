@@ -21,34 +21,36 @@ export interface Translation {
   correct: string;
   incorrect: string;
   startThisLesson: string;
+  // Home page translations
+  quickActions: string;
+  dao: string;
+  learn: string;
+  activityFeed: string;
+  bachAirdropLive: string;
+  airdropDescription: string;
+  claimYourAirdrop: string;
+  claimYourBachAirdrop: string;
+  signUpAndClaim: string;
+  walletAddressUsedAirdrop: string;
+  bachMoney: string;
+  successClaimedAirdrop: string;
+  claimAirdrop: string;
+  signMessageProveOwnership: string;
+  signing: string;
+  signAndClaim: string;
+  signatureOnlyForVerification: string;
+  tryAgain: string;
+  setYourUsername: string;
+  chooseUsernamePersonalize: string;
+  enterYourUsername: string;
+  saveUsername: string;
+  saved: string;
+  usernameSavedSuccessfully: string;
 }
 
-export type SupportedLanguages = "fa" | "en" | "sv";
+export type SupportedLanguages = "en" | "sv";
 
 export const translations: Record<SupportedLanguages, Translation> = {
-  fa: {
-    appName: "رومی",
-    home: "خانه",
-    lessons: "درس‌ها",
-    profile: "پروفایل",
-    settings: "تنظیمات",
-    welcome: "به رومی خوش آمدید!",
-    homeDesc: "روشی سرگرم‌کننده برای یادگیری زبان فارسی.",
-    getStarted: "شروع یادگیری",
-    startLesson: "شروع",
-    back: "← بازگشت",
-    lessonCompleted: "درس به پایان رسید! 🎉",
-    user: "نام کاربر",
-    guest: "مهمان",
-    progress: "پیشرفت",
-    completed: "درس تکمیل شده",
-    question: "سوال",
-    of: "از",
-    afterChoice: "پس از انتخاب، نتیجه نمایش داده می‌شود.",
-    correct: "درست!",
-    incorrect: "اشتباه!",
-    startThisLesson: "شروع درس",
-  },
   en: {
     appName: "NotWallet",
     home: "Home",
@@ -72,6 +74,35 @@ export const translations: Record<SupportedLanguages, Translation> = {
     correct: "Correct!",
     incorrect: "Incorrect!",
     startThisLesson: "Start Lesson",
+    // Home page translations
+    quickActions: "Quick Actions",
+    dao: "DAO",
+    learn: "Learn",
+    activityFeed: "Activity Feed",
+    bachAirdropLive: "🪂 BACH Airdrop Live!",
+    airdropDescription:
+      "Multiple ways to earn your BACH tokens! Complete tasks, contribute to the music database, and participate in the ecosystem.",
+    claimYourAirdrop: "Claim Your Airdrop →",
+    claimYourBachAirdrop: "🎉 Claim Your $BACH Airdrop!",
+    signUpAndClaim: "Sign Up & Claim",
+    walletAddressUsedAirdrop:
+      "Your wallet address will be used for the airdrop.",
+    bachMoney: "bach.money",
+    successClaimedAirdrop: "🎊 Success! You have claimed your airdrop.",
+    claimAirdrop: "Claim Airdrop",
+    signMessageProveOwnership:
+      "Sign this message to prove wallet ownership and claim your airdrop.",
+    signing: "Signing...",
+    signAndClaim: "Sign & Claim",
+    signatureOnlyForVerification:
+      "Your signature is only used to verify your wallet address.",
+    tryAgain: "Try Again",
+    setYourUsername: "👤 Set Your Username",
+    chooseUsernamePersonalize: "Choose a username to personalize your wallet.",
+    enterYourUsername: "Enter your username",
+    saveUsername: "Save Username",
+    saved: "Saved!",
+    usernameSavedSuccessfully: "Username saved successfully!",
   },
   sv: {
     appName: "NotWallet",
@@ -96,5 +127,35 @@ export const translations: Record<SupportedLanguages, Translation> = {
     correct: "Rätt!",
     incorrect: "Fel!",
     startThisLesson: "Starta lektionen",
+    // Home page translations
+    quickActions: "Snabbåtgärder",
+    dao: "DAO",
+    learn: "Lär dig",
+    activityFeed: "Aktivitetsflöde",
+    bachAirdropLive: "🪂 BACH Airdrop Live!",
+    airdropDescription:
+      "Flera sätt att tjäna dina BACH-tokens! Slutför uppgifter, bidra till musikdatabasen och delta i ekosystemet.",
+    claimYourAirdrop: "Hämta din Airdrop →",
+    claimYourBachAirdrop: "🎉 Hämta din $BACH Airdrop!",
+    signUpAndClaim: "Registrera dig & Hämta",
+    walletAddressUsedAirdrop:
+      "Din plånboksadress kommer att användas för airdroppen.",
+    bachMoney: "bach.money",
+    successClaimedAirdrop: "🎊 Framgång! Du har hämtat din airdrop.",
+    claimAirdrop: "Hämta Airdrop",
+    signMessageProveOwnership:
+      "Signera detta meddelande för att bevisa ägarskap av plånbok och hämta din airdrop.",
+    signing: "Signerar...",
+    signAndClaim: "Signera & Hämta",
+    signatureOnlyForVerification:
+      "Din signatur används endast för att verifiera din plånboksadress.",
+    tryAgain: "Försök igen",
+    setYourUsername: "👤 Ange ditt användarnamn",
+    chooseUsernamePersonalize:
+      "Välj ett användarnamn för att personalisera din plånbok.",
+    enterYourUsername: "Ange ditt användarnamn",
+    saveUsername: "Spara användarnamn",
+    saved: "Sparat!",
+    usernameSavedSuccessfully: "Användarnamn sparat framgångsrikt!",
   },
 };
