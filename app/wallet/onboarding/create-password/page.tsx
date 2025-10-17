@@ -17,7 +17,6 @@ import { store } from "@lib/store/store";
 import { STORE_PASSWORD } from "@lib/crate/generated";
 import bcrypt from "bcryptjs";
 import { selectionFeedback } from "@tauri-apps/plugin-haptics";
-import PageTitleBar from "@lib/components/page-title-bar";
 import { useNavigate } from "react-router-dom";
 
 enum State {
@@ -207,7 +206,6 @@ export default function CreatePasswordPage() {
           pb: 8,
         }}
       >
-        <PageTitleBar title="Create Password" />
         <Box sx={{ width: "100%", maxWidth: 420, px: 2 }}>
           <Typography
             sx={{

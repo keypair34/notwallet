@@ -19,7 +19,6 @@ import { invoke } from "@tauri-apps/api/core";
 import { selectionFeedback } from "@tauri-apps/plugin-haptics";
 import ActiveKeypairSelectionModal from "./_components/active-keypair-selection";
 import { SET_ACTIVE_KEYPAIR } from "@lib/commands";
-import { useI18n } from "@lib/i18n/provider";
 import { useNavigate } from "react-router-dom";
 
 enum State {
@@ -31,7 +30,6 @@ enum State {
 export default function WalletHome() {
   const { lock } = useAppLock();
   const router = useNavigate();
-  const { t } = useI18n();
   const [wallet, setWallet] = React.useState<SolanaWallet | undefined>(
     undefined,
   );
