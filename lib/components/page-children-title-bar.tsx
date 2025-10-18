@@ -2,16 +2,15 @@
 
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import { selectionFeedback } from "@tauri-apps/plugin-haptics";
-import { useI18n } from "@lib/i18n/provider";
+import { useLang } from "../../src/LanguageContext";
 import { useNavigate } from "react-router-dom";
 
 export default function PageChildrenTitleBar({ title }: { title: string }) {
   const router = useNavigate();
-  const { t } = useI18n();
+  const { t } = useLang();
   const handleBack = async () => {
     await selectionFeedback();
     router(-1);
@@ -35,7 +34,6 @@ export default function PageChildrenTitleBar({ title }: { title: string }) {
         }}
       >
         <Button
-          startIcon={<ArrowBackIcon />}
           onClick={handleBack}
           sx={{
             minWidth: 0,
@@ -49,7 +47,7 @@ export default function PageChildrenTitleBar({ title }: { title: string }) {
             },
           }}
         >
-          {t("common.back")}
+          {t.back}
         </Button>
         <Typography
           variant="h5"

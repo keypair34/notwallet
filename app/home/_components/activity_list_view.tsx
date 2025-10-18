@@ -19,7 +19,7 @@ import { store } from "@lib/store/store";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import { selectionFeedback } from "@tauri-apps/plugin-haptics";
 import { debug, error as logError } from "@tauri-apps/plugin-log";
-import { useI18n } from "@lib/i18n/provider";
+import { useLang } from "../../../src/LanguageContext";
 
 enum ActivityState {
   Loading,
@@ -29,7 +29,7 @@ enum ActivityState {
 }
 
 export default function ActivityListView() {
-  const { t } = useI18n();
+  const { t } = useLang();
   const [, setState] = useState<ActivityState>(ActivityState.Loading);
   const [showOnboardingCard, setShowOnboardingCard] = useState(false);
   const [pubkey, setPubkey] = useState<string | undefined>(undefined);
@@ -149,7 +149,7 @@ export default function ActivityListView() {
           fontSize: "1.1rem",
         }}
       >
-        {t("home.activityFeed")}
+        {t.activityFeed}
       </Typography>
 
       {/* BACH Airdrop Banner */}
@@ -172,7 +172,7 @@ export default function ActivityListView() {
                 mr: 1,
               }}
             >
-              {t("home.bachAirdropLive")}
+              {t.bachAirdropLive}
             </Typography>
           </Box>
           <Typography
@@ -183,7 +183,7 @@ export default function ActivityListView() {
               lineHeight: 1.5,
             }}
           >
-            {t("home.airdropDescription")}
+            {t.airdropDescription}
           </Typography>
           <Button
             onClick={async () => {
@@ -209,7 +209,7 @@ export default function ActivityListView() {
               },
             }}
           >
-            {t("home.claimYourAirdrop")}
+            {t.claimYourAirdrop}
           </Button>
         </CardContent>
       </Card>

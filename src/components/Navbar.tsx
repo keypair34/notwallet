@@ -59,7 +59,7 @@ const navItems: NavItem[] = [
 export default function Navbar() {
   const location = useLocation();
   const { t, lang, setLang } = useLang();
-  const isRTL = lang === "fa";
+  const isRTL = false;
 
   const handleLanguageChange = (
     event: React.ChangeEvent<HTMLSelectElement>,
@@ -126,6 +126,7 @@ export default function Navbar() {
           >
             <option value="en">English</option>
             <option value="sv">Svenska</option>
+            <option value="id">Bahasa Indonesia</option>
           </select>
         </div>
       </div>
