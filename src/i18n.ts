@@ -44,6 +44,39 @@ export interface Translation {
   chooseUsernamePersonalize: string;
   enterYourUsername: string;
   saveUsername: string;
+
+  onboardingCreateWalletTitle: string;
+  onboardingImportWalletTitle: string;
+  onboardingCreatePasswordTitle: string;
+  onboardingDisclaimerTitle: string;
+  onboardingDisclaimerDesc1: string;
+  onboardingDisclaimerDesc2: string;
+  onboardingDisclaimerDesc3: string;
+  onboardingDisclaimerDesc4: string;
+  onboardingDisclaimerNonCustodial: string;
+  onboardingContinue: string;
+  onboardingUnderstandContinue: string;
+  onboardingSetPasswordDesc: string;
+  onboardingPasswordRequired: string;
+  onboardingPasswordMinLength: string;
+  onboardingPasswordMismatch: string;
+  onboardingPasswordFoundTitle: string;
+  onboardingPasswordFoundDesc: string;
+  onboardingUseExistingPassword: string;
+  onboardingCreateNewPassword: string;
+  onboardingImportSeedPhraseDesc: string;
+  onboardingImportWalletButton: string;
+  onboardingImportSuccess: string;
+  onboardingImportWarning: string;
+  onboardingKeypairsTitle: string;
+  onboardingNoKeypairs: string;
+  onboardingGenerateNewAddress: string;
+  onboardingSavedSeedPhrase: string;
+  onboardingImportantDialogTitle: string;
+  onboardingImportantDialogDesc: string;
+  errorOccurred: string;
+  processing: string;
+  confirm: string;
   saved: string;
   usernameSavedSuccessfully: string;
   // DAO page translations
@@ -185,7 +218,6 @@ export interface Translation {
   // Lib components translations
   importSeedPhrase: string;
   createNewWallet: string;
-  errorOccurred: string;
   walletLocked: string;
   enterPassword: string;
   incorrectPassword: string;
@@ -245,6 +277,48 @@ export const translations: Record<SupportedLanguages, Translation> = {
     homeDesc: "A fun way to learn Persian.",
     getStarted: "Start Learning",
     startLesson: "Start",
+
+    onboardingCreateWalletTitle: "Create Wallet",
+    onboardingImportWalletTitle: "Import Wallet",
+    onboardingCreatePasswordTitle: "Create Password",
+    onboardingDisclaimerTitle: "Important Disclaimer",
+    onboardingDisclaimerDesc1: "You are about to create a self-custody wallet.",
+    onboardingDisclaimerDesc2:
+      "You are the only one who controls your wallet and funds.",
+    onboardingDisclaimerDesc3:
+      "Your seed phrase is the ONLY way to recover your wallet and assets.",
+    onboardingDisclaimerDesc4:
+      "If you lose your seed phrase, {red}your funds cannot be recovered.",
+    onboardingDisclaimerNonCustodial:
+      "This is a non-custodial wallet. Only you have access to your private keys and funds.",
+    onboardingContinue: "Continue",
+    onboardingUnderstandContinue: "I Understand, Continue",
+    onboardingSetPasswordDesc: "Set a strong password to protect your wallet.",
+    onboardingPasswordRequired:
+      "This password will be required to access your wallet on this device.",
+    onboardingPasswordMinLength: "Password must be at least 6 characters.",
+    onboardingPasswordMismatch: "Passwords do not match.",
+    onboardingPasswordFoundTitle: "Password Found",
+    onboardingPasswordFoundDesc:
+      "A password already exists for this wallet. Would you like to use the existing password or create a new one?",
+    onboardingUseExistingPassword: "Use Existing Password",
+    onboardingCreateNewPassword: "Create New Password",
+    onboardingImportSeedPhraseDesc:
+      "Enter your 12 or 24-word seed phrase below to import your wallet.",
+    onboardingImportWalletButton: "Import Wallet",
+    onboardingImportSuccess: "Import Successful!",
+    onboardingImportWarning:
+      "Make sure no one is watching your screen. Never share your seed phrase with anyone.",
+    onboardingKeypairsTitle: "Imported Keypairs",
+    onboardingNoKeypairs: "No keypairs found.",
+    onboardingGenerateNewAddress: "Generate New Address",
+    onboardingSavedSeedPhrase: "I have saved my seed phrase",
+    onboardingImportantDialogTitle: "Important!",
+    onboardingImportantDialogDesc:
+      "Your seed phrase is the only way to recover your wallet. If you lose it, you will lose access to your funds forever. Make sure you have securely saved your seed phrase before continuing.",
+    errorOccurred: "An error occurred. Please try again.",
+    processing: "Processing...",
+    confirm: "Confirm",
     back: "← Back",
     lessonCompleted: "Lesson Complete! 🎉",
     user: "Username",
@@ -438,7 +512,6 @@ export const translations: Record<SupportedLanguages, Translation> = {
     // Lib components translations
     importSeedPhrase: "Import Seed Phrase",
     createNewWallet: "Create New Wallet",
-    errorOccurred: "Error Occurred",
     walletLocked: "Wallet Locked",
     enterPassword: "Enter Password",
     incorrectPassword: "Incorrect password. Please try again.",
@@ -525,7 +598,7 @@ export const translations: Record<SupportedLanguages, Translation> = {
     successClaimedAirdrop: "🎊 Framgång! Du har hämtat din airdrop.",
     claimAirdrop: "Hämta Airdrop",
     signMessageProveOwnership:
-      "Signera detta meddelande för att bevisa ägarskap av plånbok och hämta din airdrop.",
+      "Signera detta meddelande för att bevisa plånboksägande och hämta din airdrop.",
     signing: "Signerar...",
     signAndClaim: "Signera & Hämta",
     signatureOnlyForVerification:
@@ -533,11 +606,55 @@ export const translations: Record<SupportedLanguages, Translation> = {
     tryAgain: "Försök igen",
     setYourUsername: "👤 Ange ditt användarnamn",
     chooseUsernamePersonalize:
-      "Välj ett användarnamn för att personalisera din plånbok.",
+      "Välj ett användarnamn för att personifiera din plånbok.",
     enterYourUsername: "Ange ditt användarnamn",
     saveUsername: "Spara användarnamn",
+
+    onboardingCreateWalletTitle: "Skapa Plånbok",
+    onboardingImportWalletTitle: "Importera Plånbok",
+    onboardingCreatePasswordTitle: "Skapa Lösenord",
+    onboardingDisclaimerTitle: "Viktig Ansvarsfriskrivning",
+    onboardingDisclaimerDesc1:
+      "Du är på väg att skapa en självförvarad plånbok.",
+    onboardingDisclaimerDesc2:
+      "Du är den enda som kontrollerar din plånbok och dina medel.",
+    onboardingDisclaimerDesc3:
+      "Din seed-fras är det ENDA sättet att återställa din plånbok och tillgångar.",
+    onboardingDisclaimerDesc4:
+      "Om du förlorar din seed-fras, {red}kan dina medel inte återställas.",
+    onboardingDisclaimerNonCustodial:
+      "Detta är en icke-förvaringsplånbok. Endast du har tillgång till dina privata nycklar och medel.",
+    onboardingContinue: "Fortsätt",
+    onboardingUnderstandContinue: "Jag Förstår, Fortsätt",
+    onboardingSetPasswordDesc:
+      "Ange ett starkt lösenord för att skydda din plånbok.",
+    onboardingPasswordRequired:
+      "Detta lösenord krävs för att komma åt din plånbok på denna enhet.",
+    onboardingPasswordMinLength: "Lösenordet måste vara minst 6 tecken.",
+    onboardingPasswordMismatch: "Lösenorden matchar inte.",
+    onboardingPasswordFoundTitle: "Lösenord Hittades",
+    onboardingPasswordFoundDesc:
+      "Ett lösenord finns redan för denna plånbok. Vill du använda det befintliga lösenordet eller skapa ett nytt?",
+    onboardingUseExistingPassword: "Använd Befintligt Lösenord",
+    onboardingCreateNewPassword: "Skapa Nytt Lösenord",
+    onboardingImportSeedPhraseDesc:
+      "Ange din 12- eller 24-ords seed-fras nedan för att importera din plånbok.",
+    onboardingImportWalletButton: "Importera Plånbok",
+    onboardingImportSuccess: "Import Lyckades!",
+    onboardingImportWarning:
+      "Se till att ingen tittar på din skärm. Dela aldrig din seed-fras med någon.",
+    onboardingKeypairsTitle: "Importerade Nyckelpar",
+    onboardingNoKeypairs: "Inga nyckelpar hittades.",
+    onboardingGenerateNewAddress: "Generera Ny Adress",
+    onboardingSavedSeedPhrase: "Jag har sparat min seed-fras",
+    onboardingImportantDialogTitle: "Viktigt!",
+    onboardingImportantDialogDesc:
+      "Din seed-fras är det enda sättet att återställa din plånbok. Om du förlorar den kommer du att förlora åtkomsten till dina medel för alltid. Se till att du har sparat din seed-fras säkert innan du fortsätter.",
+    errorOccurred: "Ett fel uppstod. Vänligen försök igen.",
+    processing: "Bearbetar...",
+    confirm: "Bekräfta",
     saved: "Sparat",
-    usernameSavedSuccessfully: "Användarnamnet sparades framgångsrikt!",
+    usernameSavedSuccessfully: "Användarnamn sparat framgångsrikt!",
     // DAO page translations
     daoTitle: "DAO",
     theStableFoundation: "The Stable Foundation",
@@ -690,7 +807,6 @@ export const translations: Record<SupportedLanguages, Translation> = {
     // Lib components translations
     importSeedPhrase: "Importera fröfras",
     createNewWallet: "Skapa ny plånbok",
-    errorOccurred: "Fel uppstod",
     walletLocked: "Plånbok låst",
     enterPassword: "Ange lösenord",
     incorrectPassword: "Felaktigt lösenord. Försök igen.",
@@ -748,6 +864,49 @@ export const translations: Record<SupportedLanguages, Translation> = {
     homeDesc: "Cara yang menyenangkan untuk belajar bahasa Persia.",
     getStarted: "Mulai Belajar",
     startLesson: "Mulai",
+
+    onboardingCreateWalletTitle: "Buat Dompet",
+    onboardingImportWalletTitle: "Impor Dompet",
+    onboardingCreatePasswordTitle: "Buat Kata Sandi",
+    onboardingDisclaimerTitle: "Disclaimer Penting",
+    onboardingDisclaimerDesc1: "Anda akan membuat dompet self-custody.",
+    onboardingDisclaimerDesc2:
+      "Anda adalah satu-satunya yang mengontrol dompet dan dana Anda.",
+    onboardingDisclaimerDesc3:
+      "Frasa benih Anda adalah SATU-SATUNYA cara untuk memulihkan dompet dan aset Anda.",
+    onboardingDisclaimerDesc4:
+      "Jika Anda kehilangan frasa benih, {red}dana Anda tidak dapat dipulihkan.",
+    onboardingDisclaimerNonCustodial:
+      "Ini adalah dompet non-kustodian. Hanya Anda yang memiliki akses ke kunci privat dan dana Anda.",
+    onboardingContinue: "Lanjutkan",
+    onboardingUnderstandContinue: "Saya Mengerti, Lanjutkan",
+    onboardingSetPasswordDesc:
+      "Buat kata sandi yang kuat untuk melindungi dompet Anda.",
+    onboardingPasswordRequired:
+      "Kata sandi ini diperlukan untuk mengakses dompet Anda di perangkat ini.",
+    onboardingPasswordMinLength: "Kata sandi harus minimal 6 karakter.",
+    onboardingPasswordMismatch: "Kata sandi tidak cocok.",
+    onboardingPasswordFoundTitle: "Kata Sandi Ditemukan",
+    onboardingPasswordFoundDesc:
+      "Kata sandi sudah ada untuk dompet ini. Apakah Anda ingin menggunakan kata sandi yang ada atau membuat yang baru?",
+    onboardingUseExistingPassword: "Gunakan Kata Sandi yang Ada",
+    onboardingCreateNewPassword: "Buat Kata Sandi Baru",
+    onboardingImportSeedPhraseDesc:
+      "Masukkan frasa benih 12 atau 24 kata Anda di bawah untuk mengimpor dompet Anda.",
+    onboardingImportWalletButton: "Impor Dompet",
+    onboardingImportSuccess: "Impor Berhasil!",
+    onboardingImportWarning:
+      "Pastikan tidak ada yang melihat layar Anda. Jangan pernah membagikan frasa benih Anda kepada siapa pun.",
+    onboardingKeypairsTitle: "Keypair yang Diimpor",
+    onboardingNoKeypairs: "Tidak ada keypair ditemukan.",
+    onboardingGenerateNewAddress: "Buat Alamat Baru",
+    onboardingSavedSeedPhrase: "Saya sudah menyimpan frasa benih saya",
+    onboardingImportantDialogTitle: "Penting!",
+    onboardingImportantDialogDesc:
+      "Frasa benih Anda adalah satu-satunya cara untuk memulihkan dompet Anda. Jika Anda kehilangannya, Anda akan kehilangan akses ke dana Anda selamanya. Pastikan Anda telah menyimpan frasa benih Anda dengan aman sebelum melanjutkan.",
+    errorOccurred: "Terjadi kesalahan. Silakan coba lagi.",
+    processing: "Memproses...",
+    confirm: "Konfirmasi",
     back: "← Kembali",
     lessonCompleted: "Pelajaran Selesai! 🎉",
     user: "Nama Pengguna",
@@ -941,9 +1100,8 @@ export const translations: Record<SupportedLanguages, Translation> = {
     swap: "Tukar",
     balance: "Saldo",
     // Lib components translations
-    importSeedPhrase: "Impor Frasa Seed",
+    importSeedPhrase: "Impor Frasa Benih",
     createNewWallet: "Buat Dompet Baru",
-    errorOccurred: "Terjadi Kesalahan",
     walletLocked: "Dompet Terkunci",
     enterPassword: "Masukkan Kata Sandi",
     incorrectPassword: "Kata sandi salah. Silakan coba lagi.",
