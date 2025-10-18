@@ -16,11 +16,13 @@ import { selectionFeedback } from "@tauri-apps/plugin-haptics";
 import CircularProgress from "@mui/material/CircularProgress";
 import PageChildrenTitleBar from "@lib/components/page-children-title-bar";
 import { useNavigate } from "react-router-dom";
+import { useLang } from "@src/LanguageContext";
 
 export default function WalletOnboardingImportKeypairsPage() {
   const [keypairs, setKeypairs] = React.useState<SolanaWallet[]>([]);
   const [loading, setLoading] = React.useState(true);
   const router = useNavigate();
+  const { t } = useLang();
 
   // Fetch keypairs from store on mount
   React.useEffect(() => {
@@ -89,7 +91,7 @@ export default function WalletOnboardingImportKeypairsPage() {
         pb: 8,
       }}
     >
-      <PageChildrenTitleBar title="Imported Keypairs" />
+      <PageChildrenTitleBar title={t.onboardingKeypairsTitle} />
       <Box sx={{ width: "100%", maxWidth: 420, px: 2 }}>
         <Card
           sx={{
@@ -113,7 +115,7 @@ export default function WalletOnboardingImportKeypairsPage() {
                 letterSpacing: "-0.02em",
               }}
             >
-              Your Wallet Addresses
+              {t.onboardingKeypairsTitle}
             </Typography>
           </Box>
           <List sx={{ p: 0, pb: 1 }}>
@@ -128,7 +130,7 @@ export default function WalletOnboardingImportKeypairsPage() {
                 }}
               >
                 <ListItemText
-                  primary="No keypairs found."
+                  primary={t.onboardingNoKeypairs}
                   primaryTypographyProps={{
                     sx: {
                       fontSize: "16px",
@@ -222,7 +224,7 @@ export default function WalletOnboardingImportKeypairsPage() {
           onClick={handleGenerateNew}
           disabled={keypairs.length >= 5}
         >
-          Generate New Address
+          {t.onboardingGenerateNewAddress}
         </Button>
         <Button
           variant="outlined"
@@ -246,7 +248,7 @@ export default function WalletOnboardingImportKeypairsPage() {
             router("/wallet/onboarding/create-password");
           }}
         >
-          Continue
+          {t.onboardingContinue}
         </Button>
       </Box>
     </Box>

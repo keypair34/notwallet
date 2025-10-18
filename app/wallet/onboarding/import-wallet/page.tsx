@@ -12,16 +12,18 @@ import { SolanaWallet } from "@lib/crate/generated";
 import { IMPORT_SOLANA_WALLET } from "@lib/commands";
 import PageChildrenTitleBar from "@lib/components/page-children-title-bar";
 import { useNavigate } from "react-router-dom";
+import { useLang } from "@src/LanguageContext";
 
 export default function WalletOnboardingImportWalletPage() {
   const [seed, setSeed] = React.useState("");
   const [error, setError] = React.useState("");
   const [pubkey, setPubkey] = React.useState<string | null>(null);
   const router = useNavigate();
+  const { t } = useLang();
 
   const handleImport = async () => {
     if (seed.trim().split(/\s+/).length < 12) {
-      setError("Seed phrase must be at least 12 words.");
+      setError(t.onboardingPasswordMinLength);
       setPubkey(null);
       return;
     }
@@ -37,7 +39,7 @@ export default function WalletOnboardingImportWalletPage() {
       router("/wallet/onboarding/import-keypairs");
     } catch (e: any) {
       debug(`import_solana_wallet error: ${e?.toString()}`);
-      setError(e?.toString() || "Failed to import wallet.");
+      setError(e?.toString() || t.errorOccurred);
       setPubkey(null);
     }
   };
@@ -53,7 +55,7 @@ export default function WalletOnboardingImportWalletPage() {
         pb: 8,
       }}
     >
-      <PageChildrenTitleBar title="Import Wallet" />
+      <PageChildrenTitleBar title={t.onboardingImportWalletTitle} />
       <Box sx={{ width: "100%", maxWidth: 420, px: 2 }}>
         <Typography
           sx={{
@@ -64,7 +66,7 @@ export default function WalletOnboardingImportWalletPage() {
             lineHeight: 1.5,
           }}
         >
-          Enter your 12 or 24-word seed phrase below to import your wallet.
+          {t.onboardingImportSeedPhraseDesc}
         </Typography>
 
         <Card
@@ -89,19 +91,19 @@ export default function WalletOnboardingImportWalletPage() {
                 letterSpacing: "-0.02em",
               }}
             >
-              Seed Phrase
+              {t.onboardingImportWalletButton}
             </Typography>
             <TextField
-              label="Enter your seed phrase"
+              label={t.onboardingImportWalletButton}
               multiline
               minRows={4}
               maxRows={6}
               fullWidth
-              placeholder="Enter your 12 or 24 word seed phrase"
+              placeholder={t.onboardingImportSeedPhraseDesc}
               value={seed}
               onChange={(e) => setSeed(e.target.value)}
               error={!!error}
-              helperText={error || "Words separated by spaces"}
+              helperText={error || t.onboardingImportWalletButton}
               inputProps={{
                 style: {
                   fontFamily: "monospace",
@@ -129,7 +131,7 @@ export default function WalletOnboardingImportWalletPage() {
                     mb: 1,
                   }}
                 >
-                  Import Successful!
+                  {t.onboardingImportSuccess}
                 </Typography>
                 <Typography
                   sx={{
@@ -175,8 +177,7 @@ export default function WalletOnboardingImportWalletPage() {
               p: 3,
             }}
           >
-            🔒 Make sure no one is watching your screen. Never share your seed
-            phrase with anyone.
+            🔒 {t.onboardingImportWarning}
           </Typography>
         </Box>
 
@@ -204,7 +205,7 @@ export default function WalletOnboardingImportWalletPage() {
           onClick={handleImport}
           disabled={seed.trim().length === 0}
         >
-          Import Wallet
+          {t.onboardingImportWalletButton}
         </Button>
       </Box>
     </Box>
