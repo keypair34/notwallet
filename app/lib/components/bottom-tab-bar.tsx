@@ -7,14 +7,14 @@ import Paper from "@mui/material/Paper";
 import HomeIcon from "@mui/icons-material/Home";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import SettingsIcon from "@mui/icons-material/Settings";
-import { usePathname, useRouter } from "next/navigation";
 import { selectionFeedback } from "@tauri-apps/plugin-haptics";
-import { useI18n } from "@/lib/i18n/provider";
+import { useLang } from "@src/LanguageContext";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function BottomTabBar({ isMobile }: { isMobile: boolean }) {
-  const pathname = usePathname();
-  const router = useRouter();
-  const { t } = useI18n();
+  const pathname = useLocation().pathname;
+  const router = useNavigate();
+  const { t } = useLang();
 
   // Determine active tab based on pathname
   const getActiveTab = () => {
@@ -61,11 +61,11 @@ export default function BottomTabBar({ isMobile }: { isMobile: boolean }) {
       await selectionFeedback();
     } catch {}
     if (newValue === 0 && pathname !== "/home") {
-      router.push("/home");
+      router("/home");
     } else if (newValue === 1 && pathname !== "/wallet") {
-      router.push("/wallet");
+      router("/wallet");
     } else if (newValue === 2 && pathname !== "/settings") {
-      router.push("/settings");
+      router("/settings");
     }
   };
 
@@ -93,7 +93,7 @@ export default function BottomTabBar({ isMobile }: { isMobile: boolean }) {
         }}
       >
         <BottomNavigationAction
-          label={t("home.title")}
+          label={t.home}
           icon={<HomeIcon />}
           sx={{
             color: value === 0 ? "#AD5AD7" : undefined,
@@ -101,7 +101,7 @@ export default function BottomTabBar({ isMobile }: { isMobile: boolean }) {
           }}
         />
         <BottomNavigationAction
-          label={t("wallet.title")}
+          label={t.wallet}
           icon={<AccountBalanceWalletIcon />}
           sx={{
             color: value === 1 ? "#AD5AD7" : undefined,
@@ -109,7 +109,7 @@ export default function BottomTabBar({ isMobile }: { isMobile: boolean }) {
           }}
         />
         <BottomNavigationAction
-          label={t("common.settings")}
+          label={t.settings}
           icon={<SettingsIcon />}
           sx={{
             color: value === 2 ? "#AD5AD7" : undefined,
