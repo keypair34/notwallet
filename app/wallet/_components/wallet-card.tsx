@@ -177,24 +177,6 @@ export default function WalletCard({
           </IconButton>
         </Stack>
         <Stack direction="row" spacing={1}>
-          <Tooltip title={t.toggleLockWallet} arrow>
-            <IconButton
-              size="small"
-              sx={{
-                minWidth: 0,
-                px: 1.5,
-                borderRadius: 2,
-                fontWeight: "bold",
-                background: "#fff",
-                color: "#9932CC",
-                boxShadow: "0 1px 6px #9932CC22",
-                "&:hover": { background: "#f5f6fa" },
-              }}
-              onClick={onLock}
-            >
-              <LockIcon fontSize="small" />
-            </IconButton>
-          </Tooltip>
           <Tooltip title={t.walletSettings} arrow>
             <IconButton
               sx={{
