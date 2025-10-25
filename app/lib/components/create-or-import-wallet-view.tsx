@@ -60,17 +60,6 @@ export default function CreateOrImportWalletView() {
             }}
           />
         </Box>
-        <Typography
-          variant="h5"
-          sx={{
-            color: "#1F2937",
-            fontWeight: 700,
-            letterSpacing: "-0.02em",
-            fontSize: "22px",
-          }}
-        >
-          {t.notwalletCrypto}
-        </Typography>
       </Box>
 
       {/* Main Card */}
