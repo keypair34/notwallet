@@ -7,6 +7,9 @@ import { selectionFeedback } from "@tauri-apps/plugin-haptics";
 import Box from "@mui/material/Box";
 import { useNavigate } from "react-router-dom";
 import { useLang } from "@src/LanguageContext";
+import LockOpenIcon from "@mui/icons-material/LockOpen";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 
 export default function CreateOrImportWalletView() {
   const router = useNavigate();
@@ -15,56 +18,114 @@ export default function CreateOrImportWalletView() {
   return (
     <Box
       sx={{
-        bgcolor: "linear-gradient(135deg, #FAFBFF 0%, #F8FAFF 100%)",
+        minHeight: "100vh",
+        bgcolor: "#FFFFFF",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        pb: 8,
+        p: 3,
       }}
     >
-      <Card
+      {/* Logo/Brand Section */}
+      <Box
         sx={{
-          maxWidth: 420,
-          width: "100%",
-          borderRadius: "20px",
-          boxShadow: "0 4px 20px rgba(139, 92, 246, 0.08)",
-          border: "1px solid rgba(139, 92, 246, 0.06)",
-          overflow: "hidden",
-          bgcolor: "#FFFFFF",
+          mb: 4,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: 2,
+          zIndex: 1,
         }}
       >
-        <CardContent>
+        <Box
+          sx={{
+            width: 80,
+            height: 80,
+            borderRadius: "20px",
+            background: "rgba(255, 255, 255, 0.95)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            boxShadow: "0 8px 32px rgba(0, 0, 0, 0.12)",
+            backdropFilter: "blur(10px)",
+          }}
+        >
+          <AccountBalanceWalletIcon
+            sx={{
+              fontSize: 48,
+              background: "linear-gradient(135deg, #9932CC 0%, #7A1FA2 100%)",
+              backgroundClip: "text",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}
+          />
+        </Box>
+      </Box>
+
+      {/* Main Card */}
+      <Card
+        sx={{
+          maxWidth: 480,
+          width: "100%",
+          borderRadius: "24px",
+          boxShadow: "0 20px 60px rgba(0, 0, 0, 0.3)",
+          overflow: "hidden",
+          bgcolor: "rgba(255, 255, 255, 0.98)",
+          backdropFilter: "blur(20px)",
+          zIndex: 1,
+        }}
+      >
+        <CardContent sx={{ p: 4, pb: 2 }}>
           <Typography
-            variant="h3"
+            variant="h5"
             component="h1"
             sx={{
-              fontSize: "28px",
-              fontWeight: 700,
+              fontSize: "24px",
+              fontWeight: 600,
               color: "#1F2937",
               textAlign: "center",
-              mb: 2,
-              letterSpacing: "-0.02em",
+              mb: 1,
+              letterSpacing: "-0.01em",
             }}
           >
             {t.createYourWallet}
           </Typography>
+          <Typography
+            variant="body2"
+            sx={{
+              color: "#6B7280",
+              textAlign: "center",
+              fontSize: "14px",
+              lineHeight: 1.6,
+            }}
+          >
+            Get started by creating a new wallet or importing an existing one
+          </Typography>
         </CardContent>
+
         <CardActions sx={{ flexDirection: "column", gap: 2, p: 4, pt: 2 }}>
+          {/* Import Wallet Button */}
           <Button
             variant="contained"
             fullWidth
+            startIcon={<LockOpenIcon />}
             sx={{
-              py: 1.75,
-              borderRadius: "12px",
+              py: 2,
+              borderRadius: "16px",
               fontSize: "16px",
               fontWeight: 600,
               textTransform: "none",
-              boxShadow: "0 4px 12px rgba(167, 139, 250, 0.3)",
-              background: "linear-gradient(135deg, #A78BFA 0%, #8B5CF6 100%)",
+              boxShadow: "0 8px 24px rgba(153, 50, 204, 0.4)",
+              background: "linear-gradient(135deg, #9932CC 0%, #7A1FA2 100%)",
+              transition: "all 0.3s ease",
               "&:hover": {
-                background: "linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%)",
-                boxShadow: "0 6px 16px rgba(167, 139, 250, 0.4)",
+                background: "linear-gradient(135deg, #7A1FA2 0%, #5E1580 100%)",
+                boxShadow: "0 12px 32px rgba(153, 50, 204, 0.5)",
+                transform: "translateY(-2px)",
+              },
+              "&:active": {
+                transform: "translateY(0)",
               },
             }}
             onClick={async () => {
@@ -74,21 +135,53 @@ export default function CreateOrImportWalletView() {
           >
             {t.importSeedPhrase}
           </Button>
+
+          {/* Divider */}
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              alignItems: "center",
+              gap: 2,
+              my: 1,
+            }}
+          >
+            <Box sx={{ flex: 1, height: "1px", bgcolor: "#E5E7EB" }} />
+            <Typography
+              variant="caption"
+              sx={{ color: "#9CA3AF", fontWeight: 500, fontSize: "12px" }}
+            >
+              OR
+            </Typography>
+            <Box sx={{ flex: 1, height: "1px", bgcolor: "#E5E7EB" }} />
+          </Box>
+
+          {/* Create New Wallet Button */}
           <Button
             variant="outlined"
             fullWidth
+            startIcon={<AddCircleOutlineIcon />}
             sx={{
-              py: 1.75,
-              borderRadius: "12px",
+              py: 2,
+              borderRadius: "16px",
               fontSize: "16px",
               fontWeight: 600,
               textTransform: "none",
-              borderColor: "#A78BFA",
-              color: "#A78BFA",
+              borderWidth: "2px",
+              borderColor: "#9932CC",
+              color: "#9932CC",
+              background: "rgba(153, 50, 204, 0.03)",
+              transition: "all 0.3s ease",
               "&:hover": {
-                background: "rgba(167, 139, 250, 0.04)",
-                borderColor: "#8B5CF6",
-                color: "#8B5CF6",
+                background: "rgba(153, 50, 204, 0.08)",
+                borderWidth: "2px",
+                borderColor: "#7A1FA2",
+                color: "#7A1FA2",
+                transform: "translateY(-2px)",
+                boxShadow: "0 8px 16px rgba(153, 50, 204, 0.15)",
+              },
+              "&:active": {
+                transform: "translateY(0)",
               },
             }}
             onClick={async () => {
@@ -99,6 +192,28 @@ export default function CreateOrImportWalletView() {
             {t.createNewWallet}
           </Button>
         </CardActions>
+
+        {/* Footer */}
+        <Box
+          sx={{
+            px: 4,
+            pb: 4,
+            pt: 2,
+          }}
+        >
+          <Typography
+            variant="caption"
+            sx={{
+              color: "#9CA3AF",
+              textAlign: "center",
+              display: "block",
+              fontSize: "12px",
+              lineHeight: 1.5,
+            }}
+          >
+            🔒 Your keys, your crypto. We never store your seed phrase.
+          </Typography>
+        </Box>
       </Card>
     </Box>
   );
