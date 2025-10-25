@@ -47,7 +47,7 @@ export default function CreateOrImportWalletView() {
               letterSpacing: "-0.02em",
             }}
           >
-            {t.notwalletCrypto}
+            {t.createYourWallet}
           </Typography>
         </CardContent>
         <CardActions sx={{ flexDirection: "column", gap: 2, p: 4, pt: 2 }}>
