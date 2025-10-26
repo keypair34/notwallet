@@ -13,11 +13,11 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import FingerprintIcon from "@mui/icons-material/Fingerprint";
 import { getVersion } from "@tauri-apps/api/app";
 import { invoke } from "@tauri-apps/api/core";
-import PageChildrenTitleBar from "@/lib/components/page-children-title-bar";
-import { useI18n } from "@/lib/i18n/provider";
+import PageChildrenTitleBar from "@app/lib/components/page-children-title-bar";
+import { useLang } from "../../../src/LanguageContext";
 
 export default function AppInfoPage() {
-  const { t } = useI18n();
+  const { t } = useLang();
   const [version, setVersion] = React.useState<string | null>(null);
   const [installationId, setInstallationId] = React.useState<string | null>(
     null,
@@ -42,14 +42,14 @@ export default function AppInfoPage() {
   const appInfoItems = [
     {
       id: "version",
-      label: t("appInfo.version"),
-      value: version ? `${version}` : t("appInfo.loading"),
+      label: t.version,
+      value: version ? `${version}` : t.loading,
       icon: <InfoOutlinedIcon />,
     },
     {
       id: "installationId",
-      label: t("appInfo.installationId"),
-      value: installationId || t("appInfo.loading"),
+      label: t.installationId,
+      value: installationId || t.loading,
       icon: <FingerprintIcon />,
     },
   ];
@@ -59,14 +59,13 @@ export default function AppInfoPage() {
       sx={{
         minHeight: "100vh",
         bgcolor: "linear-gradient(135deg, #FAFBFF 0%, #F8FAFF 100%)",
-        background: "linear-gradient(135deg, #FAFBFF 0%, #F8FAFF 100%)",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         py: 4,
       }}
     >
-      <PageChildrenTitleBar title={t("appInfo.title")} />
+      <PageChildrenTitleBar title={t.appInfo} />
 
       {/* Main Content Card */}
       <Box sx={{ width: "100%", maxWidth: 420, px: 2 }}>
@@ -91,7 +90,7 @@ export default function AppInfoPage() {
                 letterSpacing: "-0.02em",
               }}
             >
-              {t("appInfo.applicationInformation")}
+              {t.applicationInformation}
             </Typography>
           </Box>
 
@@ -100,7 +99,8 @@ export default function AppInfoPage() {
               <React.Fragment key={item.id}>
                 <ListItem
                   sx={{
-                    px: 0,
+                    pl: 0,
+                    pr: 8,
                     py: 2,
                     borderRadius: "12px",
                     mx: 2,
@@ -171,7 +171,7 @@ export default function AppInfoPage() {
                 lineHeight: 1.5,
               }}
             >
-              {t("appInfo.supportNote")}
+              {t.supportNote}
             </Typography>
           </Box>
         </Card>

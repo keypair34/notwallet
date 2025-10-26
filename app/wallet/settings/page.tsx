@@ -8,49 +8,93 @@ import List from "@mui/material/List";
 import AddIcon from "@mui/icons-material/Add";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
-import { useRouter } from "next/navigation";
+import BorderColorRoundedIcon from "@mui/icons-material/BorderColorRounded";
 import { selectionFeedback } from "@tauri-apps/plugin-haptics";
 import WalletSettingsSeedPhraseModal from "./_components/wallet-settings-seed-phrase-modal";
-import PageChildrenTitleBar from "@/lib/components/page-children-title-bar";
+import EditKeyPairModal from "../_components/edit-keypair-modal";
+import PageChildrenTitleBar from "@app/lib/components/page-children-title-bar";
 import SettingListItem from "./_components/setting-list-item";
 import DestroyWalletsCard from "./_components/destroy-wallets-card";
-import { useI18n } from "@/lib/i18n/provider";
+import { useLang } from "../../../src/LanguageContext";
+import { useNavigate } from "react-router-dom";
+import { SolanaWallet, STORE_ACTIVE_KEYPAIR } from "@app/lib/crate/generated";
+import { store } from "@app/lib/store/store";
 
 export default function WalletSettingsPage() {
-  const router = useRouter();
-  const { t } = useI18n();
+  const router = useNavigate();
+  const { t } = useLang();
   const [showSeedPhraseModal, setShowSeedPhraseModal] = React.useState(false);
+  const [showEditKeyPairModal, setShowEditKeyPairModal] = React.useState(false);
+  const [currentWallet, setCurrentWallet] = React.useState<SolanaWallet | null>(
+    null,
+  );
+
+  React.useEffect(() => {
+    const fetchCurrentWallet = async () => {
+      try {
+        const wallet = await store().get<SolanaWallet>(STORE_ACTIVE_KEYPAIR);
+        setCurrentWallet(wallet || null);
+      } catch (err) {
+        console.error("Error fetching current wallet:", err);
+      }
+    };
+    fetchCurrentWallet();
+  }, []);
 
   const handleClick = async (
     type:
       | "addWallet"
       | "showSeedPhrase"
       | "importSeedPhrase"
+      | "editWallet"
       | "destroyWallets",
   ) => {
     await selectionFeedback();
     if (type === "addWallet") {
-      router.push("/wallet/create-new-wallet");
+      router("/wallet/create-new-wallet");
     } else if (type === "showSeedPhrase") {
       setShowSeedPhraseModal(true);
     } else if (type === "importSeedPhrase") {
-      router.push("/wallet/import");
+      router("/wallet/import");
+    } else if (type === "editWallet") {
+      setShowEditKeyPairModal(true);
+    }
+  };
+
+  const handleCloseEditKeyPairModal = async (updatedUsername: string) => {
+    setShowEditKeyPairModal(false);
+    if (updatedUsername && currentWallet) {
+      // Refresh the current wallet data
+      try {
+        const wallet = await store().get<SolanaWallet>(STORE_ACTIVE_KEYPAIR);
+        setCurrentWallet(wallet || null);
+      } catch (err) {
+        console.error("Error refreshing wallet:", err);
+      }
     }
   };
 
   const walletItems = [
     {
+      id: "editWallet",
+      label: t.editWallet,
+      description: "Change wallet name",
+      icon: <BorderColorRoundedIcon />,
+      action: () => handleClick("editWallet"),
+      hasChevron: true,
+    },
+    {
       id: "addWallet",
-      label: t("wallet.addWallet"),
-      description: t("wallet.createNew"),
+      label: t.addWallet,
+      description: t.createNew,
       icon: <AddIcon />,
       action: () => handleClick("addWallet"),
       hasChevron: true,
     },
     {
       id: "showSeedPhrase",
-      label: t("wallet.showSeedPhrase"),
-      description: t("wallet.viewRecoveryPhrase"),
+      label: t.showSeedPhrase,
+      description: t.viewRecoveryPhrase,
       icon: <VisibilityOutlinedIcon />,
       action: () => handleClick("showSeedPhrase"),
       hasChevron: true,
@@ -60,8 +104,8 @@ export default function WalletSettingsPage() {
   const importItems = [
     {
       id: "importSeedPhrase",
-      label: t("wallet.importSeedPhrase"),
-      description: t("wallet.importExisting"),
+      label: t.importSeedPhrase,
+      description: t.importExisting,
       icon: <FileDownloadOutlinedIcon />,
       action: () => handleClick("importSeedPhrase"),
       hasChevron: true,
@@ -80,7 +124,7 @@ export default function WalletSettingsPage() {
         pb: 8,
       }}
     >
-      <PageChildrenTitleBar title={t("wallet.settings")} />
+      <PageChildrenTitleBar title={t.walletSettings} />
       <Box sx={{ width: "100%", maxWidth: 420, px: 2 }}>
         {/* Security Notice */}
         <Box
@@ -102,7 +146,7 @@ export default function WalletSettingsPage() {
               p: 3,
             }}
           >
-            {t("security.securityNotice")}
+            {t.securityNotice}
             <br />
             <Box
               component="span"
@@ -113,7 +157,7 @@ export default function WalletSettingsPage() {
                 display: "block",
               }}
             >
-              {t("security.storeOffline")}
+              {t.storeOffline}
             </Box>
           </Typography>
         </Box>
@@ -141,7 +185,7 @@ export default function WalletSettingsPage() {
                 letterSpacing: "-0.02em",
               }}
             >
-              {t("wallet.management")}
+              {t.management}
             </Typography>
           </Box>
           <List sx={{ p: 0, pb: 1 }}>
@@ -174,7 +218,7 @@ export default function WalletSettingsPage() {
                 letterSpacing: "-0.02em",
               }}
             >
-              {t("wallet.importRecovery")}
+              {t.importRecovery}
             </Typography>
           </Box>
           <List sx={{ p: 0, pb: 1 }}>
@@ -189,6 +233,13 @@ export default function WalletSettingsPage() {
         open={showSeedPhraseModal}
         onClose={() => setShowSeedPhraseModal(false)}
       />
+      {currentWallet && (
+        <EditKeyPairModal
+          open={showEditKeyPairModal}
+          onClose={handleCloseEditKeyPairModal}
+          wallet={currentWallet}
+        />
+      )}
     </Box>
   );
 }

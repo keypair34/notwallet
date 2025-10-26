@@ -5,6 +5,7 @@ use {
     smbcloud_wallet_core_rpc::balance::{
         aggregate_spl_token_balance::aggregate_spl_token_balance, sol_balance::sol_balance,
     },
+    tsync::tsync,
 };
 
 #[derive(Debug)]
@@ -46,53 +47,31 @@ impl SolanaAsset {
         }
     }
 }
-/*
+
 #[tsync]
 #[allow(dead_code)]
-pub const USDC: &str = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
+pub const ADDRESS_JUPITER: &str = "JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN";
 #[tsync]
 #[allow(dead_code)]
-pub const USDT: &str = "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB";
+pub const ADDRESS_USDC: &str = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
 #[tsync]
 #[allow(dead_code)]
-pub const USDG: &str = "2u1tszSeqZ3qBWF3uNGPFc8TzMk2tdiwknnRMWGWjGWH";
+pub const ADDRESS_USDT: &str = "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB";
 #[tsync]
 #[allow(dead_code)]
-pub const EURC: &str = "HzwqbKZw8HxMN6bF2yFZNrht3c2iXXzpKcFu7uBEDKtr";
+pub const ADDRESS_USDG: &str = "2u1tszSeqZ3qBWF3uNGPFc8TzMk2tdiwknnRMWGWjGWH";
 #[tsync]
 #[allow(dead_code)]
-pub const JUPITER: &str = "JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN";
+pub const ADDRESS_USDS: &str = "USDSwr9ApdHk5bvJKMjzff41FfuX8bSxdKcR81vTwcA";
 #[tsync]
 #[allow(dead_code)]
-pub const MEW: &str = "MEW1gQWJ3nEXg2qgERiKu7FAFj79PHvQVREQUzScPP5";
+pub const ADDRESS_USD1: &str = "USD1ttGY1N17NEEHLmELoaybftRBUSErhqYiQzvEmuB";
 #[tsync]
 #[allow(dead_code)]
-pub const PAYPAY_USD: &str = "2b1kV6DkPAnxd5ixfnxCpjxmKwqjjaYmCZfHsFu24GXo";
+pub const ADDRESS_EURC: &str = "HzwqbKZw8HxMN6bF2yFZNrht3c2iXXzpKcFu7uBEDKtr";
 #[tsync]
 #[allow(dead_code)]
-pub const BONK: &str = "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263";
-#[tsync]
-#[allow(dead_code)]
-pub const USDS: &str = "USDSwr9ApdHk5bvJKMjzff41FfuX8bSxdKcR81vTwcA";
-#[tsync]
-#[allow(dead_code)]
-pub const OFFICIAL_TRUMP: &str = "6p6xgHyF7AeE6TZkSmFsko444wqoP15icUSqi2jfGiPN";
-#[tsync]
-#[allow(dead_code)]
-pub const COINBASE_WRAPPED_BTC: &str = "cbbtcf3aa214zXHbiAZQwf4122FBYbraNdFqgw4iMij";
-#[tsync]
-#[allow(dead_code)]
-pub const MELANIA_MEME: &str = "FUAfBo2jgks6gB4Z4LfZkqSZgzNucisEHqnNebaRxM1P";
-#[tsync]
-#[allow(dead_code)]
-pub const JITO_STAKED_SOL: &str = "J1toso1uCk3RLmjorhTtrVwY9HJ7X8V9yYac6Y7kGCPn";
-#[tsync]
-#[allow(dead_code)]
-pub const ZBTC: &str = "zBTCug3er3tLyffELcvDNrKkCymbPWysGcWihESYfLg";
-#[tsync]
-#[allow(dead_code)]
-pub const USD1: &str = "USD1ttGY1N17NEEHLmELoaybftRBUSErhqYiQzvEmuB";
-*/
+pub const ADDRESS_ZBTC: &str = "zBTCug3er3tLyffELcvDNrKkCymbPWysGcWihESYfLg";
 impl SolanaAsset {
     pub fn native() -> Self {
         Self::Sol {
@@ -121,6 +100,69 @@ impl SolanaAsset {
                     symbol: "zBTC".to_string(),
                     decimal: 8,
                     logo_uri: "https://statics.solscan.io/cdn/imgs/s60?ref=68747470733a2f2f7261772e67697468756275736572636f6e74656e742e636f6d2f5a6575734e6574776f726b48512f7a6274632d6d657461646174612f726566732f68656164732f6d61696e2f6c676f6f2d76322e706e67".to_string(),
+                },
+            }),
+            ADDRESS_JUPITER => Some(Self::Jupiter{
+                meta: Metadata {
+                    address,
+                    name: "Jupiter".to_string(),
+                    symbol: "JUP".to_string(),
+                    decimal: 6,
+                    logo_uri: "https://static.jup.ag/jup/icon.png".to_string(),
+                },
+            }),
+            ADDRESS_USDC => Some(Self::Usdc {
+                meta: Metadata {
+                    address,
+                    name: "USD Coin".to_string(),
+                    symbol: "USDC".to_string(),
+                    decimal: 6,
+                    logo_uri: "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v/logo.png".to_string(),
+                },
+            }),
+            ADDRESS_USDT => Some(Self::Usdt {
+                meta: Metadata {
+                    address,
+                    name: "Tether USD".to_string(),
+                    symbol: "USDT".to_string(),
+                    decimal: 6,
+                    logo_uri: "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB/logo.svg".to_string(),
+                },
+            }),
+            ADDRESS_USDG => Some(Self::Usdg {
+                meta: Metadata {
+                    address,
+                    name: "USDG Stablecoin".to_string(),
+                    symbol: "USDG".to_string(),
+                    decimal: 9,
+                    logo_uri: "https://statics.solscan.io/cdn/imgs/s60?ref=68747470733a2f2f63646e2e676c6974746572706179732e636f6d2f75736467746f6b656e2e706e67".to_string(),
+                },
+            }),
+            ADDRESS_USDS => Some(Self::Usds {
+                meta: Metadata {
+                    address,
+                    name: "USDS".to_string(),
+                    symbol: "USDS".to_string(),
+                    decimal: 6,
+                    logo_uri: "https://static.skyusds.io/logo.png".to_string(),
+                },
+            }),
+            ADDRESS_USD1 => Some(Self::Usd1 {
+                meta: Metadata {
+                    address,
+                    name: "USD1".to_string(),
+                    symbol: "USD1".to_string(),
+                    decimal: 6,
+                    logo_uri: "https://statics.solscan.io/cdn/imgs/s60?ref=68747470733a2f2f63646e2e7573643170726f746f636f6c2e636f6d2f6c6f676f2e706e67".to_string(),
+                },
+            }),
+            ADDRESS_EURC => Some(Self::Eurc {
+                meta: Metadata {
+                    address,
+                    name: "Euro Coin".to_string(),
+                    symbol: "EURC".to_string(),
+                    decimal: 6,
+                    logo_uri: "https://www.circle.com/hubfs/Brand/EURC/EURC-icon.svg".to_string(),
                 },
             }),
             // Local develoment tokens.
@@ -164,6 +206,48 @@ impl SolanaAsset {
                 meta.address,
             ),
             SolanaAsset::ZBtc { meta } => aggregate_spl_token_balance(
+                environment.rpc_url(),
+                address,
+                SPL_TOKEN_PROGRAM_ID.to_string(),
+                meta.address,
+            ),
+            SolanaAsset::Jupiter { meta } => aggregate_spl_token_balance(
+                environment.rpc_url(),
+                address,
+                SPL_TOKEN_PROGRAM_ID.to_string(),
+                meta.address,
+            ),
+            SolanaAsset::Usdc { meta } => aggregate_spl_token_balance(
+                environment.rpc_url(),
+                address,
+                SPL_TOKEN_PROGRAM_ID.to_string(),
+                meta.address,
+            ),
+            SolanaAsset::Usdt { meta } => aggregate_spl_token_balance(
+                environment.rpc_url(),
+                address,
+                SPL_TOKEN_PROGRAM_ID.to_string(),
+                meta.address,
+            ),
+            SolanaAsset::Usdg { meta } => aggregate_spl_token_balance(
+                environment.rpc_url(),
+                address,
+                SPL_TOKEN_PROGRAM_ID.to_string(),
+                meta.address,
+            ),
+            SolanaAsset::Usds { meta } => aggregate_spl_token_balance(
+                environment.rpc_url(),
+                address,
+                SPL_TOKEN_PROGRAM_ID.to_string(),
+                meta.address,
+            ),
+            SolanaAsset::Usd1 { meta } => aggregate_spl_token_balance(
+                environment.rpc_url(),
+                address,
+                SPL_TOKEN_PROGRAM_ID.to_string(),
+                meta.address,
+            ),
+            SolanaAsset::Eurc { meta } => aggregate_spl_token_balance(
                 environment.rpc_url(),
                 address,
                 SPL_TOKEN_PROGRAM_ID.to_string(),
