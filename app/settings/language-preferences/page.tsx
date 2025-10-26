@@ -5,7 +5,6 @@ import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
-import { selectionFeedback } from "@tauri-apps/plugin-haptics";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";

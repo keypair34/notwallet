@@ -2,6 +2,7 @@ mod constants;
 mod model;
 mod network;
 mod onramp;
+mod settings;
 mod setup;
 mod swap;
 mod wallet;
@@ -9,7 +10,11 @@ mod wallet;
 use {
     crate::{
         onramp::commands::onramp_session,
-        setup::{commands::get_installation_id, setup},
+        settings::commands::{get_airdrop_environment, set_airdrop_environment},
+        setup::{
+            commands::{get_installation_id, is_debug, register_client},
+            setup,
+        },
         swap::commands::{build_swap_transaction, get_swap_quote, send_swap_transaction},
         wallet::{
             check_pubkey::check_pubkey,
@@ -78,6 +83,10 @@ pub fn run() {
             get_other_assets_balance,
             build_swap_transaction,
             send_swap_transaction,
+            is_debug,
+            get_airdrop_environment,
+            set_airdrop_environment,
+            register_client,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

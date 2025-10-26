@@ -26,9 +26,30 @@ import WalletSettingsPage from "@app/wallet/settings/page";
 import WalletTokenPage from "@app/wallet/token/page";
 import { AppLockProvider } from "@app/lib/context/app-lock-context";
 import LanguagePreferencesPage from "@app/settings/language-preferences/page";
+import DebugPage from "@app/settings/debug/page";
+import { useAirdropEnvironment } from "@app/lib/context/app-environment-context";
+import { useEffect } from "react";
+import { invoke } from "@tauri-apps/api/core";
+import { debug, error } from "@tauri-apps/plugin-log";
 
 export default function App() {
   const location = useLocation();
+  const { environment, isInitialized } = useAirdropEnvironment();
+
+  const registerClient = async () => {
+    try {
+      await invoke("register_client", { environment });
+      debug("Client registered successfully.");
+    } catch (e) {
+      error(`Error registering client: ${e}`);
+    }
+  };
+
+  useEffect(() => {
+    if (isInitialized) {
+      registerClient();
+    }
+  }, [isInitialized, environment]);
 
   return (
     <Tooltip.Provider>
@@ -218,6 +239,14 @@ export default function App() {
                 element={
                   <AnimatedPage>
                     <LanguagePreferencesPage />
+                  </AnimatedPage>
+                }
+              />
+              <Route
+                path="/settings/debug"
+                element={
+                  <AnimatedPage>
+                    <DebugPage />
                   </AnimatedPage>
                 }
               />
