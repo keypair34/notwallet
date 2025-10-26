@@ -5,8 +5,8 @@ pub const DEPLOY_KEY: &str = "your_deploy_key_here";
 pub const XLP_BASE_URL_LOCAL: &str = "http://localhost:5150";
 pub const XLP_BASE_URL: &str = "your_xlp_base_url";
 
-/// Birdeye
-pub const BIRDEYE_API_KEY: &str = "YOUR_API_KEY_HERE";
+/// XLP API Service
+pub const XLP_API_KEY: &str = "YOUR_API_KEY_HERE";
 
 /// Network request
 #[cfg(debug_assertions)]

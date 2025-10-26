@@ -4024,6 +4024,7 @@ dependencies = [
  "serde_json",
  "smbcloud-wallet-constants",
  "smbcloud-wallet-core",
+ "smbcloud-wallet-core-http",
  "smbcloud-wallet-core-network",
  "smbcloud-wallet-core-rpc",
  "smbcloud-wallet-kit",

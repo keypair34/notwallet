@@ -1,23 +1,30 @@
 use {
-    crate::constants::{
-        network::{BIRDEYE_API_KEY, USER_AGENT},
-        rpc::rpc_url,
+    crate::{
+        constants::network::{USER_AGENT, XLP_API_KEY},
+        model::settings_debug::XlpEnvironment,
     },
     log::info,
+    smbcloud_wallet_core_http::xlp::get_wallet_balance::wallet_balance,
     smbcloud_wallet_core_network::model::ErrorResponse,
-    smbcloud_wallet_kit::{balance::wallet_balance, models::currency::FiatCurrency},
     tauri::command,
 };
 
 #[command]
-pub async fn get_wallet_balance(pubkey: String) -> Result<String, ErrorResponse> {
+pub async fn get_wallet_balance(
+    environment: XlpEnvironment,
+    pubkey: String,
+) -> Result<String, ErrorResponse> {
     info!("Getting wallet balance for {}", pubkey);
-    wallet_balance(
-        rpc_url(),
-        BIRDEYE_API_KEY,
+    match wallet_balance(
+        environment.base_url(),
+        "Mainnet",
+        &pubkey,
+        XLP_API_KEY,
         USER_AGENT,
-        pubkey,
-        Some(FiatCurrency::USD),
     )
     .await
+    {
+        Ok(balance) => Ok(balance.value),
+        Err(err) => return Err(err),
+    }
 }
