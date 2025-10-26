@@ -119,6 +119,8 @@ export interface OnboardingCreateWallet {
   keypair: SolanaWallet;
 }
 
+export const KEY_AIRDROP_ENVIRONMENT = "airdrop_environment";
+
 export const SOLANA = "So11111111111111111111111111111111111111112";
 
 export const SOL_DECIMALS = 9;

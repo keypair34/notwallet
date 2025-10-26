@@ -3,30 +3,34 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { store } from "../store/store";
 import { error } from "@tauri-apps/plugin-log";
+import {
+  AirdropEnvironment,
+  KEY_AIRDROP_ENVIRONMENT,
+} from "@app/lib/crate/generated";
 
-type AppEnvironmentContextType = {
-  locked: boolean;
-  lock: () => void;
-  unlock: () => void;
+type AirdropEnvironmentContextType = {
+  environment: AirdropEnvironment;
+  setEnvironment: (environment: AirdropEnvironment) => void;
 };
 
-const AppEnvironmentContext = createContext<AppEnvironmentContextType>({
-  locked: false,
-  lock: () => {},
-  unlock: () => {},
+const AirdropEnvironmentContext = createContext<AirdropEnvironmentContextType>({
+  environment: "production",
+  setEnvironment: () => {},
 });
 
-export function AppEnvironmentProvider({
+export function AirdropEnvironmentProvider({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [locked, setLocked] = useState(false);
-  const [environment, setEnvironment] = useState("production");
+  const [environment, setEnvironment] =
+    useState<AirdropEnvironment>("production");
 
   const init = async () => {
     try {
-      const environment = await store().get<string>("app_environment");
+      const environment = await store().get<AirdropEnvironment>(
+        KEY_AIRDROP_ENVIRONMENT,
+      );
       if (environment) setEnvironment(environment);
     } catch (e) {
       error(`AppLockProvider: ${e}`);
@@ -37,25 +41,15 @@ export function AppEnvironmentProvider({
     init();
   }, []);
 
-  const lock = async () => {
-    setLocked(true);
-    await store().set("wallet_locked", true);
-  };
-
-  const unlock = async () => {
-    setLocked(false);
-    await store().set("wallet_locked", false);
-  };
-
   return (
-    <AppEnvironmentContext.Provider value={{ locked, lock, unlock }}>
+    <AirdropEnvironmentContext.Provider value={{ environment, setEnvironment }}>
       {children}
-    </AppEnvironmentContext.Provider>
+    </AirdropEnvironmentContext.Provider>
   );
 }
 
 /// Define application environment.
 /// Support local and production.
-export function useAppEnvironment() {
-  return useContext(AppEnvironmentContext);
+export function useAirdropEnvironment() {
+  return useContext(AirdropEnvironmentContext);
 }

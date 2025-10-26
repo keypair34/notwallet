@@ -1,5 +1,8 @@
 use {
+    crate::constants::network::{API_BASE_URL, API_BASE_URL_LOCAL},
+    log::warn,
     serde::{Deserialize, Serialize},
+    serde_json::Value,
     tsync::tsync,
 };
 
@@ -28,5 +31,35 @@ impl std::fmt::Display for AirdropEnvironment {
             AirdropEnvironment::Production => "production",
         };
         write!(f, "{}", env)
+    }
+}
+
+impl AirdropEnvironment {
+    pub fn from_value(value: Value) -> Self {
+        let env = match serde_json::from_value::<String>(value) {
+            Ok(env) => env,
+            Err(e) => {
+                warn!("Cannot determine airdrop environment: {}", e);
+                return AirdropEnvironment::Production;
+            }
+        };
+        match env.as_str() {
+            "development" => AirdropEnvironment::Development,
+            "production" => AirdropEnvironment::Production,
+            _ => {
+                warn!(
+                    "Cannot determine airdrop environment from '{}'. Default to production.",
+                    env
+                );
+                AirdropEnvironment::Production
+            }
+        }
+    }
+
+    pub fn base_url(&self) -> &'static str {
+        match self {
+            AirdropEnvironment::Development => API_BASE_URL_LOCAL,
+            AirdropEnvironment::Production => API_BASE_URL,
+        }
     }
 }

@@ -8,6 +8,7 @@ import ListItem from "@mui/material/ListItem";
 import List from "@mui/material/List";
 import { invoke } from "@tauri-apps/api/core";
 import {
+  CircularProgress,
   FormControl,
   InputLabel,
   MenuItem,
@@ -16,23 +17,46 @@ import {
 } from "@mui/material";
 import { useLang } from "@src/LanguageContext";
 import PageChildrenTitleBar from "@app/lib/components/page-children-title-bar";
-import { debug } from "@tauri-apps/plugin-log";
+import { debug, error } from "@tauri-apps/plugin-log";
 import { AirdropEnvironment } from "@app/lib/crate/generated";
+import { useAirdropEnvironment } from "@app/lib/context/app-environment-context";
+
+enum State {
+  Loading,
+  Loaded,
+  Error,
+}
 
 export default function DebugPage() {
   const { t } = useLang();
-  const [airdropEnvironment, setAirdropEnvironment] =
-    React.useState<AirdropEnvironment>();
+  const { environment, setEnvironment } = useAirdropEnvironment();
+  const [state, setState] = React.useState<State>(State.Loading);
 
-  const onSelectedEnvironmentChange = (value: string) => {
-    debug(`Selected environment: ${value}`);
-    setAirdropEnvironment(value as AirdropEnvironment);
+  const onSelectedEnvironmentChange = async (value: string) => {
+    try {
+      setState(State.Loading);
+      debug(`Selected airdrop environment: ${value}`);
+      const env = await invoke<AirdropEnvironment>("set_airdrop_environment", {
+        environment: value,
+      });
+      setEnvironment(env);
+      setState(State.Loaded);
+    } catch (e) {
+      error(`Failed to set airdrop environment: ${e}`);
+      setState(State.Loaded);
+    }
   };
 
   React.useEffect(() => {
     const fetchAirdropEnvironment = async () => {
-      const id = await invoke<AirdropEnvironment>("get_airdrop_environment");
-      setAirdropEnvironment(id);
+      try {
+        const env = await invoke<AirdropEnvironment>("get_airdrop_environment");
+        setEnvironment(env);
+        setState(State.Loaded);
+      } catch (e) {
+        error(`Failed to fetch airdrop environment: ${e}`);
+        setState(State.Loaded);
+      }
     };
     Promise.all([fetchAirdropEnvironment()]);
   }, []);
@@ -77,23 +101,26 @@ export default function DebugPage() {
           <List sx={{ p: 0, pb: 1 }}>
             <React.Fragment>
               <ListItem>
-                <FormControl fullWidth>
-                  <InputLabel id="airdrop-environment-label">
-                    Airdrop Environment
-                  </InputLabel>
-                  <Select
-                    labelId="airdrop-environment-label"
-                    id="airdrop-environment"
-                    defaultValue={airdropEnvironment}
-                    onChange={(event) => {
-                      const selectedEnvironment = event.target.value;
-                      onSelectedEnvironmentChange(selectedEnvironment);
-                    }}
-                  >
-                    <MenuItem value="development">Development</MenuItem>
-                    <MenuItem value="production">Production</MenuItem>
-                  </Select>
-                </FormControl>
+                {state === State.Loading && <CircularProgress />}
+                {state === State.Loaded && (
+                  <FormControl fullWidth>
+                    <InputLabel id="airdrop-environment-label">
+                      Airdrop Environment
+                    </InputLabel>
+                    <Select
+                      labelId="airdrop-environment-label"
+                      id="airdrop-environment"
+                      defaultValue={environment}
+                      onChange={async (event) => {
+                        const selectedEnvironment = event.target.value;
+                        await onSelectedEnvironmentChange(selectedEnvironment);
+                      }}
+                    >
+                      <MenuItem value="development">Development</MenuItem>
+                      <MenuItem value="production">Production</MenuItem>
+                    </Select>
+                  </FormControl>
+                )}
               </ListItem>
             </React.Fragment>
           </List>
