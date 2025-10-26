@@ -50,6 +50,12 @@ impl SolanaAsset {
 
 #[tsync]
 #[allow(dead_code)]
+pub const ADDRESS_SOL: &str = "So11111111111111111111111111111111111111112";
+#[tsync]
+#[allow(dead_code)]
+pub const ADDRESS_BACH_TOKEN: &str = "CTQBjyrX8pYyqbNa8vAhQfnRXfu9cUxnvrxj5PvbzTmf";
+#[tsync]
+#[allow(dead_code)]
 pub const ADDRESS_JUPITER: &str = "JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN";
 #[tsync]
 #[allow(dead_code)]
@@ -81,10 +87,10 @@ impl SolanaAsset {
 
     pub fn from_address(address: String) -> Option<Self> {
         match address.as_str() {
-            "So11111111111111111111111111111111111111112" => Some(Self::Sol {
+            ADDRESS_SOL => Some(Self::Sol {
                 meta: Metadata::native(),
             }),
-            "CTQBjyrX8pYyqbNa8vAhQfnRXfu9cUxnvrxj5PvbzTmf" => Some(Self::BachToken {
+            ADDRESS_BACH_TOKEN => Some(Self::BachToken {
                 meta: Metadata {
                     address,
                     name: "BACH Token".to_string(),
@@ -99,7 +105,7 @@ impl SolanaAsset {
                     name: "zBTC (zBTC)".to_string(),
                     symbol: "zBTC".to_string(),
                     decimal: 8,
-                    logo_uri: "https://statics.solscan.io/cdn/imgs/s60?ref=68747470733a2f2f7261772e67697468756275736572636f6e74656e742e636f6d2f5a6575734e6574776f726b48512f7a6274632d6d657461646174612f726566732f68656164732f6d61696e2f6c676f6f2d76322e706e67".to_string(),
+                    logo_uri: "https://raw.githubusercontent.com/ZeusNetworkHQ/zbtc-metadata/main/lgoo-v2.png".to_string(),
                 },
             }),
             ADDRESS_JUPITER => Some(Self::Jupiter{
@@ -108,7 +114,7 @@ impl SolanaAsset {
                     name: "Jupiter".to_string(),
                     symbol: "JUP".to_string(),
                     decimal: 6,
-                    logo_uri: "https://static.jup.ag/jup/icon.png".to_string(),
+                    logo_uri: "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN/logo.png".to_string(),
                 },
             }),
             ADDRESS_USDC => Some(Self::Usdc {
@@ -135,7 +141,7 @@ impl SolanaAsset {
                     name: "USDG Stablecoin".to_string(),
                     symbol: "USDG".to_string(),
                     decimal: 9,
-                    logo_uri: "https://statics.solscan.io/cdn/imgs/s60?ref=68747470733a2f2f63646e2e676c6974746572706179732e636f6d2f75736467746f6b656e2e706e67".to_string(),
+                    logo_uri: "https://cdn.glitterpays.com/usdgtoken.png".to_string(),
                 },
             }),
             ADDRESS_USDS => Some(Self::Usds {
@@ -144,7 +150,7 @@ impl SolanaAsset {
                     name: "USDS".to_string(),
                     symbol: "USDS".to_string(),
                     decimal: 6,
-                    logo_uri: "https://static.skyusds.io/logo.png".to_string(),
+                    logo_uri: "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/USDSwr9ApdHk5bvJKMjzff41FfuX8bSxdKcR81vTwcA/logo.svg".to_string(),
                 },
             }),
             ADDRESS_USD1 => Some(Self::Usd1 {
@@ -153,7 +159,7 @@ impl SolanaAsset {
                     name: "USD1".to_string(),
                     symbol: "USD1".to_string(),
                     decimal: 6,
-                    logo_uri: "https://statics.solscan.io/cdn/imgs/s60?ref=68747470733a2f2f63646e2e7573643170726f746f636f6c2e636f6d2f6c6f676f2e706e67".to_string(),
+                    logo_uri: "https://cdn.usd1protocol.com/logo.png".to_string(),
                 },
             }),
             ADDRESS_EURC => Some(Self::Eurc {
@@ -162,7 +168,7 @@ impl SolanaAsset {
                     name: "Euro Coin".to_string(),
                     symbol: "EURC".to_string(),
                     decimal: 6,
-                    logo_uri: "https://www.circle.com/hubfs/Brand/EURC/EURC-icon.svg".to_string(),
+                    logo_uri: "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/HzwqbKZw8HxMN6bF2yFZNrht3c2iXXzpKcFu7uBEDKtr/logo.png".to_string(),
                 },
             }),
             // Local develoment tokens.
@@ -199,72 +205,16 @@ impl SolanaAsset {
     ) -> Result<(u64, f64), ErrorResponse> {
         match self {
             SolanaAsset::Sol { meta: _ } => sol_balance(environment.rpc_url(), address),
-            SolanaAsset::BachToken { meta } => aggregate_spl_token_balance(
-                environment.rpc_url(),
-                address,
-                SPL_TOKEN_PROGRAM_ID.to_string(),
-                meta.address,
-            ),
-            SolanaAsset::ZBtc { meta } => aggregate_spl_token_balance(
-                environment.rpc_url(),
-                address,
-                SPL_TOKEN_PROGRAM_ID.to_string(),
-                meta.address,
-            ),
-            SolanaAsset::Jupiter { meta } => aggregate_spl_token_balance(
-                environment.rpc_url(),
-                address,
-                SPL_TOKEN_PROGRAM_ID.to_string(),
-                meta.address,
-            ),
-            SolanaAsset::Usdc { meta } => aggregate_spl_token_balance(
-                environment.rpc_url(),
-                address,
-                SPL_TOKEN_PROGRAM_ID.to_string(),
-                meta.address,
-            ),
-            SolanaAsset::Usdt { meta } => aggregate_spl_token_balance(
-                environment.rpc_url(),
-                address,
-                SPL_TOKEN_PROGRAM_ID.to_string(),
-                meta.address,
-            ),
-            SolanaAsset::Usdg { meta } => aggregate_spl_token_balance(
-                environment.rpc_url(),
-                address,
-                SPL_TOKEN_PROGRAM_ID.to_string(),
-                meta.address,
-            ),
-            SolanaAsset::Usds { meta } => aggregate_spl_token_balance(
-                environment.rpc_url(),
-                address,
-                SPL_TOKEN_PROGRAM_ID.to_string(),
-                meta.address,
-            ),
-            SolanaAsset::Usd1 { meta } => aggregate_spl_token_balance(
-                environment.rpc_url(),
-                address,
-                SPL_TOKEN_PROGRAM_ID.to_string(),
-                meta.address,
-            ),
-            SolanaAsset::Eurc { meta } => aggregate_spl_token_balance(
-                environment.rpc_url(),
-                address,
-                SPL_TOKEN_PROGRAM_ID.to_string(),
-                meta.address,
-            ),
-            SolanaAsset::BachToken0 { meta } => aggregate_spl_token_balance(
-                environment.rpc_url(),
-                address,
-                SPL_TOKEN_PROGRAM_ID.to_string(),
-                meta.address,
-            ),
-            SolanaAsset::BachToken1 { meta } => aggregate_spl_token_balance(
-                environment.rpc_url(),
-                address,
-                SPL_TOKEN_PROGRAM_ID.to_string(),
-                meta.address,
-            ),
+            // All SPL tokens use the same balance aggregation logic
+            _ => {
+                let meta = self.metadata();
+                aggregate_spl_token_balance(
+                    environment.rpc_url(),
+                    address,
+                    SPL_TOKEN_PROGRAM_ID.to_string(),
+                    meta.address,
+                )
+            }
         }
     }
 }
