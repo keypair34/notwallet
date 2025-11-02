@@ -1,5 +1,5 @@
 use {
-    crate::models::{asset_metadata::Metadata, environment::Environment},
+    crate::models::asset_metadata::Metadata,
     smbcloud_wallet_constants::{
         assets_solana::{
             ADDRESS_BACH_TOKEN, ADDRESS_EURC, ADDRESS_JUPITER, ADDRESS_SOL, ADDRESS_USD1,
@@ -175,16 +175,16 @@ impl SolanaAsset {
     /// Get address' balance for this current asset.
     pub fn wallet_balance(
         self,
-        environment: Environment,
+        rpc_url: String,
         address: String,
     ) -> Result<(u64, f64), ErrorResponse> {
         match self {
-            SolanaAsset::Sol { meta: _ } => sol_balance(environment.rpc_url(), address),
+            SolanaAsset::Sol { meta: _ } => sol_balance(rpc_url, address),
             // All SPL tokens use the same balance aggregation logic
             _ => {
                 let meta = self.metadata();
                 aggregate_spl_token_balance(
-                    environment.rpc_url(),
+                    rpc_url,
                     address,
                     SPL_TOKEN_PROGRAM_ID.to_string(),
                     meta.address,
