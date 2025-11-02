@@ -9,17 +9,18 @@ import CardContent from "@mui/material/CardContent";
 import { useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import OnboardingCard from "./onboarding_card";
-import { CHECK_PUBKEY } from "@lib/commands";
+import { CHECK_PUBKEY } from "@app/lib/commands";
 import {
   SolanaWallet,
   CheckPubkeyResponse,
   STORE_ACTIVE_KEYPAIR,
-} from "@lib/crate/generated";
-import { store } from "@lib/store/store";
+} from "@app/lib/crate/generated";
+import { store } from "@app/lib/store/store";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import { selectionFeedback } from "@tauri-apps/plugin-haptics";
 import { debug, error as logError } from "@tauri-apps/plugin-log";
 import { useLang } from "../../../src/LanguageContext";
+import { useAirdropEnvironment } from "@app/lib/context/app-environment-context";
 
 enum ActivityState {
   Loading,
@@ -30,6 +31,7 @@ enum ActivityState {
 
 export default function ActivityListView() {
   const { t } = useLang();
+  const { environment } = useAirdropEnvironment();
   const [, setState] = useState<ActivityState>(ActivityState.Loading);
   const [showOnboardingCard, setShowOnboardingCard] = useState(false);
   const [pubkey, setPubkey] = useState<string | undefined>(undefined);
@@ -47,6 +49,7 @@ export default function ActivityListView() {
       // Move this call to backend
       const res = await invoke<CheckPubkeyResponse>(CHECK_PUBKEY, {
         pubkey: wallet.pubkey,
+        environment,
       });
       debug(`check_pubkey exists: ${res.exists}, pubkey: ${pubkey}`);
       setShowOnboardingCard(!res.exists);

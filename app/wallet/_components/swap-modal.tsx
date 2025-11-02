@@ -19,17 +19,17 @@ import {
   SOLANA,
   SOL_DECIMALS,
   BACH_DECIMALS,
-  BACH_TOKEN,
-} from "@lib/crate/generated";
+  ADDRESS_BACH_TOKEN,
+} from "@app/lib/crate/generated";
 import { selectionFeedback } from "@tauri-apps/plugin-haptics";
 import { invoke } from "@tauri-apps/api/core";
-import { GET_SWAP_QUOTE, BUILD_SWAP_TRANSACTION } from "@lib/commands";
+import { GET_SWAP_QUOTE, BUILD_SWAP_TRANSACTION } from "@app/lib/commands";
 import CircularProgress from "@mui/material/CircularProgress";
 import Alert from "@mui/material/Alert";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
-import { AssetIcon } from "@lib/components/token-icons";
+import { AssetIcon } from "@app/lib/components/token-icons";
 import { info, debug } from "@tauri-apps/plugin-log";
 import { useLang } from "../../../src/LanguageContext";
 
@@ -86,8 +86,8 @@ export default function SwapModal({
         setIsLoadingQuote(true);
         setError(null);
 
-        const fromMint = fromToken === "SOL" ? SOLANA : BACH_TOKEN;
-        const toMint = toToken === "SOL" ? SOLANA : BACH_TOKEN;
+        const fromMint = fromToken === "SOL" ? SOLANA : ADDRESS_BACH_TOKEN;
+        const toMint = toToken === "SOL" ? SOLANA : ADDRESS_BACH_TOKEN;
 
         const amount = parseFloat(inputAmount);
         const quoteResult = await invoke<SwapQuoteResponse>(GET_SWAP_QUOTE, {
@@ -265,7 +265,7 @@ export default function SwapModal({
   };
 
   const getTokenIcon = (token: "SOL" | "BACH") => {
-    const id = token === "SOL" ? SOLANA : BACH_TOKEN;
+    const id = token === "SOL" ? SOLANA : ADDRESS_BACH_TOKEN;
     return <AssetIcon id={id} size={20} />;
   };
 

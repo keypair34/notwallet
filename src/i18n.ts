@@ -128,6 +128,7 @@ export interface Translation {
   // Wallet specific translations
   walletTitle: string;
   switchKeypairTitle: string;
+  addressQrCode: string;
   noKeypairsFound: string;
   account: string;
   active: string;
@@ -223,6 +224,7 @@ export interface Translation {
   incorrectPassword: string;
   unlockWallet: string;
   notwalletCrypto: string;
+  createYourWallet: string;
   // Settings pages translations
   congratulations: string;
   congratulationsMessage: string;
@@ -252,6 +254,8 @@ export interface Translation {
   // Common translations
   about: string;
   appInfo: string;
+  appPreferences: string;
+  languagePreferences: string;
   app: string;
   legalSupport: string;
   termsOfService: string;
@@ -261,6 +265,7 @@ export interface Translation {
   aboutDescription: string;
   developedBy: string;
   swedish: string;
+  debug: string;
 }
 
 export type SupportedLanguages = "en" | "sv" | "id";
@@ -421,6 +426,7 @@ export const translations: Record<SupportedLanguages, Translation> = {
     // Wallet specific translations
     walletTitle: "Wallet",
     switchKeypairTitle: "Switch Wallet",
+    addressQrCode: "Scan Address",
     noKeypairsFound: "No wallets found",
     account: "Account",
     active: "Active",
@@ -517,6 +523,7 @@ export const translations: Record<SupportedLanguages, Translation> = {
     incorrectPassword: "Incorrect password. Please try again.",
     unlockWallet: "Unlock Wallet",
     notwalletCrypto: "NotWallet Crypto",
+    createYourWallet: "Create Your Wallet",
     // Settings pages translations
     congratulations: "🎉 Congratulations! 🎉",
     congratulationsMessage:
@@ -547,6 +554,8 @@ export const translations: Record<SupportedLanguages, Translation> = {
     // Common translations
     about: "About",
     appInfo: "App Info",
+    appPreferences: "App Preferences",
+    languagePreferences: "Language Preferences",
     app: "App",
     legalSupport: "Legal & Support",
     termsOfService: "Terms of Service",
@@ -557,6 +566,7 @@ export const translations: Record<SupportedLanguages, Translation> = {
       "A modern, community-owned, non-custodial open-source Solana wallet app built for privacy, simplicity, and security.",
     developedBy: "Developed and maintained by The Stable Foundation.",
     swedish: "Swedish",
+    debug: "Debug",
   },
   sv: {
     appName: "NotWallet",
@@ -716,6 +726,7 @@ export const translations: Record<SupportedLanguages, Translation> = {
     // Wallet specific translations
     walletTitle: "Plånbok",
     switchKeypairTitle: "Byt plånbok",
+    addressQrCode: "Skanningsadress",
     noKeypairsFound: "Inga plånböcker hittades",
     account: "Konto",
     active: "Aktiv",
@@ -812,6 +823,7 @@ export const translations: Record<SupportedLanguages, Translation> = {
     incorrectPassword: "Felaktigt lösenord. Försök igen.",
     unlockWallet: "Lås upp plånbok",
     notwalletCrypto: "NotWallet Crypto",
+    createYourWallet: "Skapa din plånbok",
     // Settings pages translations
     congratulations: "🎉 Grattis! 🎉",
     congratulationsMessage:
@@ -842,6 +854,8 @@ export const translations: Record<SupportedLanguages, Translation> = {
     // Common translations
     about: "Om",
     appInfo: "App Info",
+    appPreferences: "App Preferences",
+    languagePreferences: "Language Preferences",
     app: "App",
     legalSupport: "Juridik & Support",
     termsOfService: "Användarvillkor",
@@ -852,6 +866,7 @@ export const translations: Record<SupportedLanguages, Translation> = {
       "En modern, gemenskapsägd, icke-förvaringsbaserad open-source Solana-plånboksapp byggd för integritet, enkelhet och säkerhet.",
     developedBy: "Utvecklad och underhållen av The Stable Foundation.",
     swedish: "Svenska",
+    debug: "Debug",
   },
   id: {
     appName: "NotWallet",
@@ -1011,6 +1026,7 @@ export const translations: Record<SupportedLanguages, Translation> = {
     // Wallet specific translations
     walletTitle: "Dompet",
     switchKeypairTitle: "Ganti Dompet",
+    addressQrCode: "Scan Alamat Dompet",
     noKeypairsFound: "Tidak ada dompet ditemukan",
     account: "Akun",
     active: "Aktif",
@@ -1107,6 +1123,7 @@ export const translations: Record<SupportedLanguages, Translation> = {
     incorrectPassword: "Kata sandi salah. Silakan coba lagi.",
     unlockWallet: "Buka Kunci Dompet",
     notwalletCrypto: "NotWallet Crypto",
+    createYourWallet: "Buat Dompet Anda",
     // Settings pages translations
     congratulations: "🎉 Selamat! 🎉",
     congratulationsMessage:
@@ -1137,6 +1154,8 @@ export const translations: Record<SupportedLanguages, Translation> = {
     // Common translations
     about: "Tentang",
     appInfo: "Info Aplikasi",
+    appPreferences: "Preferensi Aplikasi",
+    languagePreferences: "Preferensi Bahasa",
     app: "Aplikasi",
     legalSupport: "Legal & Dukungan",
     termsOfService: "Syarat Layanan",
@@ -1147,5 +1166,6 @@ export const translations: Record<SupportedLanguages, Translation> = {
       "Aplikasi dompet Solana open-source modern yang dimiliki komunitas, non-custodial yang dibangun untuk privasi, kesederhanaan, dan keamanan.",
     developedBy: "Dikembangkan dan dikelola oleh The Stable Foundation.",
     swedish: "Bahasa Swedia",
+    debug: "Debug",
   },
 };

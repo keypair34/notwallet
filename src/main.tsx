@@ -4,6 +4,8 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import "./index.css";
 import { LanguageProvider } from "./LanguageContext";
+import { AirdropEnvironmentProvider } from "@app/lib/context/app-environment-context";
+import { XlpEnvironmentProvider } from "@app/lib/context/xlp-environment-context";
 
 const rootElement = document.getElementById("root");
 if (!rootElement) {
@@ -14,7 +16,11 @@ ReactDOM.createRoot(rootElement).render(
   <React.StrictMode>
     <LanguageProvider>
       <BrowserRouter>
-        <App />
+        <AirdropEnvironmentProvider>
+          <XlpEnvironmentProvider>
+            <App />
+          </XlpEnvironmentProvider>
+        </AirdropEnvironmentProvider>
       </BrowserRouter>
     </LanguageProvider>
   </React.StrictMode>,

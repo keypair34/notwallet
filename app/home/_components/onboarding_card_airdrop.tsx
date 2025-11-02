@@ -12,6 +12,7 @@ import { invoke } from "@tauri-apps/api/core";
 import Confetti from "react-confetti";
 import { selectionFeedback } from "@tauri-apps/plugin-haptics";
 import { useLang } from "../../../src/LanguageContext";
+import { useAirdropEnvironment } from "@app/lib/context/app-environment-context";
 
 type OnboardingCardAirdropProps = {
   open: boolean;
@@ -25,6 +26,7 @@ export default function OnboardingCardAirdrop({
   onClose,
 }: OnboardingCardAirdropProps) {
   const { t } = useLang();
+  const { environment } = useAirdropEnvironment();
   const [modalOpen, setModalOpen] = React.useState(false);
   const [signing, setSigning] = React.useState(false);
   const [success, setSuccess] = React.useState(false);
@@ -37,7 +39,7 @@ export default function OnboardingCardAirdrop({
     try {
       const now = Date.now();
       const message = `I want my $BACH ${now}`;
-      await invoke<string>("sign_message", { message });
+      await invoke<string>("sign_message", { message, environment });
       setModalOpen(false);
       setShowConfetti(true);
       setSuccess(true);

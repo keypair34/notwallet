@@ -1,7 +1,9 @@
 use {
     crate::{
         constants::store::{store, STORE_ACTIVE_KEYPAIR},
-        model::{airdrop::AirdropResponse, keypair::SolanaWallet},
+        model::{
+            airdrop::AirdropResponse, keypair::SolanaWallet, settings_debug::AirdropEnvironment,
+        },
         network::airdrop::airdrop,
     },
     bs58,
@@ -13,6 +15,7 @@ use {
 #[command]
 pub async fn sign_message(
     app: AppHandle,
+    environment: AirdropEnvironment,
     message: String,
 ) -> Result<AirdropResponse, ErrorResponse> {
     // Load wallet from store
@@ -52,5 +55,5 @@ pub async fn sign_message(
     let signature_b58 = bs58::encode(signature).into_string();
 
     // Call the airdrop function with pubkey and signature
-    airdrop(wallet.pubkey.clone(), signature_b58.clone()).await
+    airdrop(environment, wallet.pubkey.clone(), signature_b58.clone()).await
 }

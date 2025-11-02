@@ -16,12 +16,23 @@ import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 import PrivacyTipOutlinedIcon from "@mui/icons-material/PrivacyTipOutlined";
 import CodeOutlinedIcon from "@mui/icons-material/CodeOutlined";
 import PhoneAndroidOutlinedIcon from "@mui/icons-material/PhoneAndroidOutlined";
+import SettingsApplicationsIcon from "@mui/icons-material/SettingsApplications";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import SettingsIcon from "@mui/icons-material/Settings";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import { selectionFeedback } from "@tauri-apps/plugin-haptics";
 import Confetti from "react-confetti";
-import { useLang } from "../../src/LanguageContext";
+import { invoke } from "@tauri-apps/api/core";
 import { useNavigate } from "react-router-dom";
+import { useLang } from "@src/LanguageContext";
+
+type SettingItem = {
+  id: string;
+  label: string;
+  icon: React.ReactElement;
+  action: () => void;
+  hasChevron: boolean;
+};
 
 export default function SettingsPage() {
   const router = useNavigate();
@@ -33,6 +44,7 @@ export default function SettingsPage() {
     width: 0,
     height: 0,
   });
+  const [isDebug, setIsDebug] = React.useState(false);
 
   React.useEffect(() => {
     const updateDimensions = () => {
@@ -56,6 +68,7 @@ export default function SettingsPage() {
       | "privacyPolicy"
       | "termsOfService"
       | "appInfo"
+      | "debugSetting"
       | "appPreferences"
       | "languagePreferences",
   ) => {
@@ -67,7 +80,7 @@ export default function SettingsPage() {
     } else if (type === "termsOfService") {
       openUrl("https://notwallet.eu/terms");
     } else if (type === "openSource") {
-      openUrl("https://github.com/TheStableFoundation/not");
+      openUrl("https://github.com/TheStableFoundation/notwallet");
     } else if (type === "footer") {
       const newCount = footerClickCount + 1;
       setFooterClickCount(newCount);
@@ -83,7 +96,9 @@ export default function SettingsPage() {
     } else if (type === "appPreferences") {
       router("/settings/app-preferences");
     } else if (type === "languagePreferences") {
-      router("/settings/app-preferences");
+      router("/settings/language-preferences");
+    } else if (type === "debugSetting") {
+      router("/settings/debug");
     }
   };
 
@@ -92,22 +107,43 @@ export default function SettingsPage() {
     setFooterClickCount(0); // Reset counter after showing modal
   };
 
-  const settingsItems = [
-    {
-      id: "about",
-      label: t.about,
-      icon: <InfoOutlinedIcon />,
-      action: () => handleClick("about"),
-      hasChevron: true,
-    },
-    {
-      id: "appInfo",
-      label: t.appInfo,
-      icon: <PhoneAndroidOutlinedIcon />,
-      action: () => handleClick("appInfo"),
-      hasChevron: true,
-    },
-  ];
+  const settingsItems = (isDebug: boolean) => {
+    let settings: SettingItem[] = [
+      {
+        id: "about",
+        label: t.about,
+        icon: <InfoOutlinedIcon />,
+        action: () => handleClick("about"),
+        hasChevron: true,
+      },
+      {
+        id: "appInfo",
+        label: t.appInfo,
+        icon: <PhoneAndroidOutlinedIcon />,
+        action: () => handleClick("appInfo"),
+        hasChevron: true,
+      },
+      {
+        id: "languagePreferences",
+        label: t.languagePreferences,
+        icon: <SettingsApplicationsIcon />,
+        action: () => handleClick("languagePreferences"),
+        hasChevron: true,
+      },
+    ];
+
+    if (isDebug) {
+      settings.push({
+        id: "debugSetting",
+        label: "Debug Settings",
+        icon: <SettingsIcon />,
+        action: () => handleClick("debugSetting"),
+        hasChevron: true,
+      });
+    }
+
+    return settings;
+  };
 
   const legalItems = [
     {
@@ -132,6 +168,15 @@ export default function SettingsPage() {
       hasChevron: true,
     },
   ];
+
+  const init = async () => {
+    const isDebug = await invoke<boolean>("is_debug");
+    setIsDebug(isDebug);
+  };
+
+  React.useEffect(() => {
+    init();
+  }, []);
 
   const renderListItem = (item: any, isLast: boolean = false) => (
     <React.Fragment key={item.id}>
@@ -236,7 +281,7 @@ export default function SettingsPage() {
             </Typography>
           </Box>
           <List sx={{ p: 0, pb: 1 }}>
-            {settingsItems.map((item, index) =>
+            {settingsItems(isDebug).map((item, index) =>
               renderListItem(item, index === settingsItems.length - 1),
             )}
           </List>

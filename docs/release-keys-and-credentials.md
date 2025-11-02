@@ -4,17 +4,10 @@ These are non comprehensive keys and credentials that are used in the backend se
 
 ## Deploy Key
 
-This is a secret key that the backend service uses to authenticate airdrop claims. Find it in the `src-tauri/src/network/airdrop.rs` file.
+This is a secret key that the backend service uses to authenticate network requests. Find it in the `src-tauri/src/constants/network.rs` file.
 
 ```rust
-let req_body = AirdropRequest {
-    pubkey: &pubkey,
-    signature: &signature,
-    deploy_key: "your_deploy_key",
-};
-
-let url = format!("{}/api/v1/airdrop", API_BASE_URL);
-
+pub const DEPLOY_KEY: &str = "your_deploy_key_here";
 ```
 
 ### Base URL
@@ -67,4 +60,4 @@ export const ONRAMPER_KEY = "your_onramper_key";
 export const ONRAMPER_SIGNER_KEY = "your_onramper_signer_key";
 ```
 
-Now you are ready to build [NotWallet Crypto non-custodial Solana crypto wallet](https://github.com/TheStableFoundation/not) for production release.
+Now you are ready to build [NotWallet Crypto non-custodial Solana crypto wallet](https://github.com/TheStableFoundation/notwallet) for production release.

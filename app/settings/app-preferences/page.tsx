@@ -16,7 +16,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import PaletteOutlinedIcon from "@mui/icons-material/PaletteOutlined";
 import LanguageIcon from "@mui/icons-material/Language";
 import { useColorScheme } from "@mui/material/styles";
-import PageChildrenTitleBar from "@lib/components/page-children-title-bar";
+import PageChildrenTitleBar from "@app/lib/components/page-children-title-bar";
 import { useLang } from "../../../src/LanguageContext";
 
 export default function AppPreferences() {
@@ -58,7 +58,6 @@ export default function AppPreferences() {
       sx={{
         minHeight: "100vh",
         bgcolor: "linear-gradient(135deg, #FAFBFF 0%, #F8FAFF 100%)",
-        background: "linear-gradient(135deg, #FAFBFF 0%, #F8FAFF 100%)",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",

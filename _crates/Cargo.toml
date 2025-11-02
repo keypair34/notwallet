@@ -1,13 +1,13 @@
 [package]
 name = "smbcloud-wallet-kit-v3"
-version = "1.0.4"
+version = "1.0.6"
 edition = "2021"
 description = "smbCloud Wallet Kit V3 for NotWallet Crypto non-custodial Solana crypto wallet."
 authors = ["Seto Elkahfi <work@setoelkahfi.se>"]
 license = "MIT"
 homepage = "https://thestablefoundation.org/"
-repository = "https://github.com/TheStableFoundation/not/"
-documentation = "https://github.com/TheStableFoundation/not/tree/main/docs"
+repository = "https://github.com/TheStableFoundation/notwallet/"
+documentation = "https://github.com/TheStableFoundation/notwallet/tree/main/docs"
 keywords = ["solana", "wallet", "crypto"]
 readme = "README.md"
 
@@ -21,11 +21,11 @@ smbcloud-wallet-core-http = { version = "1", path = "./wallet-core-http" }
 smbcloud-wallet-core-model = { version = "1", path = "./wallet-core-model" }
 smbcloud-wallet-core-network = { version = "1", path = "./wallet-core-network" }
 smbcloud-wallet-core-rpc = { version = "1", path = "./wallet-core-rpc" }
-uniffi = { version = "0.29", features = ["cli", "tokio"] }
 solana-account-decoder = { version = "3", git = "https://github.com/setoelkahfi/agave", branch = "master" }
 solana-client = { version = "3", git = "https://github.com/setoelkahfi/agave", branch = "master" }
 solana-pubkey = "3"
 solana-rpc-client = { version = "3", git = "https://github.com/setoelkahfi/agave", branch = "master" }
+uniffi = { version = "0.29", features = ["cli", "tokio"] }
 
 [lib]
 crate-type = ["lib", "cdylib", "staticlib"]

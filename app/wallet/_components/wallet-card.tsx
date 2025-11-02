@@ -8,9 +8,7 @@ import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import AddIcon from "@mui/icons-material/Add";
 import SettingsIcon from "@mui/icons-material/Settings";
-import LockIcon from "@mui/icons-material/Lock";
-import BorderColorRoundedIcon from "@mui/icons-material/BorderColorRounded";
-import { SolanaWallet } from "@lib/crate/generated";
+import { SolanaWallet } from "@app/lib/crate/generated";
 import IconButton from "@mui/material/IconButton";
 import SendIcon from "@mui/icons-material/Send";
 import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
@@ -19,35 +17,37 @@ import Box from "@mui/material/Box";
 import { selectionFeedback } from "@tauri-apps/plugin-haptics";
 import { writeText } from "@tauri-apps/plugin-clipboard-manager";
 import { invoke } from "@tauri-apps/api/core";
-import { GET_ALL_KEYPAIRS, GET_WALLET_BALANCE } from "@lib/commands";
+import { GET_ALL_KEYPAIRS, GET_WALLET_BALANCE } from "@app/lib/commands";
 import SendModal from "./send-modal";
 import SwapModal from "./swap-modal";
-import EditKeyPairModal from "./edit-keypair-modal";
 import { error } from "@tauri-apps/plugin-log";
 import { useLang } from "../../../src/LanguageContext";
 import { useNavigate } from "react-router-dom";
+import { useXlpEnvironment } from "@app/lib/context/xlp-environment-context";
+import QrCodeIcon from "@mui/icons-material/QrCode";
+import SwitchAccountIcon from "@mui/icons-material/SwitchAccount";
 
 interface WalletCardProps {
   wallet: SolanaWallet;
   onLock: () => void;
   onSwitchKeypair: () => void;
+  onQrCodeClicked: () => void;
 }
 
 export default function WalletCard({
   wallet,
-  onLock,
   onSwitchKeypair,
+  onQrCodeClicked,
 }: WalletCardProps) {
   const router = useNavigate();
   const { t } = useLang();
+  const { xlpEnvironment } = useXlpEnvironment();
   const [walletBalance, setWalletBalance] = React.useState<string>("-");
   const [walletUsername, setWalletUsername] = React.useState<string>(
     wallet.username || t.defaultUsername,
   );
   const [sendModalOpen, setSendModalOpen] = React.useState<boolean>(false);
   const [swapModalOpen, setSwapModalOpen] = React.useState<boolean>(false);
-  const [editKeyPairModalOpen, setEditKeyPairModalOpen] =
-    React.useState<boolean>(false);
   const [availableKeypairs, setAvailableKeypairs] = React.useState<
     SolanaWallet[]
   >([]);
@@ -100,27 +100,16 @@ export default function WalletCard({
     init();
   };
 
-  const handleCloseEditKeyPairModal = (updatedUsername: string) => {
-    setEditKeyPairModalOpen(false);
-    if (updatedUsername && updatedUsername !== walletUsername) {
-      setWalletUsername(updatedUsername);
-    }
-  };
-
   const onBuySol = React.useCallback(async () => {
     await selectionFeedback();
     router("/wallet/buy/stripe?address=" + wallet.pubkey);
   }, [router, wallet]);
 
-  const onEditKeypair = async () => {
-    await selectionFeedback();
-    setEditKeyPairModalOpen(true);
-  };
-
   const init = async () => {
     try {
       const walletBalance = await invoke<string>(GET_WALLET_BALANCE, {
         pubkey: wallet.pubkey,
+        environment: xlpEnvironment,
       });
       setWalletBalance(`${walletBalance}`);
     } catch (err) {
@@ -153,48 +142,15 @@ export default function WalletCard({
         justifyContent="space-between"
         sx={{ mb: 2 }}
       >
+        <Typography
+          variant="h6"
+          fontWeight="bold"
+          color="#fff"
+          sx={{ fontSize: 16 }}
+        >
+          {walletUsername}
+        </Typography>
         <Stack direction="row" spacing={1}>
-          <Typography
-            variant="h6"
-            fontWeight="bold"
-            color="#fff"
-            sx={{ fontSize: 16 }}
-          >
-            {walletUsername}
-          </Typography>
-          <IconButton
-            size="small"
-            onClick={onEditKeypair}
-            sx={{
-              fontWeight: "bold",
-              background: "#fff",
-              color: "#9932CC",
-              boxShadow: "0 1px 6px #9932CC22",
-              "&:hover": { background: "#f5f6fa" },
-            }}
-          >
-            <BorderColorRoundedIcon fontSize="small" />
-          </IconButton>
-        </Stack>
-        <Stack direction="row" spacing={1}>
-          <Tooltip title={t.toggleLockWallet} arrow>
-            <IconButton
-              size="small"
-              sx={{
-                minWidth: 0,
-                px: 1.5,
-                borderRadius: 2,
-                fontWeight: "bold",
-                background: "#fff",
-                color: "#9932CC",
-                boxShadow: "0 1px 6px #9932CC22",
-                "&:hover": { background: "#f5f6fa" },
-              }}
-              onClick={onLock}
-            >
-              <LockIcon fontSize="small" />
-            </IconButton>
-          </Tooltip>
           <Tooltip title={t.walletSettings} arrow>
             <IconButton
               sx={{
@@ -270,29 +226,22 @@ export default function WalletCard({
                 onClick={onSwitchKeypair}
                 size="small"
               >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                  <path
-                    d="M16 17L21 12L16 7"
-                    stroke="#9932CC"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M21 12H9"
-                    stroke="#9932CC"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M8 7L3 12L8 17"
-                    stroke="#9932CC"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
+                <SwitchAccountIcon></SwitchAccountIcon>
+              </IconButton>
+            </Tooltip>
+            <Tooltip title={"QR Code"}>
+              <IconButton
+                sx={{
+                  color: "#9932CC",
+                  bgcolor: "#f5f6fa",
+                  "&:hover": { bgcolor: "#EDE7F6" },
+                  ml: 1,
+                  borderRadius: 2,
+                }}
+                onClick={onQrCodeClicked}
+                size="small"
+              >
+                <QrCodeIcon></QrCodeIcon>
               </IconButton>
             </Tooltip>
           </Box>
@@ -482,11 +431,6 @@ export default function WalletCard({
         onClose={handleCloseSwapModal}
         senderAddress={wallet.pubkey}
         availableKeypairs={availableKeypairs}
-      />
-      <EditKeyPairModal
-        open={editKeyPairModalOpen}
-        onClose={handleCloseEditKeyPairModal}
-        wallet={wallet}
       />
     </Card>
   );

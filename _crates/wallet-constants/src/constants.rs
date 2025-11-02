@@ -3,13 +3,9 @@ use tsync::tsync;
 pub const LAMPORTS_PER_SOL: f64 = 1_000_000_000.0;
 pub const SEMITONE_PER_BACH: f64 = 1_000_000_000_000.0;
 
-#[tsync]
-pub const SOLANA: &str = "So11111111111111111111111111111111111111112";
 pub const SOL_DECIMALS: u8 = 9;
 
 /// The Stable Foundation
-/// #[tsync]
-pub const BACH_TOKEN: &str = "CTQBjyrX8pYyqbNa8vAhQfnRXfu9cUxnvrxj5PvbzTmf";
 #[tsync]
 pub const THE_STABLE_FOUNDATION_ADDRESS: &str = "9DWkPYFKcjpGVjwCjgAnYM8T6H4hssEnW27rLDtfU8y5";
 #[tsync]
@@ -29,3 +25,7 @@ pub const JUPITER_PRICE_PATH: &str = "price/v3";
 /// Birdeye
 pub const BIRDEYE_BASE_URL: &str = "https://public-api.birdeye.so/";
 pub const BIRDEYE_PRICE_PATH: &str = "defi/price";
+
+/// XLP API Service
+pub const XLP_WALLET_BALANCE_PATH: &str = "/v1/wallets/wallet_balance";
+pub const XLP_WALLET_TOKEN_LIST_PATH: &str = "/v1/wallets/token_list";

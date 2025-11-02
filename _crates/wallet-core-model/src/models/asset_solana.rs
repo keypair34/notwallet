@@ -1,6 +1,12 @@
 use {
-    crate::models::{asset_metadata::Metadata, environment::Environment},
-    smbcloud_wallet_constants::constants::SPL_TOKEN_PROGRAM_ID,
+    crate::models::asset_metadata::Metadata,
+    smbcloud_wallet_constants::{
+        assets_solana::{
+            ADDRESS_BACH_TOKEN, ADDRESS_EURC, ADDRESS_JUPITER, ADDRESS_SOL, ADDRESS_USD1,
+            ADDRESS_USDC, ADDRESS_USDG, ADDRESS_USDS, ADDRESS_USDT, ADDRESS_ZBTC,
+        },
+        constants::SPL_TOKEN_PROGRAM_ID,
+    },
     smbcloud_wallet_core_network::model::ErrorResponse,
     smbcloud_wallet_core_rpc::balance::{
         aggregate_spl_token_balance::aggregate_spl_token_balance, sol_balance::sol_balance,
@@ -12,6 +18,15 @@ pub enum SolanaAsset {
     Sol { meta: Metadata },
     BachToken { meta: Metadata },
     ZBtc { meta: Metadata },
+    Jupiter { meta: Metadata },
+    // US Dollar Stablecoins
+    Usdc { meta: Metadata },
+    Usdt { meta: Metadata },
+    Usdg { meta: Metadata },
+    Usds { meta: Metadata },
+    Usd1 { meta: Metadata },
+    // Euro stablecoins
+    Eurc { meta: Metadata },
     // Local token
     BachToken0 { meta: Metadata },
     BachToken1 { meta: Metadata },
@@ -23,6 +38,15 @@ impl SolanaAsset {
             Self::Sol { meta } => meta.to_owned(),
             Self::BachToken { meta } => meta.to_owned(),
             Self::ZBtc { meta } => meta.to_owned(),
+            Self::Jupiter { meta } => meta.to_owned(),
+            // Stablecoins
+            Self::Usdc { meta } => meta.to_owned(),
+            Self::Usdt { meta } => meta.to_owned(),
+            Self::Usdg { meta } => meta.to_owned(),
+            Self::Usds { meta } => meta.to_owned(),
+            Self::Usd1 { meta } => meta.to_owned(),
+            Self::Eurc { meta } => meta.to_owned(),
+            // Local token
             Self::BachToken0 { meta } => meta.to_owned(),
             Self::BachToken1 { meta } => meta.to_owned(),
         }
@@ -38,10 +62,10 @@ impl SolanaAsset {
 
     pub fn from_address(address: String) -> Option<Self> {
         match address.as_str() {
-            "So11111111111111111111111111111111111111112" => Some(Self::Sol {
+            ADDRESS_SOL => Some(Self::Sol {
                 meta: Metadata::native(),
             }),
-            "CTQBjyrX8pYyqbNa8vAhQfnRXfu9cUxnvrxj5PvbzTmf" => Some(Self::BachToken {
+            ADDRESS_BACH_TOKEN => Some(Self::BachToken {
                 meta: Metadata {
                     address,
                     name: "BACH Token".to_string(),
@@ -50,13 +74,76 @@ impl SolanaAsset {
                     logo_uri: "https://raw.githubusercontent.com/solana-labs/token-list/badd1dbe8c2d1e38c4f77b77f1d5fd5c60d3cccb/assets/mainnet/CTQBjyrX8pYyqbNa8vAhQfnRXfu9cUxnvrxj5PvbzTmf/bach-token-logo-Est.2022.png".to_string(),
                 },
             }),
-            "zBTCug3er3tLyffELcvDNrKkCymbPWysGcWihESYfLg" => Some(Self::ZBtc {
+            ADDRESS_ZBTC => Some(Self::ZBtc {
                 meta: Metadata {
                     address,
                     name: "zBTC (zBTC)".to_string(),
                     symbol: "zBTC".to_string(),
                     decimal: 8,
-                    logo_uri: "https://statics.solscan.io/cdn/imgs/s60?ref=68747470733a2f2f7261772e67697468756275736572636f6e74656e742e636f6d2f5a6575734e6574776f726b48512f7a6274632d6d657461646174612f726566732f68656164732f6d61696e2f6c676f6f2d76322e706e67".to_string(),
+                    logo_uri: "https://raw.githubusercontent.com/ZeusNetworkHQ/zbtc-metadata/main/lgoo-v2.png".to_string(),
+                },
+            }),
+            ADDRESS_JUPITER => Some(Self::Jupiter{
+                meta: Metadata {
+                    address,
+                    name: "Jupiter".to_string(),
+                    symbol: "JUP".to_string(),
+                    decimal: 6,
+                    logo_uri: "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN/logo.png".to_string(),
+                },
+            }),
+            ADDRESS_USDC => Some(Self::Usdc {
+                meta: Metadata {
+                    address,
+                    name: "USD Coin".to_string(),
+                    symbol: "USDC".to_string(),
+                    decimal: 6,
+                    logo_uri: "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v/logo.png".to_string(),
+                },
+            }),
+            ADDRESS_USDT => Some(Self::Usdt {
+                meta: Metadata {
+                    address,
+                    name: "Tether USD".to_string(),
+                    symbol: "USDT".to_string(),
+                    decimal: 6,
+                    logo_uri: "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB/logo.svg".to_string(),
+                },
+            }),
+            ADDRESS_USDG => Some(Self::Usdg {
+                meta: Metadata {
+                    address,
+                    name: "USDG Stablecoin".to_string(),
+                    symbol: "USDG".to_string(),
+                    decimal: 9,
+                    logo_uri: "https://cdn.glitterpays.com/usdgtoken.png".to_string(),
+                },
+            }),
+            ADDRESS_USDS => Some(Self::Usds {
+                meta: Metadata {
+                    address,
+                    name: "USDS".to_string(),
+                    symbol: "USDS".to_string(),
+                    decimal: 6,
+                    logo_uri: "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/USDSwr9ApdHk5bvJKMjzff41FfuX8bSxdKcR81vTwcA/logo.svg".to_string(),
+                },
+            }),
+            ADDRESS_USD1 => Some(Self::Usd1 {
+                meta: Metadata {
+                    address,
+                    name: "USD1".to_string(),
+                    symbol: "USD1".to_string(),
+                    decimal: 6,
+                    logo_uri: "https://cdn.usd1protocol.com/logo.png".to_string(),
+                },
+            }),
+            ADDRESS_EURC => Some(Self::Eurc {
+                meta: Metadata {
+                    address,
+                    name: "Euro Coin".to_string(),
+                    symbol: "EURC".to_string(),
+                    decimal: 6,
+                    logo_uri: "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/HzwqbKZw8HxMN6bF2yFZNrht3c2iXXzpKcFu7uBEDKtr/logo.png".to_string(),
                 },
             }),
             // Local develoment tokens.
@@ -88,35 +175,21 @@ impl SolanaAsset {
     /// Get address' balance for this current asset.
     pub fn wallet_balance(
         self,
-        environment: Environment,
+        rpc_url: String,
         address: String,
     ) -> Result<(u64, f64), ErrorResponse> {
         match self {
-            SolanaAsset::Sol { meta: _ } => sol_balance(environment.rpc_url(), address),
-            SolanaAsset::BachToken { meta } => aggregate_spl_token_balance(
-                environment.rpc_url(),
-                address,
-                SPL_TOKEN_PROGRAM_ID.to_string(),
-                meta.address,
-            ),
-            SolanaAsset::ZBtc { meta } => aggregate_spl_token_balance(
-                environment.rpc_url(),
-                address,
-                SPL_TOKEN_PROGRAM_ID.to_string(),
-                meta.address,
-            ),
-            SolanaAsset::BachToken0 { meta } => aggregate_spl_token_balance(
-                environment.rpc_url(),
-                address,
-                SPL_TOKEN_PROGRAM_ID.to_string(),
-                meta.address,
-            ),
-            SolanaAsset::BachToken1 { meta } => aggregate_spl_token_balance(
-                environment.rpc_url(),
-                address,
-                SPL_TOKEN_PROGRAM_ID.to_string(),
-                meta.address,
-            ),
+            SolanaAsset::Sol { meta: _ } => sol_balance(rpc_url, address),
+            // All SPL tokens use the same balance aggregation logic
+            _ => {
+                let meta = self.metadata();
+                aggregate_spl_token_balance(
+                    rpc_url,
+                    address,
+                    SPL_TOKEN_PROGRAM_ID.to_string(),
+                    meta.address,
+                )
+            }
         }
     }
 }

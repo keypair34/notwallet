@@ -13,15 +13,15 @@ import { invoke } from "@tauri-apps/api/core";
 import {
   GET_TREASURY_BACH_BALANCE,
   GET_TREASURY_SOL_BALANCE,
-} from "@lib/commands";
+} from "@app/lib/commands";
 import { debug } from "@tauri-apps/plugin-log";
 import {
-  BACH_TOKEN,
+  ADDRESS_BACH_TOKEN,
   SOLANA,
   THE_STABLE_FOUNDATION_TREASURY_ADDRESS,
-} from "@lib/crate/generated";
-import { openExplorer } from "@lib/helper";
-import { AssetIcon } from "@lib/components/token-icons";
+} from "@app/lib/crate/generated";
+import { openExplorer } from "@app/lib/helper";
+import { AssetIcon } from "@app/lib/components/token-icons";
 import { useLang } from "../../../../src/LanguageContext";
 
 enum LoadingState {
@@ -190,7 +190,7 @@ export default function TreasuryCard() {
                 boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
               }}
             >
-              <AssetIcon id={BACH_TOKEN} size={28} />
+              <AssetIcon id={ADDRESS_BACH_TOKEN} size={28} />
             </Box>
             <Box sx={{ textAlign: "center" }}>
               <Typography

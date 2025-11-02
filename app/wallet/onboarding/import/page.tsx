@@ -12,7 +12,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { invoke } from "@tauri-apps/api/core";
 import { debug } from "@tauri-apps/plugin-log";
 import { useNavigate } from "react-router-dom";
-import { SolanaWallet } from "@lib/crate/generated";
+import { SolanaWallet } from "@app/lib/crate/generated";
 import { selectionFeedback } from "@tauri-apps/plugin-haptics";
 import { useLang } from "@src/LanguageContext";
 
@@ -120,7 +120,7 @@ export default function WalletOnboardingImportPage() {
               helperText={error}
               sx={{ mb: 2, bgcolor: "#f3f4f6", borderRadius: 2 }}
               inputProps={{
-                style: { fontFamily: "monospace", fontSize: "1.1rem" },
+                style: { fontFamily: "monospace" },
               }}
             />
             {pubkey && (
@@ -155,7 +155,6 @@ export default function WalletOnboardingImportPage() {
             </Button>
           </CardActions>
         </Card>
-        {/* <BottomTabBar /> */}
       </Box>
     </Box>
   );
