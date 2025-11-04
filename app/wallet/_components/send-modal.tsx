@@ -79,7 +79,7 @@ export default function SendModal({
     setRecipient(event.target.value);
   };
 
-  const handleTokenTypeChange = (event: SelectChangeEvent) => {
+  const handleSelectedBalanceChange = (event: SelectChangeEvent) => {
     updateSelectedToken(event.target.value);
   };
 
@@ -87,7 +87,7 @@ export default function SendModal({
     setSelectedTokenAddress(address);
     debug(`Selected address: ${selectedTokenAddress}`);
     const selectedBalance = availableAssets.find(
-      (p) => p.meta.address == selectedTokenAddress,
+      (p) => p.meta.address == address,
     );
     setSelectedBalance(selectedBalance);
     debug(`Selected balance: ${selectedBalance}`);
@@ -202,11 +202,11 @@ export default function SendModal({
               id="token-type"
               value={selectedTokenAddress}
               label={t.tokenType}
-              onChange={handleTokenTypeChange}
+              onChange={handleSelectedBalanceChange}
               disabled={isLoading}
             >
-              {availableAssets.map((asset) => (
-                <MenuItem value={asset.meta.address}>
+              {availableAssets.map((asset, index) => (
+                <MenuItem key={index} value={asset.meta.address}>
                   <AssetIcon
                     id={asset.meta.address}
                     logoUrl={asset.meta.logo_uri}
