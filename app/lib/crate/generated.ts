@@ -2,10 +2,6 @@
 
 export const STRIPE_PUBLISHABLE_KEY = "your_stripe_publishable_key";
 
-export const ONRAMPER_KEY = "your_onramper_key";
-
-export const ONRAMPER_SIGNER_KEY = "your_onramper_signer_key";
-
 /**
  * Generate:
  * tsync -i src-tauri/src/ crates/wallet-kit/src/ -o lib/crate/generated.ts
@@ -290,6 +286,8 @@ export const ADDRESS_ZBTC = "zBTCug3er3tLyffELcvDNrKkCymbPWysGcWihESYfLg";
 export const THE_STABLE_FOUNDATION_ADDRESS = "9DWkPYFKcjpGVjwCjgAnYM8T6H4hssEnW27rLDtfU8y5";
 
 export const THE_STABLE_FOUNDATION_TREASURY_ADDRESS = "3YAyrP4mjiLRuHZQjfskmmVBbF7urtfDLfnLtW2jzgx3";
+
+export const THE_STABLE_FOUNDATION_TREASURY_WALLET_FEE = "GHwjki2QkzkY9ZsDWEpvxk8EAckm8FuAtsohQYW9RFnj";
 
 export const SPL_TOKEN_PROGRAM_ID = "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA";
 

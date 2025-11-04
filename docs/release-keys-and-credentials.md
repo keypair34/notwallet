@@ -40,7 +40,7 @@ const SOLANA_RPC_ID: &str = "your_id";
 
 ### Fiat-to-crypto Services
 
-We are using Stripe and Onramper.
+We are using Stripe and only available in the EU.
 
 Stripe secret key in the `src-tauri/src/constants/onramp.rs`.
 
@@ -54,10 +54,6 @@ Other keys are in the `lib/crate/generated.ts`.
 /* This file is generated and managed by tsync */
 
 export const STRIPE_PUBLISHABLE_KEY = "your_stripe_publishable_key";
-
-export const ONRAMPER_KEY = "your_onramper_key";
-
-export const ONRAMPER_SIGNER_KEY = "your_onramper_signer_key";
 ```
 
 Now you are ready to build [NotWallet Crypto non-custodial Solana crypto wallet](https://github.com/TheStableFoundation/notwallet) for production release.
