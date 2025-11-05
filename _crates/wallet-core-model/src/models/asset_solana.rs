@@ -60,6 +60,10 @@ impl SolanaAsset {
         }
     }
 
+    pub fn smallest_denomination(self) -> f64 {
+        10_u64.pow(self.metadata().decimal as u32) as f64
+    }
+
     pub fn from_address(address: String) -> Option<Self> {
         match address.as_str() {
             ADDRESS_SOL => Some(Self::Sol {

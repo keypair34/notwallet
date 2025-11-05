@@ -133,9 +133,11 @@ pub async fn create_token_transfer_ix(
     token_program_id: String,
     amount: f64,
 ) -> Result<String, TransactionError> {
-    let asset = SolanaAsset::from_address(token_mint_address.clone())
-        .ok_or_else(|| TransactionError::InvalidAddress(from_pubkey.clone()));
-
+    // Get the SolanaAsset
+    let asset = match SolanaAsset::from_address(token_mint_address.clone()) {
+        Some(asset) => asset,
+        None => return Err(TransactionError::InvalidAddress(from_pubkey.clone())),
+    };
     // Connect to the Solana cluster
     let rpc_client = RpcClient::new(rpc_url);
 
@@ -248,26 +250,26 @@ pub async fn create_token_transfer_ix(
     // Convert to the smallest unit
 
     let denomination = asset.smallest_denomination();
-    let fee_st = fee_breakdown.fee_token_units(denomination);
-    let net_amount_st = fee_breakdown.net_token_units(denomination);
-    let total_amount_st = fee_breakdown.total_token_units(denomination);
+    let fee_denomination = fee_breakdown.fee_token_units(denomination);
+    let net_amount = fee_breakdown.net_token_units(denomination);
+    let total_amount = fee_breakdown.total_token_units(denomination);
 
     debug!("Token fee breakdown: {}", fee_breakdown.format_summary());
 
     // Check token balance
     let token_balance = get_token_balance(&rpc_client, &sender_token_account).await?;
 
-    if token_balance < total_amount_st {
+    if token_balance < total_amount {
         warn!(
             "Insufficient token funds: balance {}, required {}",
-            token_balance, total_amount_st
+            token_balance, total_amount
         );
         return Err(TransactionError::InsufficientFunds);
     }
 
     debug!(
         "Creating token transfer: fee={} st, net={} st",
-        fee_st, net_amount_st
+        fee_denomination, net_amount
     );
 
     // Create token transfer instructions
@@ -276,7 +278,7 @@ pub async fn create_token_transfer_ix(
         &sender_token_account,
         &treasury_token_account,
         &from_wallet,
-        fee_st,
+        fee_denomination,
     )
     .map_err(|e| TransactionError::TransactionError(e.to_string()))?;
 
@@ -286,7 +288,7 @@ pub async fn create_token_transfer_ix(
         &recipient_token_account,
         &from_wallet,
         &[&from_wallet],
-        net_amount_st,
+        net_amount,
     )
     .map_err(|e| TransactionError::TransactionError(e.to_string()))?;
 
