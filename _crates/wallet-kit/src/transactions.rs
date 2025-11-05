@@ -4,6 +4,7 @@ use {
     smbcloud_wallet_constants::constants::{
         SEMITONE_PER_BACH, THE_STABLE_FOUNDATION_TREASURY_WALLET_FEE,
     },
+    smbcloud_wallet_core_model::models::asset_solana::SolanaAsset,
     solana_client::{nonblocking::rpc_client::RpcClient, rpc_request::TokenAccountsFilter},
     solana_sdk::{
         program_pack::Pack, pubkey::Pubkey, signature::Keypair, signer::Signer, system_instruction,
@@ -132,6 +133,9 @@ pub async fn create_token_transfer_ix(
     token_program_id: String,
     amount: f64,
 ) -> Result<String, TransactionError> {
+    let asset = SolanaAsset::from_address(token_mint_address.clone())
+        .ok_or_else(|| TransactionError::InvalidAddress(from_pubkey.clone()));
+
     // Connect to the Solana cluster
     let rpc_client = RpcClient::new(rpc_url);
 
@@ -149,7 +153,7 @@ pub async fn create_token_transfer_ix(
         .map_err(|_| TransactionError::InvalidAddress(token_program_id.clone()))?;
 
     // Calculate fee breakdown for token transaction
-    let fee_breakdown = TreasuryFeeManager::calculate_fees(amount, token_mint_address.to_string())
+    let fee_breakdown = TreasuryFeeManager::calculate_fees(amount, asset.metadata().symbol)
         .map_err(|e| TransactionError::FeeCalculationError(e.to_string()))?;
 
     // Find the token accounts for the sender, recipient, and treasury
@@ -241,10 +245,12 @@ pub async fn create_token_transfer_ix(
             }
         };
 
-    // Convert to st
-    let fee_st = fee_breakdown.fee_token_units(SEMITONE_PER_BACH);
-    let net_amount_st = fee_breakdown.net_token_units(SEMITONE_PER_BACH);
-    let total_amount_st = fee_breakdown.total_token_units(SEMITONE_PER_BACH);
+    // Convert to the smallest unit
+
+    let denomination = asset.smallest_denomination();
+    let fee_st = fee_breakdown.fee_token_units(denomination);
+    let net_amount_st = fee_breakdown.net_token_units(denomination);
+    let total_amount_st = fee_breakdown.total_token_units(denomination);
 
     debug!("Token fee breakdown: {}", fee_breakdown.format_summary());
 
@@ -253,7 +259,7 @@ pub async fn create_token_transfer_ix(
 
     if token_balance < total_amount_st {
         warn!(
-            "Insufficient token funds: balance {} st, required {} st",
+            "Insufficient token funds: balance {}, required {}",
             token_balance, total_amount_st
         );
         return Err(TransactionError::InsufficientFunds);
