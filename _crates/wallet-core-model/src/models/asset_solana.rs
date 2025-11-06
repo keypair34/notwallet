@@ -1,5 +1,6 @@
 use {
     crate::models::asset_metadata::Metadata,
+    serde::{Deserialize, Serialize},
     smbcloud_wallet_constants::{
         assets_solana::{
             ADDRESS_BACH_TOKEN, ADDRESS_EURC, ADDRESS_JUPITER, ADDRESS_SOL, ADDRESS_USD1,
@@ -11,9 +12,11 @@ use {
     smbcloud_wallet_core_rpc::balance::{
         aggregate_spl_token_balance::aggregate_spl_token_balance, sol_balance::sol_balance,
     },
+    tsync::tsync,
 };
 
-#[derive(Debug)]
+#[derive(Debug, Deserialize, Serialize)]
+#[tsync]
 pub enum SolanaAsset {
     Sol { meta: Metadata },
     BachToken { meta: Metadata },
@@ -53,10 +56,71 @@ impl SolanaAsset {
     }
 }
 
+/// Verified assets
 impl SolanaAsset {
+    pub fn verified_assets() -> Vec<Self> {
+        vec![
+            Self::native(),
+            Self::bach_token(),
+            Self::zbtc(),
+            Self::jupiter(),
+            Self::usdc(),
+            Self::usdt(),
+            Self::usdg(),
+            Self::usds(),
+            Self::usd1(),
+            Self::eurc(),
+        ]
+    }
+
     pub fn native() -> Self {
         Self::Sol {
             meta: Metadata::native(),
+        }
+    }
+    pub fn bach_token() -> Self {
+        Self::Sol {
+            meta: Metadata::bach_token(),
+        }
+    }
+    pub fn zbtc() -> Self {
+        Self::Sol {
+            meta: Metadata::zbtc(),
+        }
+    }
+    pub fn jupiter() -> Self {
+        Self::Sol {
+            meta: Metadata::jupiter(),
+        }
+    }
+    pub fn usdc() -> Self {
+        Self::Sol {
+            meta: Metadata::usdc(),
+        }
+    }
+    pub fn usdt() -> Self {
+        Self::Sol {
+            meta: Metadata::usdt(),
+        }
+    }
+    pub fn usdg() -> Self {
+        Self::Sol {
+            meta: Metadata::usdg(),
+        }
+    }
+    pub fn usds() -> Self {
+        Self::Sol {
+            meta: Metadata::usds(),
+        }
+    }
+    pub fn usd1() -> Self {
+        Self::Sol {
+            meta: Metadata::usd1(),
+        }
+    }
+    pub fn eurc() -> Self {
+        Self::Sol {
+            meta: Metadata::eurc(),
         }
     }
 
@@ -66,36 +130,16 @@ impl SolanaAsset {
 
     pub fn from_address(address: String) -> Option<Self> {
         match address.as_str() {
-            ADDRESS_SOL => Some(Self::Sol {
-                meta: Metadata::native(),
-            }),
-            ADDRESS_BACH_TOKEN => Some(Self::BachToken {
-                meta: Metadata::bach_token(),
-            }),
-            ADDRESS_ZBTC => Some(Self::ZBtc {
-                meta: Metadata::zbtc(),
-            }),
-            ADDRESS_JUPITER => Some(Self::Jupiter{
-                meta: Metadata::jupiter(),
-            }),
-            ADDRESS_USDC => Some(Self::Usdc {
-                meta: Metadata::usdc(),
-            }),
-            ADDRESS_USDT => Some(Self::Usdt {
-                meta: Metadata::usdt(),
-            }),
-            ADDRESS_USDG => Some(Self::Usdg {
-                meta: Metadata::usdg(),
-            }),
-            ADDRESS_USDS => Some(Self::Usds {
-                meta: Metadata::usds(),
-            }),
-            ADDRESS_USD1 => Some(Self::Usd1 {
-                meta: Metadata::usd1(),
-            }),
-            ADDRESS_EURC => Some(Self::Eurc {
-                meta: Metadata::eurc(),
-            }),
+            ADDRESS_SOL => Some(Self::native()),
+            ADDRESS_BACH_TOKEN => Some(Self::bach_token()),
+            ADDRESS_ZBTC => Some(Self::zbtc()),
+            ADDRESS_JUPITER => Some(Self::jupiter()),
+            ADDRESS_USDC => Some(Self::usdc()),
+            ADDRESS_USDT => Some(Self::usdt()),
+            ADDRESS_USDG => Some(Self::usdg()),
+            ADDRESS_USDS => Some(Self::usds()),
+            ADDRESS_USD1 => Some(Self::usd1()),
+            ADDRESS_EURC => Some(Self::eurc()),
             // Local develoment tokens.
             "38JsCWEZ3dLRzcwxiCbL9rkkZqwwoWLAoCmqu7mWGSwq" => Some(Self::BachToken0 {
                 meta: Metadata {
