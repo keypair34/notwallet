@@ -70,85 +70,31 @@ impl SolanaAsset {
                 meta: Metadata::native(),
             }),
             ADDRESS_BACH_TOKEN => Some(Self::BachToken {
-                meta: Metadata {
-                    address,
-                    name: "BACH Token".to_string(),
-                    symbol: "BACH".to_string(),
-                    decimal: 12,
-                    logo_uri: "https://raw.githubusercontent.com/solana-labs/token-list/badd1dbe8c2d1e38c4f77b77f1d5fd5c60d3cccb/assets/mainnet/CTQBjyrX8pYyqbNa8vAhQfnRXfu9cUxnvrxj5PvbzTmf/bach-token-logo-Est.2022.png".to_string(),
-                },
+                meta: Metadata::bach_token(),
             }),
             ADDRESS_ZBTC => Some(Self::ZBtc {
-                meta: Metadata {
-                    address,
-                    name: "zBTC (zBTC)".to_string(),
-                    symbol: "zBTC".to_string(),
-                    decimal: 8,
-                    logo_uri: "https://raw.githubusercontent.com/ZeusNetworkHQ/zbtc-metadata/main/lgoo-v2.png".to_string(),
-                },
+                meta: Metadata::zbtc(),
             }),
             ADDRESS_JUPITER => Some(Self::Jupiter{
-                meta: Metadata {
-                    address,
-                    name: "Jupiter".to_string(),
-                    symbol: "JUP".to_string(),
-                    decimal: 6,
-                    logo_uri: "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN/logo.png".to_string(),
-                },
+                meta: Metadata::jupiter(),
             }),
             ADDRESS_USDC => Some(Self::Usdc {
-                meta: Metadata {
-                    address,
-                    name: "USD Coin".to_string(),
-                    symbol: "USDC".to_string(),
-                    decimal: 6,
-                    logo_uri: "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v/logo.png".to_string(),
-                },
+                meta: Metadata::usdc(),
             }),
             ADDRESS_USDT => Some(Self::Usdt {
-                meta: Metadata {
-                    address,
-                    name: "Tether USD".to_string(),
-                    symbol: "USDT".to_string(),
-                    decimal: 6,
-                    logo_uri: "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB/logo.svg".to_string(),
-                },
+                meta: Metadata::usdt(),
             }),
             ADDRESS_USDG => Some(Self::Usdg {
-                meta: Metadata {
-                    address,
-                    name: "USDG Stablecoin".to_string(),
-                    symbol: "USDG".to_string(),
-                    decimal: 9,
-                    logo_uri: "https://cdn.glitterpays.com/usdgtoken.png".to_string(),
-                },
+                meta: Metadata::usdg(),
             }),
             ADDRESS_USDS => Some(Self::Usds {
-                meta: Metadata {
-                    address,
-                    name: "USDS".to_string(),
-                    symbol: "USDS".to_string(),
-                    decimal: 6,
-                    logo_uri: "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/USDSwr9ApdHk5bvJKMjzff41FfuX8bSxdKcR81vTwcA/logo.svg".to_string(),
-                },
+                meta: Metadata::usds(),
             }),
             ADDRESS_USD1 => Some(Self::Usd1 {
-                meta: Metadata {
-                    address,
-                    name: "USD1".to_string(),
-                    symbol: "USD1".to_string(),
-                    decimal: 6,
-                    logo_uri: "https://cdn.usd1protocol.com/logo.png".to_string(),
-                },
+                meta: Metadata::usd1(),
             }),
             ADDRESS_EURC => Some(Self::Eurc {
-                meta: Metadata {
-                    address,
-                    name: "Euro Coin".to_string(),
-                    symbol: "EURC".to_string(),
-                    decimal: 6,
-                    logo_uri: "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/HzwqbKZw8HxMN6bF2yFZNrht3c2iXXzpKcFu7uBEDKtr/logo.png".to_string(),
-                },
+                meta: Metadata::eurc(),
             }),
             // Local develoment tokens.
             "38JsCWEZ3dLRzcwxiCbL9rkkZqwwoWLAoCmqu7mWGSwq" => Some(Self::BachToken0 {
