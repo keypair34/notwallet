@@ -542,7 +542,7 @@ export default function SwapModal({
                     {t.outputAmount}:
                   </Typography>
                   <Typography variant="body2" fontWeight="bold">
-                    {getOutputAmount()} {selectedToTokenAddress}
+                    {getOutputAmount()} {selectedToTokenBalance?.meta.symbol}
                   </Typography>
                 </Stack>
                 <Stack direction="row" justifyContent="space-between">
