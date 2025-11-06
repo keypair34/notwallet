@@ -21,6 +21,7 @@ use {
         swap::{
             command_build_swap_transaction::build_swap_transaction,
             command_get_swap_quote::get_swap_quote,
+            command_get_verified_assets::get_verified_assets,
             command_send_swap_transaction::send_swap_transaction,
         },
         wallet::{
@@ -102,6 +103,7 @@ pub fn run() {
             get_network_environment,
             set_network_environment,
             get_wallet_assets_balance,
+            get_verified_assets,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

@@ -124,8 +124,6 @@ export const SOLANA = "So11111111111111111111111111111111111111112";
 
 export const SOL_DECIMALS = 9;
 
-export const BACH_DECIMALS = 12;
-
 export const USDC = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
 
 export const USDT = "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB";
@@ -306,6 +304,68 @@ export interface Metadata {
   decimal: number;
   logo_uri: string;
 }
+
+export type SolanaAsset =
+  | {
+      Sol: {
+        meta: Metadata;
+      };
+    }
+  | {
+      BachToken: {
+        meta: Metadata;
+      };
+    }
+  | {
+      ZBtc: {
+        meta: Metadata;
+      };
+    }
+  | {
+      Jupiter: {
+        meta: Metadata;
+      };
+    }
+  | {
+      Usdc: {
+        meta: Metadata;
+      };
+    }
+  | {
+      Usdt: {
+        meta: Metadata;
+      };
+    }
+  | {
+      Usdg: {
+        meta: Metadata;
+      };
+    }
+  | {
+      Usds: {
+        meta: Metadata;
+      };
+    }
+  | {
+      Usd1: {
+        meta: Metadata;
+      };
+    }
+  | {
+      Eurc: {
+        meta: Metadata;
+      };
+    }
+  | {
+      BachToken0: {
+        meta: Metadata;
+      };
+    }
+  | {
+      BachToken1: {
+        meta: Metadata;
+      };
+    };
 
 export interface BalanceV1 {
   meta: Metadata;

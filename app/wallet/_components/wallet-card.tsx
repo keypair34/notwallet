@@ -8,7 +8,12 @@ import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import AddIcon from "@mui/icons-material/Add";
 import SettingsIcon from "@mui/icons-material/Settings";
-import { ADDRESS_SOL, BalanceV1, SolanaWallet } from "@app/lib/crate/generated";
+import {
+  ADDRESS_SOL,
+  BalanceV1,
+  SolanaAsset,
+  SolanaWallet,
+} from "@app/lib/crate/generated";
 import IconButton from "@mui/material/IconButton";
 import SendIcon from "@mui/icons-material/Send";
 import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
@@ -57,6 +62,7 @@ export default function WalletCard({
   const [availableKeypairs, setAvailableKeypairs] = React.useState<
     SolanaWallet[]
   >([]);
+  const [verifiedAssets, setVerifiedAssets] = React.useState<SolanaAsset[]>([]);
 
   // Update walletUsername when wallet.username changes
   React.useEffect(() => {
@@ -144,6 +150,8 @@ export default function WalletCard({
         environment: xlpEnvironment,
       });
       setWalletBalance(`${walletBalance}`);
+      const verifiedAssets = await invoke<SolanaAsset[]>("get_verified_assets");
+      setVerifiedAssets(verifiedAssets);
     } catch (err) {
       error(`Error fetching balance: ${JSON.stringify(err)}`);
     }
@@ -465,6 +473,7 @@ export default function WalletCard({
         senderAddress={wallet.pubkey}
         availableKeypairs={availableKeypairs}
         availableAssets={availableAssets}
+        verifiedAssets={verifiedAssets}
       />
       <NoSolModal open={noSolModalOpen} onClose={handleCloseNoSolModal} />
     </Card>

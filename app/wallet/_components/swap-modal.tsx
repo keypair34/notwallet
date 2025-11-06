@@ -18,9 +18,10 @@ import {
   PrioritizationFeeLamports,
   SOLANA,
   SOL_DECIMALS,
-  BACH_DECIMALS,
   Environment,
   BalanceV1,
+  SolanaAsset,
+  Metadata,
 } from "@app/lib/crate/generated";
 import { selectionFeedback } from "@tauri-apps/plugin-haptics";
 import { invoke } from "@tauri-apps/api/core";
@@ -42,6 +43,12 @@ interface SwapModalProps {
   senderAddress: string;
   availableKeypairs: SolanaWallet[];
   availableAssets: BalanceV1[];
+  verifiedAssets: SolanaAsset[];
+}
+
+function getAssetMeta(asset: SolanaAsset): Metadata {
+  const values = Object.values(asset);
+  return values[0].meta;
 }
 
 export default function SwapModal({
@@ -49,6 +56,7 @@ export default function SwapModal({
   onClose,
   senderAddress,
   availableAssets,
+  verifiedAssets,
 }: SwapModalProps) {
   const { t } = useLang();
   const { environment } = useNetworkEnvironment();
@@ -180,8 +188,7 @@ export default function SwapModal({
   const getOutputAmount = () => {
     if (!quote) return "0";
     const amount = parseInt(quote.outAmount);
-    const decimals =
-      selectedToTokenAddress === "SOL" ? SOL_DECIMALS : BACH_DECIMALS;
+    const decimals = selectedToTokenAddress === "SOL" ? SOL_DECIMALS : 12;
     return (amount / Math.pow(10, decimals)).toFixed(6);
   };
 
@@ -189,7 +196,7 @@ export default function SwapModal({
     if (!quote || !quote.routePlan[0]) return "0";
     const feeAmount = parseInt(quote.routePlan[0].swapInfo.feeAmount);
     const feeMint = quote.routePlan[0].swapInfo.feeMint;
-    const decimals = feeMint === SOLANA ? SOL_DECIMALS : BACH_DECIMALS;
+    const decimals = feeMint === SOLANA ? SOL_DECIMALS : 12;
     return (feeAmount / Math.pow(10, decimals)).toFixed(6);
   };
 
@@ -447,21 +454,26 @@ export default function SwapModal({
                       onChange={handleSelectedToTokenBalanceChange}
                       disabled={isSwapping}
                     >
-                      {availableAssets
+                      {verifiedAssets
                         .filter(
                           (asset) =>
-                            asset.meta.address !==
+                            getAssetMeta(asset).address !==
                             selectedFromTokenBalance?.meta.address,
                         )
                         .map((asset, index) => (
-                          <MenuItem key={index} value={asset.meta.address}>
+                          <MenuItem
+                            key={index}
+                            value={getAssetMeta(asset).address}
+                          >
                             <ListItemIcon>
                               <AssetIcon
-                                id={asset.meta.address}
-                                logoUrl={asset.meta.logo_uri}
+                                id={getAssetMeta(asset).address}
+                                logoUrl={getAssetMeta(asset).logo_uri}
                               />
                             </ListItemIcon>
-                            <ListItemText>{asset.meta.symbol}</ListItemText>
+                            <ListItemText>
+                              {getAssetMeta(asset).symbol}
+                            </ListItemText>
                           </MenuItem>
                         ))}
                     </Select>
@@ -530,7 +542,7 @@ export default function SwapModal({
                     {t.outputAmount}:
                   </Typography>
                   <Typography variant="body2" fontWeight="bold">
-                    {getOutputAmount()} {selectedToTokenAddress}
+                    {getOutputAmount()} {selectedToTokenBalance?.meta.symbol}
                   </Typography>
                 </Stack>
                 <Stack direction="row" justifyContent="space-between">

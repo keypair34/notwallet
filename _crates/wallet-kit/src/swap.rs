@@ -5,8 +5,7 @@ use {
     log::debug,
     reqwest::{header::CONTENT_TYPE, Client},
     smbcloud_wallet_constants::constants::{
-        JUPITER_BASE_URL, JUPITER_SWAP_PATH, JUPITER_SWAP_QUOTE_PATH, PLATFORM_FEE_BPS,
-        THE_STABLE_FOUNDATION_TREASURY_WALLET_FEE,
+        JUPITER_BASE_URL, JUPITER_SWAP_PATH, JUPITER_SWAP_QUOTE_PATH,
     },
     smbcloud_wallet_core_model::models::asset_solana::SolanaAsset,
     smbcloud_wallet_core_network::{model::ErrorResponse, request},
@@ -65,15 +64,13 @@ pub async fn get_jupiter_swap_quote(
             panic!("Check supported assets in the wallet-core-model crate.")
         };
     let url = format!(
-        "{}{}?inputMint={}&outputMint={}&amount={}&slippageBps={}&platformFeeBps={}&feeAccount={}",
+        "{}{}?inputMint={}&outputMint={}&amount={}&slippageBps={}",
         JUPITER_BASE_URL,
         JUPITER_SWAP_QUOTE_PATH,
         from_token,
         to_token,
         amount_denomination,
         slippage_bps,
-        PLATFORM_FEE_BPS,
-        THE_STABLE_FOUNDATION_TREASURY_WALLET_FEE
     );
     let client = Client::new().get(url);
     request(client).await
