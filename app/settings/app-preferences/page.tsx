@@ -5,120 +5,592 @@ import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
-import Button from "@mui/material/Button";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { useRouter } from "next/navigation";
 import { selectionFeedback } from "@tauri-apps/plugin-haptics";
 import RadioGroup from "@mui/material/RadioGroup";
 import Radio from "@mui/material/Radio";
 import FormControl from "@mui/material/FormControl";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import FormLabel from "@mui/material/FormLabel";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import PaletteOutlinedIcon from "@mui/icons-material/PaletteOutlined";
+import LanguageIcon from "@mui/icons-material/Language";
 import { useColorScheme } from "@mui/material/styles";
+import PageChildrenTitleBar from "@app/lib/components/page-children-title-bar";
+import { useLang } from "../../../src/LanguageContext";
 
 export default function AppPreferences() {
-  const router = useRouter();
   const { mode, setMode } = useColorScheme();
+  const { t, lang, setLang } = useLang();
+
+  const handleThemeChange = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    await selectionFeedback();
+    setMode(event.target.value as "system" | "light" | "dark");
+  };
+
+  const handleLanguageChange = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    await selectionFeedback();
+    setLang(event.target.value as "en" | "sv" | "id");
+  };
 
   if (!mode) {
-    return <p>No mode</p>;
+    return (
+      <Box
+        sx={{
+          minHeight: "100vh",
+          bgcolor: "linear-gradient(135deg, #FAFBFF 0%, #F8FAFF 100%)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Typography sx={{ color: "#6B7280" }}>{t.loading}...</Typography>
+      </Box>
+    );
   }
 
   return (
     <Box
       sx={{
-        minHeight: "unset",
-        height: "auto",
-        bgcolor: "#f5f6fa",
+        minHeight: "100vh",
+        bgcolor: "linear-gradient(135deg, #FAFBFF 0%, #F8FAFF 100%)",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         py: 4,
       }}
     >
-      <Card
-        sx={{
-          maxWidth: 400,
-          width: "100%",
-          px: 2,
-          py: 2,
-          boxShadow: 3,
-          position: "relative",
-        }}
-      >
-        <Box
+      <PageChildrenTitleBar title={t.preferences} />
+
+      {/* Main Content Card */}
+      <Box sx={{ width: "100%", maxWidth: 420, px: 2 }}>
+        <Card
           sx={{
-            display: "flex",
-            alignItems: "center",
-            pl: 2,
-            pt: 2,
-            pb: 1,
-            bgcolor: "transparent",
-          }}
-        >
-          <Button
-            startIcon={<ArrowBackIcon />}
-            onClick={async () => {
-              await selectionFeedback();
-              router.back();
-            }}
-            sx={{
-              minWidth: 0,
-              px: 1,
-              py: 0.5,
-              fontSize: "0.95rem",
-              mr: 1,
-            }}
-          >
-            Back
-          </Button>
-          <Box sx={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
-            <Typography variant="h5" fontWeight="bold" paddingRight={2}>
-              App Preferences
-            </Typography>
-          </Box>
-        </Box>
-        <Divider />
-        <Box
-          sx={{
-            display: "flex",
             width: "100%",
-            alignItems: "center",
-            justifyContent: "center",
-            bgcolor: "background.default",
-            color: "text.primary",
-            borderRadius: 1,
-            p: 3,
-            minHeight: "56px",
+            borderRadius: "20px",
+            boxShadow: "0 4px 20px rgba(139, 92, 246, 0.08)",
+            border: "1px solid rgba(139, 92, 246, 0.06)",
+            overflow: "hidden",
+            bgcolor: "#FFFFFF",
           }}
         >
-          <FormControl>
-            <FormLabel id="demo-theme-toggle">Theme</FormLabel>
-            <RadioGroup
-              aria-labelledby="demo-theme-toggle"
-              name="theme-toggle"
-              row
-              value={mode}
-              onChange={async (event) => {
-                await selectionFeedback();
-                setMode(event.target.value as "system" | "light" | "dark");
+          <Box sx={{ p: 3, pb: 1 }}>
+            <Typography
+              variant="h6"
+              sx={{
+                fontSize: "18px",
+                fontWeight: 600,
+                color: "#1F2937",
+                mb: 1,
+                letterSpacing: "-0.02em",
               }}
             >
-              <FormControlLabel
-                value="system"
-                control={<Radio />}
-                label="System"
-              />
-              <FormControlLabel
-                value="light"
-                control={<Radio />}
-                label="Light"
-              />
-              <FormControlLabel value="dark" control={<Radio />} label="Dark" />
-            </RadioGroup>
-          </FormControl>
-        </Box>
-      </Card>
+              {t.preferences}
+            </Typography>
+          </Box>
+
+          <List sx={{ p: 0, pb: 1 }}>
+            <ListItem
+              sx={{
+                px: 0,
+                py: 3,
+                borderRadius: "12px",
+                mx: 2,
+                mb: 1,
+                flexDirection: "column",
+                alignItems: "flex-start",
+              }}
+              component="li"
+              disablePadding
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  width: "100%",
+                  mb: 2,
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    color: "#8B5CF6",
+                    minWidth: 48,
+                    ml: 2,
+                  }}
+                >
+                  <PaletteOutlinedIcon />
+                </ListItemIcon>
+                <Box sx={{ flex: 1 }}>
+                  <Typography
+                    sx={{
+                      fontSize: "16px",
+                      fontWeight: 500,
+                      color: "#1F2937",
+                      letterSpacing: "-0.01em",
+                      mb: 0.5,
+                    }}
+                  >
+                    {t.theme}
+                  </Typography>
+                  <Typography
+                    sx={{
+                      fontSize: "14px",
+                      color: "#6B7280",
+                    }}
+                  >
+                    {t.chooseAppearance}
+                  </Typography>
+                </Box>
+              </Box>
+
+              <Box
+                sx={{
+                  width: "100%",
+                  pl: 6,
+                  pr: 2,
+                }}
+              >
+                <FormControl component="fieldset" sx={{ width: "100%" }}>
+                  <RadioGroup
+                    aria-labelledby="theme-selection"
+                    name="theme-selection"
+                    value={mode}
+                    onChange={handleThemeChange}
+                    sx={{ gap: 1 }}
+                  >
+                    <FormControlLabel
+                      value="system"
+                      control={
+                        <Radio
+                          sx={{
+                            color: "#D1D5DB",
+                            "&.Mui-checked": {
+                              color: "#8B5CF6",
+                            },
+                          }}
+                        />
+                      }
+                      label={
+                        <Box>
+                          <Typography
+                            sx={{
+                              fontSize: "15px",
+                              fontWeight: 500,
+                              color: "#1F2937",
+                            }}
+                          >
+                            {t.system}
+                          </Typography>
+                          <Typography
+                            sx={{
+                              fontSize: "13px",
+                              color: "#6B7280",
+                              mt: 0.25,
+                            }}
+                          >
+                            {t.matchDevice}
+                          </Typography>
+                        </Box>
+                      }
+                      sx={{
+                        mx: 0,
+                        py: 1.5,
+                        px: 2,
+                        borderRadius: "12px",
+                        border: "1px solid transparent",
+                        transition: "all 0.2s ease",
+                        "&:hover": {
+                          bgcolor: "rgba(139, 92, 246, 0.04)",
+                          border: "1px solid rgba(139, 92, 246, 0.1)",
+                        },
+                        "& .MuiFormControlLabel-label": {
+                          flex: 1,
+                        },
+                      }}
+                    />
+                    <FormControlLabel
+                      value="light"
+                      control={
+                        <Radio
+                          sx={{
+                            color: "#D1D5DB",
+                            "&.Mui-checked": {
+                              color: "#8B5CF6",
+                            },
+                          }}
+                        />
+                      }
+                      label={
+                        <Box>
+                          <Typography
+                            sx={{
+                              fontSize: "15px",
+                              fontWeight: 500,
+                              color: "#1F2937",
+                            }}
+                          >
+                            {t.light}
+                          </Typography>
+                          <Typography
+                            sx={{
+                              fontSize: "13px",
+                              color: "#6B7280",
+                              mt: 0.25,
+                            }}
+                          >
+                            {t.cleanBright}
+                          </Typography>
+                        </Box>
+                      }
+                      sx={{
+                        mx: 0,
+                        py: 1.5,
+                        px: 2,
+                        borderRadius: "12px",
+                        border: "1px solid transparent",
+                        transition: "all 0.2s ease",
+                        "&:hover": {
+                          bgcolor: "rgba(139, 92, 246, 0.04)",
+                          border: "1px solid rgba(139, 92, 246, 0.1)",
+                        },
+                        "& .MuiFormControlLabel-label": {
+                          flex: 1,
+                        },
+                      }}
+                    />
+                    <FormControlLabel
+                      value="dark"
+                      control={
+                        <Radio
+                          sx={{
+                            color: "#D1D5DB",
+                            "&.Mui-checked": {
+                              color: "#8B5CF6",
+                            },
+                          }}
+                        />
+                      }
+                      label={
+                        <Box>
+                          <Typography
+                            sx={{
+                              fontSize: "15px",
+                              fontWeight: 500,
+                              color: "#1F2937",
+                            }}
+                          >
+                            {t.dark}
+                          </Typography>
+                          <Typography
+                            sx={{
+                              fontSize: "13px",
+                              color: "#6B7280",
+                              mt: 0.25,
+                            }}
+                          >
+                            {t.easyEyes}
+                          </Typography>
+                        </Box>
+                      }
+                      sx={{
+                        mx: 0,
+                        py: 1.5,
+                        px: 2,
+                        borderRadius: "12px",
+                        border: "1px solid transparent",
+                        transition: "all 0.2s ease",
+                        "&:hover": {
+                          bgcolor: "rgba(139, 92, 246, 0.04)",
+                          border: "1px solid rgba(139, 92, 246, 0.1)",
+                        },
+                        "& .MuiFormControlLabel-label": {
+                          flex: 1,
+                        },
+                      }}
+                    />
+                  </RadioGroup>
+                </FormControl>
+              </Box>
+            </ListItem>
+
+            {/* Language Selection */}
+            <ListItem
+              sx={{
+                px: 0,
+                py: 3,
+                borderRadius: "12px",
+                mx: 2,
+                mb: 1,
+                flexDirection: "column",
+                alignItems: "flex-start",
+              }}
+              component="li"
+              disablePadding
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  width: "100%",
+                  mb: 2,
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    color: "#8B5CF6",
+                    minWidth: 48,
+                    ml: 2,
+                  }}
+                >
+                  <LanguageIcon />
+                </ListItemIcon>
+                <Box sx={{ flex: 1 }}>
+                  <Typography
+                    sx={{
+                      fontSize: "16px",
+                      fontWeight: 500,
+                      color: "#1F2937",
+                      letterSpacing: "-0.01em",
+                      mb: 0.5,
+                    }}
+                  >
+                    {t.language}
+                  </Typography>
+                  <Typography
+                    sx={{
+                      fontSize: "14px",
+                      color: "#6B7280",
+                    }}
+                  >
+                    {t.selectLanguage}
+                  </Typography>
+                </Box>
+              </Box>
+
+              <Box
+                sx={{
+                  width: "100%",
+                  pl: 6,
+                  pr: 2,
+                }}
+              >
+                <FormControl component="fieldset" sx={{ width: "100%" }}>
+                  <RadioGroup
+                    aria-labelledby="language-selection"
+                    name="language-selection"
+                    value={lang}
+                    onChange={handleLanguageChange}
+                    sx={{ gap: 1 }}
+                  >
+                    <FormControlLabel
+                      value="en"
+                      control={
+                        <Radio
+                          sx={{
+                            color: "#D1D5DB",
+                            "&.Mui-checked": {
+                              color: "#8B5CF6",
+                            },
+                          }}
+                        />
+                      }
+                      label={
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 1.5,
+                          }}
+                        >
+                          <span style={{ fontSize: "16px" }}>🇺🇸</span>
+                          <Box>
+                            <Typography
+                              sx={{
+                                fontSize: "15px",
+                                fontWeight: 500,
+                                color: "#1F2937",
+                              }}
+                            >
+                              {t.english}
+                            </Typography>
+                            <Typography
+                              sx={{
+                                fontSize: "13px",
+                                color: "#6B7280",
+                                mt: 0.25,
+                              }}
+                            >
+                              English
+                            </Typography>
+                          </Box>
+                        </Box>
+                      }
+                      sx={{
+                        mx: 0,
+                        py: 1.5,
+                        px: 2,
+                        borderRadius: "12px",
+                        border: "1px solid transparent",
+                        transition: "all 0.2s ease",
+                        "&:hover": {
+                          bgcolor: "rgba(139, 92, 246, 0.04)",
+                          border: "1px solid rgba(139, 92, 246, 0.1)",
+                        },
+                        "& .MuiFormControlLabel-label": {
+                          flex: 1,
+                        },
+                      }}
+                    />
+                    <FormControlLabel
+                      value="sv"
+                      control={
+                        <Radio
+                          sx={{
+                            color: "#D1D5DB",
+                            "&.Mui-checked": {
+                              color: "#8B5CF6",
+                            },
+                          }}
+                        />
+                      }
+                      label={
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 1.5,
+                          }}
+                        >
+                          <span style={{ fontSize: "16px" }}>🇸🇪</span>
+                          <Box>
+                            <Typography
+                              sx={{
+                                fontSize: "15px",
+                                fontWeight: 500,
+                                color: "#1F2937",
+                              }}
+                            >
+                              {t.swedish}
+                            </Typography>
+                            <Typography
+                              sx={{
+                                fontSize: "13px",
+                                color: "#6B7280",
+                                mt: 0.25,
+                              }}
+                            >
+                              Svenska
+                            </Typography>
+                          </Box>
+                        </Box>
+                      }
+                      sx={{
+                        mx: 0,
+                        py: 1.5,
+                        px: 2,
+                        borderRadius: "12px",
+                        border: "1px solid transparent",
+                        transition: "all 0.2s ease",
+                        "&:hover": {
+                          bgcolor: "rgba(139, 92, 246, 0.04)",
+                          border: "1px solid rgba(139, 92, 246, 0.1)",
+                        },
+                        "& .MuiFormControlLabel-label": {
+                          flex: 1,
+                        },
+                      }}
+                    />
+                    <FormControlLabel
+                      value="id"
+                      control={
+                        <Radio
+                          sx={{
+                            color: "#D1D5DB",
+                            "&.Mui-checked": {
+                              color: "#8B5CF6",
+                            },
+                          }}
+                        />
+                      }
+                      label={
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 1.5,
+                          }}
+                        >
+                          <span style={{ fontSize: "16px" }}>🇮🇩</span>
+                          <Box>
+                            <Typography
+                              sx={{
+                                fontSize: "15px",
+                                fontWeight: 500,
+                                color: "#1F2937",
+                              }}
+                            >
+                              {t.indonesian}
+                            </Typography>
+                            <Typography
+                              sx={{
+                                fontSize: "13px",
+                                color: "#6B7280",
+                                mt: 0.25,
+                              }}
+                            >
+                              Bahasa Indonesia
+                            </Typography>
+                          </Box>
+                        </Box>
+                      }
+                      sx={{
+                        mx: 0,
+                        py: 1.5,
+                        px: 2,
+                        borderRadius: "12px",
+                        border: "1px solid transparent",
+                        transition: "all 0.2s ease",
+                        "&:hover": {
+                          bgcolor: "rgba(139, 92, 246, 0.04)",
+                          border: "1px solid rgba(139, 92, 246, 0.1)",
+                        },
+                        "& .MuiFormControlLabel-label": {
+                          flex: 1,
+                        },
+                      }}
+                    />
+                  </RadioGroup>
+                </FormControl>
+              </Box>
+            </ListItem>
+          </List>
+
+          <Divider sx={{ borderColor: "rgba(139, 92, 246, 0.08)", mt: 2 }} />
+
+          {/* Footer Note */}
+          <Box
+            sx={{
+              p: 3,
+              textAlign: "center",
+            }}
+          >
+            <Typography
+              variant="body2"
+              sx={{
+                fontSize: "12px",
+                color: "#9CA3AF",
+                lineHeight: 1.5,
+              }}
+            >
+              {t.changesApplyImmediately}
+            </Typography>
+          </Box>
+        </Card>
+      </Box>
     </Box>
   );
 }

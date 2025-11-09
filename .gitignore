@@ -32,6 +32,16 @@ dist-ssr
 *.jks
 upload-keystore.jks
 keystore.properties
+!src-tauri/gen-override/android/keystore.properties
 
 # Allow encrypted keystore files
 !secrets/*.gpg
+
+# App builds
+*.pkg
+
+# Zed
+target
+
+# Environment
+.env

@@ -2,14 +2,13 @@
 
 import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
-import { useAppLock } from "@/lib/context/app-lock-context";
+import { useAppLock } from "@app/lib/context/app-lock-context";
 import { debug, error as logError } from "@tauri-apps/plugin-log";
-import LockedWalletView from "@/lib/components/locked-wallet-view";
-import CreateOrImportWalletView from "@/lib/components/create-or-import-wallet-view";
-import { Seed, STORE_KEYPAIRS, STORE_PASSWORD } from "@/lib/crate/generated";
+import LockedWalletView from "@app/lib/components/locked-wallet-view";
+import { Seed, STORE_KEYPAIRS, STORE_PASSWORD } from "@app/lib/crate/generated";
 import { useState, useEffect } from "react";
-import { redirect } from "next/navigation";
-import { store } from "../lib/store/store";
+import { redirect } from "react-router-dom";
+import { store } from "@app/lib/store/store";
 
 enum State {
   Loading,
@@ -115,7 +114,8 @@ function MainPageContent() {
   if (state == State.Loaded && seeds?.length > 0) {
     // If user has seeds but no password, redirect to password creation page
     if (!hasPassword) {
-      return redirect("/onboarding/create-password");
+      redirect("/wallet/onboarding/create-password");
+      return <></>;
     }
 
     // If user has seeds and password and is locked, show unlock screen
@@ -130,12 +130,15 @@ function MainPageContent() {
     }
 
     // If user has seeds and password and is unlocked, redirect to home
-    return redirect("/home");
+    redirect("/");
   }
 
-  return <CreateOrImportWalletView />;
+  // If user has no seeds, redirect to wallet onboarding page
+  redirect("/");
+  return <></>;
 }
 
 export default function Page() {
+  // This root path (/) is just a dummy path to resolve to the one of three main pages.
   return <MainPageContent />;
 }

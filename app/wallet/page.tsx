@@ -1,22 +1,27 @@
 "use client";
+
 import * as React from "react";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import LoadingCard from "@/lib/components/loading-card";
-import { store } from "../../lib/store/store";
+import ErrorCard from "@app/lib/components/error-card";
+import { store } from "@app/lib/store/store";
 import {
+  BalanceV1,
   SolanaWallet,
   STORE_ACTIVE_KEYPAIR,
   STORE_KEYPAIRS,
-} from "../../lib/crate/generated";
+  STORE_PASSWORD,
+} from "@app/lib/crate/generated";
 import { debug } from "@tauri-apps/plugin-log";
-import { redirect, useRouter } from "next/navigation";
-import { useAppLock } from "../../lib/context/app-lock-context";
-import WalletCard from "./components/wallet_card";
-import ActivityCard from "./components/activity_card";
+import { useAppLock } from "@app/lib/context/app-lock-context";
+import WalletCard from "./_components/wallet-card";
+import ActivityCard from "./_components/activity_card";
 import { invoke } from "@tauri-apps/api/core";
 import { selectionFeedback } from "@tauri-apps/plugin-haptics";
-import ActiveKeypairSelectionModal from "./components/active-keypair-selection";
+import ActiveKeypairSelectionModal from "./_components/active-keypair-selection";
+import { SET_ACTIVE_KEYPAIR } from "@app/lib/commands";
+import { useNavigate } from "react-router-dom";
+import { CircularProgress } from "@mui/material";
+import ModalQrCodeModal from "./_components/modal-qrcode";
 
 enum State {
   Loading,
@@ -24,59 +29,34 @@ enum State {
   Error,
 }
 
-// Helper to group stablecoins by denomination
-// (kept here for ActivityCard to receive as prop)
-function groupStablecoinsByDenomination(
-  activities: {
-    coin: string;
-    amount: number;
-    date: string;
-    type: "received" | "sent" | "airdrop";
-  }[],
-) {
-  // Define mapping from coin to denomination
-  const denominationMap: Record<string, string> = {
-    USDC: "USD",
-    USDT: "USD",
-    USDG: "USD",
-    EURC: "EUR",
-    EURT: "EUR",
-    // Add more as needed
-  };
-
-  // Group by denomination
-  const grouped: Record<
-    string,
-    {
-      coin: string;
-      amount: number;
-      date: string;
-      type: "received" | "sent" | "airdrop";
-    }[]
-  > = {};
-  for (const activity of activities) {
-    const denom = denominationMap[activity.coin] || activity.coin;
-    if (!grouped[denom]) grouped[denom] = [];
-    grouped[denom].push(activity);
-  }
-  return grouped;
-}
-
 export default function WalletHome() {
-  // Placeholder data
-  const [userName, setUserName] = React.useState<string>("Nowhere Man");
   const { lock } = useAppLock();
-  const router = useRouter();
+  const router = useNavigate();
   const [wallet, setWallet] = React.useState<SolanaWallet | undefined>(
     undefined,
   );
   const [state, setState] = React.useState(State.Loading);
   const [showSwitchModal, setShowSwitchModal] = React.useState(false);
+  const [showQrCodeModal, setShowQrCodeModal] = React.useState(false);
   const [allKeypairs, setAllKeypairs] = React.useState<SolanaWallet[]>([]);
+  const [availableAssets, setAvailableAssets] = React.useState<BalanceV1[]>([]);
 
-  const loadWallet = async () => {
+  const init = async () => {
     try {
+      // Decide if we should redirect to onboarding
       const keypairs = await store().get<SolanaWallet[]>(STORE_KEYPAIRS);
+      if (!keypairs || keypairs.length === 0) {
+        router("/wallet/onboarding");
+        return;
+      }
+
+      // Check if we should redirect to create password onboarding
+      const passwordCheck = await store().get<string>(STORE_PASSWORD);
+      if (!passwordCheck) {
+        router("/wallet/onboarding/create-password");
+        return;
+      }
+
       let walletActive: SolanaWallet | undefined;
       walletActive = await store().get<SolanaWallet>(STORE_ACTIVE_KEYPAIR);
       let wallet: SolanaWallet | undefined = walletActive;
@@ -87,11 +67,6 @@ export default function WalletHome() {
       }
       debug(`wallet: ${wallet?.pubkey}`);
       setWallet(wallet);
-      // Load username
-      const username = await store().get<string>("username");
-      if (username !== undefined) {
-        setUserName(username);
-      }
       setState(State.Loaded);
     } catch {
       setState(State.Error);
@@ -101,7 +76,7 @@ export default function WalletHome() {
   const onSelectWallet = async (wallet: SolanaWallet) => {
     setState(State.Loading);
     try {
-      await invoke("set_active_keypair", { keypair: wallet });
+      await invoke(SET_ACTIVE_KEYPAIR, { keypair: wallet });
       setTimeout(() => {
         setWallet(wallet);
         setState(State.Loaded);
@@ -112,8 +87,12 @@ export default function WalletHome() {
     }
   };
 
+  const onAvailableAssetsUpdated = (assets: BalanceV1[]) => {
+    setAvailableAssets(assets);
+  };
+
   React.useEffect(() => {
-    loadWallet();
+    init();
   }, []);
 
   // Fetch all keypairs for switch modal
@@ -129,100 +108,60 @@ export default function WalletHome() {
     fetchKeypairs();
   }, []);
 
-  // Add onDeposit function
-  const onDeposit = React.useCallback(async () => {
-    await selectionFeedback();
-    router.push("/deposit");
-  }, [router]);
-
-  if (state === State.Loading) {
-    return (
-      <Box
-        sx={{
-          minHeight: "100vh",
-          bgcolor: "#f5f6fa",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <LoadingCard />
-      </Box>
-    );
-  }
-
-  if (state === State.Error) {
-    return (
-      <Box
-        sx={{
-          minHeight: "100vh",
-          bgcolor: "#f5f6fa",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <span style={{ color: "red" }}>Failed to load wallet.</span>
-      </Box>
-    );
-  }
-
-  if (!wallet) {
-    lock();
-    return redirect("/");
-  }
-
   return (
     <Box
       sx={{
         minHeight: "unset",
         height: "auto",
-        bgcolor: "#f5f6fa",
         pb: 10,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
       }}
     >
-      <Box sx={{ width: "100%", maxWidth: 480 }}>
-        <Typography
-          variant="h5"
-          component="h1"
-          fontWeight="bold"
-          align="center"
-          sx={{ mb: 2 }}
-        >
-          Wallet
-        </Typography>
-      </Box>
-      <Box sx={{ width: "100%", maxWidth: 480 }}>
-        <WalletCard
-          userName={userName}
-          wallet={wallet}
-          onLock={async () => {
-            await selectionFeedback();
-            lock();
-            router.replace("/");
-          }}
-          onDeposit={onDeposit}
-          onSwitchKeypair={async () => {
-            await selectionFeedback();
-            setShowSwitchModal(true);
-          }}
-        />
-        <ActivityCard
-          groupStablecoinsByDenomination={groupStablecoinsByDenomination}
-        />
-      </Box>
-      <ActiveKeypairSelectionModal
-        open={showSwitchModal}
-        onClose={() => setShowSwitchModal(false)}
-        keypairs={allKeypairs}
-        activePubkey={wallet?.pubkey}
-        onSelect={onSelectWallet}
-      />
+      {state === State.Loading && (
+        <CircularProgress className="bg-primary-light" />
+      )}
+      {state === State.Error && <ErrorCard />}
+      {state === State.Loaded && wallet && (
+        <>
+          <Box sx={{ width: "100%", maxWidth: 480 }}>
+            <WalletCard
+              wallet={wallet}
+              onLock={async () => {
+                await selectionFeedback();
+                lock();
+                router("/");
+              }}
+              onSwitchKeypair={async () => {
+                await selectionFeedback();
+                setShowSwitchModal(true);
+              }}
+              onQrCodeClicked={async () => {
+                await selectionFeedback();
+                setShowQrCodeModal(true);
+              }}
+              availableAssets={availableAssets}
+            />
+            <ActivityCard
+              wallet={wallet}
+              onAvailableAssetsUpdated={onAvailableAssetsUpdated}
+            />
+          </Box>
+          <ActiveKeypairSelectionModal
+            open={showSwitchModal}
+            onClose={() => setShowSwitchModal(false)}
+            keypairs={allKeypairs}
+            activePubkey={wallet?.pubkey}
+            onSelect={onSelectWallet}
+          />
+          <ModalQrCodeModal
+            open={showQrCodeModal}
+            onClose={() => setShowQrCodeModal(false)}
+            activePubkey={wallet?.pubkey}
+          />
+        </>
+      )}
     </Box>
   );
 }

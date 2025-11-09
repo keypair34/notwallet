@@ -1,58 +1,32 @@
-# NotWallet
+<!-- LOGO -->
+<h1>
+<p align="center">
+  <img src="./assets/app-icon-v4.png" alt="Logo" width="128">
+  <br>NotWallet Crypto
+</h1>
+  <p align="center">
+    Non-custodial, multi-platform, simple Solana wallet.
+    <br />
+    <a href="#about">About</a>
+    ·
+    <a href="#about">Download</a>
+    ·
+    <a href="./docs">Documentation</a>
+    ·
+    <a href="CONTRIBUTING.md">Contributing</a>
+  </p>
+</p>
 
-Solana wallet and more. Do your own research.
+## About
 
-**Use at your own risk.**
+Not just a crypto wallet: remittance, payment, DAO, DeFi. You name it.
 
-## Recommended IDE Setup
+## Download
 
-- [VS Code](https://code.visualstudio.com/)
-- [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode)
-- [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+- [Apple App Store](https://apps.apple.com/se/app/notwallet-crypto/id6749607570)
+- [Google Play Store](https://play.google.com/store/apps/details?id=xyz.notwallet.NotWallet)
+- [Apple App Store (Apple Watch only)](https://apps.apple.com/se/app/notwallet-crypto-watch/id6749650386)
 
-## Run targets
+---
 
-Build desktop, iOS, and Android targets:
-
-```bash
-# Desktop
-$ pnpm run tauri dev
-# iOS (macOS only)
-$ pnpm run tauri ios init
-$ pnpm run tauri ios dev
-# Android
-$ pnpm run tauri android init
-$ pnpm run tauri android dev
-```
-
-- Follow Tauri guide for more information.
-- When updating `tauri.conf.json`, always clean up `src-tauri/gen` folder and init the android and ios project again.
-
-```bash
-$ pnpm run tauri android init
-$ pnpm run tauri ios init
-```
-
-## Release Mobiles
-
-For Android, build for release with the upload keystore ready in the path in `keystore.properties` file
-
-```
-$ cargo tauri android build --aab
-```
-
-For iOS, modify the api key and api user in the publish-ios.sh script with your own user and key.
-
-```
-$ pnpm publish-ios
-```
-
-<details>
-  <summary>Screenshots</summary>
-
-  <p><img src="screenshots/0.png" alt="locked-wallet-view.png" width="250"/></p>
-  <p><img src="screenshots/1.png" alt="wallet-home.png" width="250"/></p>
-  <p><img src="screenshots/2.png" alt="wallet-mobile.png" width="250"/></p>
-
-</details>
-
+Made with ❄️ in Stockholm

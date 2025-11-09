@@ -1,6 +1,6 @@
-# Contributing to Not - Crypto Wallet
+# Contributing to NotWallet Crypto
 
-Thank you for your interest in contributing to **Not - Crypto Wallet**!  
+Thank you for your interest in contributing to **NotWallet Crypto**!
 Our vision is to build a secure, user-friendly, and privacy-focused Solana wallet—open to everyone, just like MetaMask is for Ethereum.
 
 We welcome contributions of all kinds: code, documentation, design, bug reports, feature requests, and community support.
@@ -12,7 +12,7 @@ We welcome contributions of all kinds: code, documentation, design, bug reports,
 ### 1. Get Started
 
 - **Read our [README](./README.md)** to understand the project’s purpose and setup.
-- **Check open [issues](https://github.com/TheStableFoundation/not/issues)** for bugs, features, or improvements you can help with.
+- **Check open [issues](https://github.com/TheStableFoundation/notwallet/issues)** for bugs, features, or improvements you can help with.
 - **Join the discussion**: Open an issue if you want to propose a new feature or discuss an idea.
 
 ### 2. Code Contributions
@@ -32,7 +32,7 @@ We welcome contributions of all kinds: code, documentation, design, bug reports,
 
 ### 4. Reporting Bugs & Requesting Features
 
-- Use [GitHub Issues](https://github.com/TheStableFoundation/not/issues) to report bugs or request features.
+- Use [GitHub Issues](https://github.com/TheStableFoundation/notwallet/issues) to report bugs or request features.
 - Provide as much detail as possible: steps to reproduce, screenshots, logs, or context.
 
 ### 5. Community Standards
@@ -45,7 +45,7 @@ We welcome contributions of all kinds: code, documentation, design, bug reports,
 
 ## Vision
 
-We aim to make Not - Crypto Wallet as trusted and widely used for Solana as MetaMask is for Ethereum.  
+We aim to make NotWallet Crypto as trusted and widely used for Solana as MetaMask is for Ethereum.
 Your contributions help us get there—thank you!
 
 ---

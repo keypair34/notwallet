@@ -1,0 +1,21 @@
+{
+  "productName": "NotWallet",
+  "identifier": "xyz.notwallet.NotWalletApp",
+  "app": {
+    "windows": [
+      {
+        "title": "NotWallet Crypto"
+      }
+    ]
+  },
+  "bundle": {
+    "icon": ["icons/icon.icns"],
+    "macOS": {
+      "entitlements": "./Entitlements.plist",
+      "signingIdentity": "your_signing_identity_here",
+      "files": {
+        "embedded.provisionprofile": "/path/to/provisionprofile.provisionprofile"
+      }
+    }
+  }
+}

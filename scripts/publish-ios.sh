@@ -27,7 +27,7 @@ if [ -z "$API_ISSUER" ]; then
 fi
 
 echo "Building iOS app..."
-pnpm tauri ios build --export-method app-store-connect || { echo "Error: iOS build failed"; exit 1; }
+cargo tauri ios build --export-method app-store-connect -c src-tauri/tauri.prod-ios-appstore.conf.json || { echo "Error: iOS build failed"; exit 1; }
 
 echo "Uploading to App Store Connect..."
 xcrun altool --upload-app --type ios --file "src-tauri/gen/apple/build/arm64/notwallet.ipa" --apiKey "$API_KEY" --apiIssuer "$API_ISSUER" || { echo "Error: Upload to App Store Connect failed"; exit 1; }
