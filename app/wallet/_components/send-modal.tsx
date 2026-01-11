@@ -20,6 +20,10 @@ import { useLang } from "../../../src/LanguageContext";
 import { useNetworkEnvironment } from "@app/lib/context/network-environment-context";
 import { AssetIcon } from "@app/lib/components/token-icons";
 import { debug } from "@tauri-apps/plugin-log";
+import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
+import { IconButton, Tooltip } from "@mui/material";
+import { platform } from "@tauri-apps/plugin-os";
+import { useNavigate } from "react-router-dom";
 
 interface SendModalProps {
   open: boolean;
@@ -27,6 +31,8 @@ interface SendModalProps {
   senderAddress: string;
   availableKeypairs: SolanaWallet[];
   availableAssets: BalanceV1[];
+  preSelectedTokenAddress?: string;
+  scannedAddress?: string;
 }
 
 export default function SendModal({
@@ -35,9 +41,12 @@ export default function SendModal({
   senderAddress,
   availableKeypairs,
   availableAssets,
+  preSelectedTokenAddress,
+  scannedAddress,
 }: SendModalProps) {
   const { t } = useLang();
   const { environment } = useNetworkEnvironment();
+  const router = useNavigate();
   const [amount, setAmount] = React.useState<string>("");
   const [recipient, setRecipient] = React.useState<string>("");
   const [customAddress, setCustomAddress] = React.useState<string>("");
@@ -52,12 +61,24 @@ export default function SendModal({
   React.useEffect(() => {
     if (open) {
       setAmount("");
-      setRecipient("");
-      setCustomAddress("");
       setError(null);
       setSuccess(false);
       if (availableAssets.length > 0) {
         updateSelectedToken(availableAssets[0].meta.address);
+      }
+      // Pre-selected token to send. This means that we are coming from the scan QR page.
+      if (preSelectedTokenAddress) {
+        updateSelectedToken(preSelectedTokenAddress);
+      }
+      if (scannedAddress) {
+        setCustomAddress(scannedAddress);
+        setRecipient("custom");
+      } else {
+        // It is possible to only have one keypair. In that case, it doesn't make sense to send to its own address.
+        filteredKeypairs.length == 0
+          ? setRecipient("custom")
+          : setRecipient("");
+        setCustomAddress("");
       }
     }
   }, [open]);
@@ -91,6 +112,10 @@ export default function SendModal({
     );
     setSelectedBalance(selectedBalance);
     debug(`Selected balance: ${selectedBalance}`);
+  };
+
+  const onCameraButtonClicked = async () => {
+    router(`/wallet/scan?selectedTokenAddress=${selectedTokenAddress}`);
   };
 
   const handleSend = async () => {
@@ -216,7 +241,6 @@ export default function SendModal({
               ))}
             </Select>
           </FormControl>
-
           <TextField
             label={t.amount}
             fullWidth
@@ -232,48 +256,56 @@ export default function SendModal({
             }}
             helperText={`${t.available}: ${selectedBalance?.ui_amount} ${selectedBalance?.meta.symbol}`}
           />
-
-          {filteredKeypairs.length > 0 ? (
-            <FormControl fullWidth>
-              <InputLabel id="recipient-label">{t.recipient}</InputLabel>
-              <Select
-                labelId="recipient-label"
-                id="recipient"
-                value={recipient}
-                label={t.recipient}
-                onChange={handleRecipientChange}
-                disabled={isLoading}
-              >
-                {filteredKeypairs.map((keypair) => (
-                  <MenuItem key={keypair.pubkey} value={keypair.pubkey}>
-                    {keypair.pubkey.slice(0, 6)}...{keypair.pubkey.slice(-6)}
-                  </MenuItem>
-                ))}
-                <MenuItem value="custom">
-                  <em>{t.enterCustomAddress}</em>
-                </MenuItem>
-              </Select>
-            </FormControl>
-          ) : (
-            <TextField
-              label={t.recipientAddress}
-              fullWidth
+          <FormControl fullWidth>
+            <InputLabel id="recipient-label">{t.recipient}</InputLabel>
+            <Select
+              labelId="recipient-label"
+              id="recipient"
               value={recipient}
-              onChange={(e) => setRecipient(e.target.value)}
+              label={t.recipient}
+              onChange={handleRecipientChange}
               disabled={isLoading}
-              placeholder={t.enterRecipientPublicKey}
-            />
-          )}
-
+            >
+              {filteredKeypairs.map((keypair) => (
+                <MenuItem key={keypair.pubkey} value={keypair.pubkey}>
+                  {keypair.pubkey.slice(0, 6)}...{keypair.pubkey.slice(-6)}
+                </MenuItem>
+              ))}
+              <MenuItem value="custom">
+                <em>{t.enterCustomAddress}</em>
+              </MenuItem>
+            </Select>
+          </FormControl>
           {recipient === "custom" && (
-            <TextField
-              label={t.customAddress}
-              fullWidth
-              value={customAddress}
-              onChange={(e) => setCustomAddress(e.target.value)}
-              disabled={isLoading}
-              placeholder={t.enterRecipientPublicKey}
-            />
+            <>
+              <TextField
+                label={t.customAddress}
+                fullWidth
+                value={customAddress}
+                onChange={(e) => setCustomAddress(e.target.value)}
+                disabled={isLoading}
+                placeholder={t.enterRecipientPublicKey}
+              />
+              {platform() == "android" && (
+                <Tooltip title={"Scan address"}>
+                  <IconButton
+                    sx={{
+                      color: "#9932CC",
+                      bgcolor: "#f5f6fa",
+                      "&:hover": { bgcolor: "#EDE7F6" },
+                      ml: 1,
+                      borderRadius: 2,
+                    }}
+                    onClick={async () => {
+                      await onCameraButtonClicked();
+                    }}
+                    size="small"
+                  >
+                    <QrCodeScannerIcon />
+                  </IconButton>
+                </Tooltip>
+              )}
+            </>
           )}
         </Stack>
 

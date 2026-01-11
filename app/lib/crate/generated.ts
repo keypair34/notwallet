@@ -10,6 +10,10 @@ export const STRIPE_PUBLISHABLE_KEY = "your_stripe_publishable_key";
  */
 export const STORE = ".notwallet.dat";
 
+export const STORE_ACCOUNT = ".account.dat";
+
+export const STORE_ACCESS_TOKEN_KEY = "access_token";
+
 export const STORE_KEYPAIRS = "keypairs";
 
 export const STORE_SEEDS = "seeds";
@@ -288,6 +292,10 @@ export const ADDRESS_EURC = "HzwqbKZw8HxMN6bF2yFZNrht3c2iXXzpKcFu7uBEDKtr";
 
 export const ADDRESS_ZBTC = "zBTCug3er3tLyffELcvDNrKkCymbPWysGcWihESYfLg";
 
+export const ADDRESS_CBBTC = "cbbtcf3aa214zXHbiAZQwf4122FBYbraNdFqgw4iMij";
+
+export const ADDRESS_XBTC = "CtzPWv73Sn1dMGVU3ZtLv9yWSyUAanBni19YWDaznnkn";
+
 /** The Stable Foundation */
 export const THE_STABLE_FOUNDATION_ADDRESS = "9DWkPYFKcjpGVjwCjgAnYM8T6H4hssEnW27rLDtfU8y5";
 
@@ -307,64 +315,83 @@ export interface Metadata {
 
 export type SolanaAsset =
   | {
-      Sol: {
+      "Sol": {
         meta: Metadata;
-      };
+      }
     }
   | {
-      BachToken: {
+      "BachToken": {
         meta: Metadata;
-      };
+      }
     }
   | {
-      ZBtc: {
+      "Jupiter": {
         meta: Metadata;
-      };
+      }
+    }
+  /** Begin Bitcoin */
+  | {
+      "ZBtc": {
+        meta: Metadata;
+      }
     }
   | {
-      Jupiter: {
+      "CbBtc": {
         meta: Metadata;
-      };
+      }
     }
   | {
-      Usdc: {
+      "XBtc": {
         meta: Metadata;
-      };
+      }
+    }
+  /**
+   * End Bitcoin
+   * Begin USD Stablecoins
+   */
+  | {
+      "Usdc": {
+        meta: Metadata;
+      }
     }
   | {
-      Usdt: {
+      "Usdt": {
         meta: Metadata;
-      };
+      }
     }
   | {
-      Usdg: {
+      "Usdg": {
         meta: Metadata;
-      };
+      }
     }
   | {
-      Usds: {
+      "Usds": {
         meta: Metadata;
-      };
+      }
     }
   | {
-      Usd1: {
+      "Usd1": {
         meta: Metadata;
-      };
+      }
+    }
+  /**
+   * End USD Stablecoins
+   * Begin Euro stablecoins
+   */
+  | {
+      "Eurc": {
+        meta: Metadata;
+      }
     }
   | {
-      Eurc: {
+      "BachToken0": {
         meta: Metadata;
-      };
+      }
     }
   | {
-      BachToken0: {
+      "BachToken1": {
         meta: Metadata;
-      };
-    }
-  | {
-      BachToken1: {
-        meta: Metadata;
-      };
+      }
     };
 
 export interface BalanceV1 {
