@@ -7,7 +7,7 @@ import Tooltip from "@mui/material/Tooltip";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import SchoolIcon from "@mui/icons-material/School";
 import { selectionFeedback } from "@tauri-apps/plugin-haptics";
-import { useLang } from "../../../src/LanguageContext";
+import { useLang } from "../../lib/context/language-context";
 import { useNavigate } from "react-router-dom";
 
 interface MenuItemProps {
@@ -77,14 +77,14 @@ export default function HorizontalMenu() {
 
   const menuItems = [
     {
-      icon: <AccountBalanceIcon fontSize="medium" />,
-      label: t.dao,
-      onClick: handleDAO,
-    },
-    {
       icon: <SchoolIcon fontSize="medium" />,
       label: t.learn,
       onClick: handleLearn,
+    },
+    {
+      icon: <AccountBalanceIcon fontSize="medium" />,
+      label: t.dao,
+      onClick: handleDAO,
     },
     // Add more menu items here as needed
   ];
